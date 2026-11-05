@@ -6,8 +6,9 @@
   cache em disco por versão do catálogo e conferência por SHA-256.
 * Mapas: `condepe_geometry()` (Malha Municipal de Pernambuco da Condepe/Fidem,
   conferida pelo SHA-256 do manifesto, ou a malha do IBGE), dissolvida em
-  regiões com `level`; `condepe_regions()` com oito regionalizações (Regiões
+  regiões com `level`; `condepe_regions()` com dez regionalizações (Regiões
   de Desenvolvimento, meso e microrregiões, regiões imediatas e
-  intermediárias, regiões e macrorregiões de saúde, regiões metropolitanas);
+  intermediárias, regiões e macrorregiões de saúde, GRE, regiões fiscais,
+  regiões metropolitanas);
   `condepe_add_geometry()` junta os dados à malha. Quatro guias:
   primeiros passos, exemplos, mapas e a relação das fontes.

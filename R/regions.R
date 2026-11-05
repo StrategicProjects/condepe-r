@@ -8,12 +8,14 @@ condepe_levels <- c(
   regiao_imediata = "Regi\u00f5es geogr\u00e1ficas imediatas (IBGE)",
   regiao_saude = "Regi\u00f5es de sa\u00fade, as Geres (SES-PE, via base territorial do DATASUS)",
   macrorregiao_saude = "Macrorregi\u00f5es de sa\u00fade (SES-PE, via DATASUS)",
+  gre = "Ger\u00eancias Regionais de Educa\u00e7\u00e3o (SEE-PE; Recife Norte e Sul juntas)",
+  regiao_fiscal = "Regi\u00f5es fiscais (SEFAZ-PE)",
   rm = "Regi\u00f5es metropolitanas: RMR e RIDE Petrolina-Juazeiro"
 )
 
 #' Regionalizações dos municípios de Pernambuco
 #'
-#' A que região pertence cada município, em oito regionalizações oficiais:
+#' A que região pertence cada município, em dez regionalizações oficiais:
 #'
 #' ```{r, echo = FALSE, results = "asis"}
 #' cat(paste0("* `", names(condepe_levels), "`: ", condepe_levels), sep = "\n")

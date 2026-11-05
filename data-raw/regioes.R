@@ -7,7 +7,10 @@
 #   de saúde (as 12 Geres da SES-PE), macrorregião de saúde e região
 #   metropolitana (RMR e RIDE Petrolina-Juazeiro);
 # - Condepe/Fidem: Regiões de Desenvolvimento (data-raw/rd_fidem.csv, da
-#   tabela de referência do BDE; Fernando de Noronha é o "Distrito Estadual").
+#   tabela de referência do BDE; Fernando de Noronha é o "Distrito Estadual");
+# - SEE-PE e SEFAZ-PE: Gerência Regional de Educação e Região Fiscal
+#   (data-raw/gre_fiscal.csv, extraído por data-raw/gre_fiscal.R da malha de
+#   referência do datalake da equipe).
 #
 # Rode da raiz do pacote quando uma fonte mudar e commite o CSV:
 #   Rscript data-raw/regioes.R
@@ -59,9 +62,14 @@ municipios$rm[municipios$cd_municipio_ibge == "2606200"] <- "Região Metropolita
 rd <- utils::read.csv("data-raw/rd_fidem.csv", colClasses = "character", encoding = "UTF-8")
 municipios$rd <- rd$rd[match(municipios$cd_municipio_ibge, rd$cd_municipio_ibge)]
 
+gf <- utils::read.csv("data-raw/gre_fiscal.csv", colClasses = "character", encoding = "UTF-8")
+municipios$gre <- gf$gre[match(municipios$cd_municipio_ibge, gf$cd_municipio_ibge)]
+municipios$regiao_fiscal <- gf$regiao_fiscal[match(municipios$cd_municipio_ibge, gf$cd_municipio_ibge)]
+
 municipios <- municipios[order(municipios$cd_municipio_ibge),
   c("cd_municipio_ibge", "nm_municipio", "rd", "mesorregiao", "microrregiao",
-    "regiao_intermediaria", "regiao_imediata", "regiao_saude", "macrorregiao_saude", "rm")]
+    "regiao_intermediaria", "regiao_imediata", "regiao_saude", "macrorregiao_saude",
+    "gre", "regiao_fiscal", "rm")]
 stopifnot(!anyNA(municipios[setdiff(names(municipios), "rm")]))
 utils::write.csv(municipios, "inst/extdata/regioes.csv", row.names = FALSE, fileEncoding = "UTF-8", na = "")
 print(sapply(municipios[-(1:2)], function(x) length(unique(stats::na.omit(x)))))
