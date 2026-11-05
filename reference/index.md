@@ -18,6 +18,17 @@ O que o Observatório publica.
 - [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md)
   : Uma fonte inteira
 
+## Mapas e regiões
+
+Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
+
+- [`condepe_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_geometry.md)
+  : Malha municipal de Pernambuco
+- [`condepe_add_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_add_geometry.md)
+  : Junta dados do Observatório à malha municipal
+- [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)
+  : Regionalizações dos municípios de Pernambuco
+
 ## Cache e opções
 
 - [`condepe_cache_dir()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cache_dir.md)

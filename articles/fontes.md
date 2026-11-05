@@ -10,81 +10,25 @@ fonte também tem uma ficha em <https://cf.pe.gov.br/observatorio>.
 
 ## Economia
 
-### Agropecuária
-
-[TABLE]
-
-### Comércio e Serviços
-
-[TABLE]
-
-### Finanças Públicas
-
-[TABLE]
-
-### Indicadores
-
-[TABLE]
-
-### Indústria
-
-[TABLE]
-
-### PIB
+26 fontes · 89.374 indicadores
 
 [TABLE]
 
 ## Infraestrutura
 
-### Transporte
+2 fontes · 29 indicadores
 
 [TABLE]
 
 ## Social
 
-### Assistencia
-
-[TABLE]
-
-### Demografia
-
-[TABLE]
-
-### Domicílios
-
-[TABLE]
-
-### Educação
-
-[TABLE]
-
-### Indicadores Sociais
-
-[TABLE]
-
-### Movimento Eleitoral
-
-[TABLE]
-
-### Saúde
-
-[TABLE]
-
-### Trabalho
+44 fontes · 15.060 indicadores
 
 [TABLE]
 
 ## Território
 
-### Divisão Territorial
-
-[TABLE]
-
-### Meio Ambiente
-
-[TABLE]
-
-### Posição e Extensão
+3 fontes · 9.034 indicadores
 
 [TABLE]
 

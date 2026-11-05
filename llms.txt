@@ -44,6 +44,15 @@ condepe_series(
 # Uma fonte inteira e a lista de municípios
 condepe_data("datasus_sinasc")
 condepe_localities()
+
+# Mapas (requer o pacote sf): malha da Condepe/Fidem ou do IBGE,
+# regionalizações do estado e junção dos dados pelo código IBGE
+malha <- condepe_geometry(noronha = FALSE)
+rd <- condepe_geometry("rd")            # Regiões de Desenvolvimento
+condepe_regions("regiao_saude")         # a que região pertence cada município
+mapa <- condepe_add_geometry(condepe_series(
+  "sidra_populacao_estimada", "Populacao residente estimada", years = 2025
+))
 ```
 
 Os nomes das colunas ficam em português, como publicados, para que todo
@@ -55,11 +64,35 @@ trazem o período em `indicador` (`"... [MM/AAAA]"`) e em `mes`;
 `indicador_base` é o rótulo sem ele.
 
 Guias: [primeiros
-passos](https://strategicprojects.github.io/condepe-r/articles/condepe.html),
-[exemplos](https://strategicprojects.github.io/condepe-r/articles/exemplos.html),
-[mapas](https://strategicprojects.github.io/condepe-r/articles/mapas.html)
+passos](https://strategicprojects.github.io/condepe-r/articles/condepe.md),
+[exemplos](https://strategicprojects.github.io/condepe-r/articles/exemplos.md),
+[mapas](https://strategicprojects.github.io/condepe-r/articles/mapas.md)
 e a [relação das
-fontes](https://strategicprojects.github.io/condepe-r/articles/fontes.html).
+fontes](https://strategicprojects.github.io/condepe-r/articles/fontes.md).
+
+## Fontes do Observatório
+
+Versão **`2026-11-05_171049`** do catálogo: **75 fontes**, **113.497
+indicadores** e **8.890.619 observações**. O identificador da fonte é o
+que se passa às funções do pacote; clique num eixo para abrir a lista. A
+relação também está no guia [Fontes do
+Observatório](https://strategicprojects.github.io/condepe-r/articles/fontes.md).
+
+Economia 26 fontes · 89.374 indicadores
+
+[TABLE]
+
+Infraestrutura 2 fontes · 29 indicadores
+
+[TABLE]
+
+Social 44 fontes · 15.060 indicadores
+
+[TABLE]
+
+Território 3 fontes · 9.034 indicadores
+
+[TABLE]
 
 ## De onde vêm os dados
 
@@ -108,6 +141,17 @@ O que o Observatório publica.
   : Série de um ou mais indicadores
 - [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md)
   : Uma fonte inteira
+
+## Mapas e regiões
+
+Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
+
+- [`condepe_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_geometry.md)
+  : Malha municipal de Pernambuco
+- [`condepe_add_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_add_geometry.md)
+  : Junta dados do Observatório à malha municipal
+- [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)
+  : Regionalizações dos municípios de Pernambuco
 
 ## Cache e opções
 
