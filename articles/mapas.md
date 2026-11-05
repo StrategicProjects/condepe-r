@@ -170,16 +170,17 @@ plot of chunk populacao
 ## Regiões
 
 [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)
-diz a que região pertence cada município em oito regionalizações:
-Regiões de Desenvolvimento (RD) da Condepe/Fidem, meso e microrregiões e
-regiões imediatas e intermediárias do IBGE, regiões e macrorregiões de
-saúde e regiões metropolitanas. A tabela vai com o pacote, sem rede:
+diz a que região pertence cada município em dez regionalizações: Regiões
+de Desenvolvimento (RD) da Condepe/Fidem, meso e microrregiões e regiões
+imediatas e intermediárias do IBGE, regiões e macrorregiões de saúde,
+Gerências Regionais de Educação (GRE), regiões fiscais da SEFAZ e
+regiões metropolitanas. A tabela vai com o pacote, sem rede:
 
 ``` r
 
 reg <- condepe_regions()
 reg
-#> # A tibble: 185 × 10
+#> # A tibble: 185 × 12
 #>   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao
 #>   <chr>             <chr>                 <chr>         <chr>       <chr>       
 #> 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      
@@ -188,15 +189,16 @@ reg
 #> 4 2600302           Agrestina             Agreste Cent… Agreste Pe… Brejo Perna…
 #> 5 2600401           Água Preta            Mata Sul      Mata Perna… Mata Meridi…
 #> 6 2600500           Águas Belas           Agreste Meri… Agreste Pe… Vale do Ipa…
-#>   regiao_intermediaria regiao_imediata     regiao_saude macrorregiao_saude rm   
+#>   regiao_intermediaria regiao_imediata     regiao_saude macrorregiao_saude gre  
 #>   <chr>                <chr>               <chr>        <chr>              <chr>
-#> 1 Recife               Recife              I Região de… Metropolitana      Regi…
-#> 2 Serra Talhada        Afogados da Ingaze… X Região de… Sertão             <NA> 
-#> 3 Petrolina            Petrolina           VIII Região… Vale do São Franc… <NA> 
-#> 4 Caruaru              Caruaru             IV Região d… Agreste            <NA> 
-#> 5 Recife               Palmares            III Região … Metropolitana      <NA> 
-#> 6 Caruaru              Garanhuns           V Região de… Agreste            <NA> 
+#> 1 Recife               Recife              I Região de… Metropolitana      Metr…
+#> 2 Serra Talhada        Afogados da Ingaze… X Região de… Sertão             Sert…
+#> 3 Petrolina            Petrolina           VIII Região… Vale do São Franc… Sert…
+#> 4 Caruaru              Caruaru             IV Região d… Agreste            Agre…
+#> 5 Recife               Palmares            III Região … Metropolitana      Mata…
+#> 6 Caruaru              Garanhuns           V Região de… Agreste            Agre…
 #> # ℹ 179 more rows
+#> # ℹ 2 more variables: regiao_fiscal <chr>, rm <chr>
 table(reg$rd)
 #> 
 #>                Agreste Central             Agreste Meridional 

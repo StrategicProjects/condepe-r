@@ -1,6 +1,6 @@
 # Regionalizações dos municípios de Pernambuco
 
-A que região pertence cada município, em oito regionalizações oficiais:
+A que região pertence cada município, em dez regionalizações oficiais:
 
 ## Usage
 
@@ -36,6 +36,11 @@ metropolitana ficam com `NA` em `rm`.
   territorial do DATASUS)
 
 - `macrorregiao_saude`: Macrorregiões de saúde (SES-PE, via DATASUS)
+
+- `gre`: Gerências Regionais de Educação (SEE-PE; Recife Norte e Sul
+  juntas)
+
+- `regiao_fiscal`: Regiões fiscais (SEFAZ-PE)
 
 - `rm`: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
 

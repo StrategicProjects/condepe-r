@@ -22,7 +22,8 @@ condepe_geometry(
   `"municipio"` (padrão) ou uma das regionalizações de
   [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md):
   `"rd"`, `"mesorregiao"`, `"microrregiao"`, `"regiao_intermediaria"`,
-  `"regiao_imediata"`, `"regiao_saude"`, `"macrorregiao_saude"`, `"rm"`.
+  `"regiao_imediata"`, `"regiao_saude"`, `"macrorregiao_saude"`,
+  `"gre"`, `"regiao_fiscal"`, `"rm"`.
 
 - source:
 
@@ -64,9 +65,9 @@ Com `level`, os municípios são dissolvidos na regionalização pedida
 (veja
 [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)):
 Regiões de Desenvolvimento, meso e microrregiões, regiões imediatas e
-intermediárias, regiões e macrorregiões de saúde ou regiões
-metropolitanas. As regiões herdam exatamente as divisas da malha
-municipal escolhida.
+intermediárias, regiões e macrorregiões de saúde, Gerências Regionais de
+Educação, regiões fiscais ou regiões metropolitanas. As regiões herdam
+exatamente as divisas da malha municipal escolhida.
 
 ## See also
 
