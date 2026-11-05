@@ -74,7 +74,7 @@ test_that("condepe_regions cobre os 185 municípios em cada regionalização", {
   esperado <- c(rd = 13L, mesorregiao = 5L, microrregiao = 19L,
                 regiao_intermediaria = 4L, regiao_imediata = 18L,
                 regiao_saude = 12L, macrorregiao_saude = 4L,
-                gre = 15L, regiao_fiscal = 3L, rm = 2L)
+                gre = 15L, regiao_fiscal = 3L, dro = 9L, rm = 2L)
   for (nv in names(esperado)) {
     expect_equal(length(unique(stats::na.omit(r[[nv]]))), esperado[[nv]], label = nv)
   }

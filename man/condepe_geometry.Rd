@@ -16,7 +16,7 @@ condepe_geometry(
 \item{level}{\code{"municipio"} (padrão) ou uma das regionalizações de
 \code{\link[=condepe_regions]{condepe_regions()}}: \code{"rd"}, \code{"mesorregiao"}, \code{"microrregiao"},
 \code{"regiao_intermediaria"}, \code{"regiao_imediata"}, \code{"regiao_saude"},
-\code{"macrorregiao_saude"}, \code{"gre"}, \code{"regiao_fiscal"}, \code{"rm"}.}
+\code{"macrorregiao_saude"}, \code{"gre"}, \code{"regiao_fiscal"}, \code{"dro"}, \code{"rm"}.}
 
 \item{source}{\code{"condepe"} ou \code{"ibge"}.}
 
@@ -51,7 +51,8 @@ nomes vêm de \code{\link[=condepe_localities]{condepe_localities()}}.
 Com \code{level}, os municípios são dissolvidos na regionalização pedida (veja
 \code{\link[=condepe_regions]{condepe_regions()}}): Regiões de Desenvolvimento, meso e microrregiões,
 regiões imediatas e intermediárias, regiões e macrorregiões de saúde,
-Gerências Regionais de Educação, regiões fiscais ou regiões metropolitanas. As regiões herdam exatamente as divisas da malha
+Gerências Regionais de Educação, regiões fiscais, Diretorias Regionais de
+Operações do DER ou regiões metropolitanas. As regiões herdam exatamente as divisas da malha
 municipal escolhida.
 }
 \examples{

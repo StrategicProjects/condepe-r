@@ -18,13 +18,14 @@ condepe_ibge_malha_url <- "https://servicodados.ibge.gov.br/api/v3/malhas/estado
 #' Com `level`, os municípios são dissolvidos na regionalização pedida (veja
 #' [condepe_regions()]): Regiões de Desenvolvimento, meso e microrregiões,
 #' regiões imediatas e intermediárias, regiões e macrorregiões de saúde,
-#' Gerências Regionais de Educação, regiões fiscais ou regiões metropolitanas. As regiões herdam exatamente as divisas da malha
+#' Gerências Regionais de Educação, regiões fiscais, Diretorias Regionais de
+#' Operações do DER ou regiões metropolitanas. As regiões herdam exatamente as divisas da malha
 #' municipal escolhida.
 #'
 #' @param level `"municipio"` (padrão) ou uma das regionalizações de
 #'   [condepe_regions()]: `"rd"`, `"mesorregiao"`, `"microrregiao"`,
 #'   `"regiao_intermediaria"`, `"regiao_imediata"`, `"regiao_saude"`,
-#'   `"macrorregiao_saude"`, `"gre"`, `"regiao_fiscal"`, `"rm"`.
+#'   `"macrorregiao_saude"`, `"gre"`, `"regiao_fiscal"`, `"dro"`, `"rm"`.
 #' @param source `"condepe"` ou `"ibge"`.
 #' @param quality Só para `source = "ibge"`: `"intermediaria"` (padrão,
 #'   cerca de 200 KB), `"minima"` ou `"maxima"`.

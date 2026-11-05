@@ -15,7 +15,7 @@ de região (ou só \code{regiao}, se \code{level} for dado). Municípios fora de
 região metropolitana ficam com \code{NA} em \code{rm}.
 }
 \description{
-A que região pertence cada município, em dez regionalizações oficiais:
+A que região pertence cada município, em onze regionalizações oficiais:
 }
 \details{
 \itemize{
@@ -28,6 +28,7 @@ A que região pertence cada município, em dez regionalizações oficiais:
 \item \code{macrorregiao_saude}: Macrorregiões de saúde (SES-PE, via DATASUS)
 \item \code{gre}: Gerências Regionais de Educação (SEE-PE; Recife Norte e Sul juntas)
 \item \code{regiao_fiscal}: Regiões fiscais (SEFAZ-PE)
+\item \code{dro}: Diretorias Regionais de Operações do DER-PE (Noronha é o 1º DOD)
 \item \code{rm}: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
 }
 
