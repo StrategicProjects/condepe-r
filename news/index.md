@@ -1,8 +1,8 @@
 # Changelog
 
-## condepe 0.0.0.9000
+## condepe 0.1.0
 
-- First version:
+- Initial CRAN submission:
   [`condepe_catalog()`](https://strategicprojects.github.io/condepe-r/reference/condepe_catalog.md),
   [`condepe_indicators()`](https://strategicprojects.github.io/condepe-r/reference/condepe_indicators.md),
   [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md),
