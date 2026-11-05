@@ -10,23 +10,24 @@ with a 'Hugging Face' mirror as fallback, cached on disk per catalogue
 version and checked against their published 'SHA-256'. Network failures
 are handled gracefully.
 
-## Package options
+## Opções do pacote
 
-- `condepe.quiet`: suppress informational messages. Defaults to `TRUE`
-  in non-interactive sessions.
+- `condepe.quiet`: silencia as mensagens informativas. Padrão `TRUE` em
+  sessões não interativas.
 
-- `condepe.cache_dir`: cache location. Defaults to
-  `tools::R_user_dir("condepe", "cache")`.
+- `condepe.cache_dir`: local do cache. Padrão
+  `tools::R_user_dir("condepe", "cache")` (ou `CONDEPE_CACHE_DIR`).
 
-- `condepe.catalog_max_age`: seconds a cached catalogue is trusted
-  without asking the server. Defaults to 6 hours.
+- `condepe.catalog_max_age`: segundos em que o catálogo em cache vale
+  sem consultar o servidor. Padrão 6 horas.
 
-- `condepe.base_url`, `condepe.mirror_url`: the canonical endpoint and
-  the mirror (also `CONDEPE_URL` / `CONDEPE_MIRROR_URL`); an empty
-  mirror disables the fallback.
+- `condepe.base_url`, `condepe.mirror_url`: o endereço canônico e o
+  espelho (também `CONDEPE_URL` / `CONDEPE_MIRROR_URL`); espelho vazio
+  desliga o fallback.
 
-- `condepe.max_tries`, `condepe.timeout`: retry attempts (default 3,
-  exponential backoff) and request timeout in seconds (default 60).
+- `condepe.max_tries`, `condepe.timeout`: tentativas (padrão 3, com
+  espera exponencial) e tempo limite de cada requisição em segundos
+  (padrão 60).
 
 ## See also
 

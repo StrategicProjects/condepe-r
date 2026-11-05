@@ -1,8 +1,8 @@
-# Municipalities of Pernambuco and the State, with IBGE codes
+# Municípios de Pernambuco e o Estado, com código IBGE
 
-Taken from the population estimates source, which covers all 185
-municipalities (Fernando de Noronha included); the State (`"26"`) comes
-first.
+Tirados da fonte de estimativas de população, que cobre os 185
+municípios (Fernando de Noronha incluído); o Estado (`"26"`) vem
+primeiro.
 
 ## Usage
 
@@ -14,11 +14,11 @@ condepe_localities(refresh = FALSE)
 
 - refresh:
 
-  If `TRUE`, download again even if a verified copy is cached.
+  Se `TRUE`, baixa de novo mesmo que haja cópia conferida em cache.
 
 ## Value
 
-A tibble with `cd_municipio_ibge` and `nm_municipio`.
+Um tibble com `cd_municipio_ibge` e `nm_municipio`.
 
 ## Examples
 

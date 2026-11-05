@@ -1,8 +1,8 @@
-# List the sources published by the Observatory
+# Fontes publicadas pelo Observatório
 
-One row per source, with axis, theme, description, original publisher,
-number of rows, indicators and localities, and the years covered. The
-catalogue version is in `attr(x, "version")` and the citation to use in
+Uma linha por fonte, com eixo, tema, descrição, órgão de origem, número
+de linhas, de indicadores e de localidades, e os anos cobertos. A versão
+do catálogo fica em `attr(x, "version")` e a citação a usar, em
 `attr(x, "citation")`.
 
 ## Usage
@@ -15,15 +15,15 @@ condepe_catalog(refresh = FALSE)
 
 - refresh:
 
-  If `TRUE`, ignore the cached catalogue (trusted for 6 hours) and ask
-  the server.
+  Se `TRUE`, ignora o catálogo em cache (válido por 6 horas) e consulta
+  o servidor.
 
 ## Value
 
-A tibble with columns `id_fonte`, `eixo`, `tema`, `assunto`,
+Um tibble com as colunas `id_fonte`, `eixo`, `tema`, `assunto`,
 `descricao`, `fonte_original`, `linhas`, `indicadores`, `localidades`,
-`ano_inicio`, `ano_fim`. Zero rows (with a warning) if the Observatory
-cannot be reached.
+`ano_inicio`, `ano_fim`. Zero linhas (com aviso) se o Observatório não
+responder.
 
 ## Examples
 

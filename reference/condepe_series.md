@@ -1,6 +1,6 @@
-# Series of one or more indicators
+# Série de um ou mais indicadores
 
-Filters a source by indicator and, optionally, by locality and year.
+Filtra uma fonte por indicador e, se pedido, por localidade e ano.
 
 ## Usage
 
@@ -12,38 +12,38 @@ condepe_series(source, indicator, code = NULL, years = NULL, refresh = FALSE)
 
 - source:
 
-  Source id, e.g. `"sidra_populacao_estimada"` (see
+  Identificador da fonte, por exemplo `"sidra_populacao_estimada"` (veja
   [`condepe_catalog()`](https://strategicprojects.github.io/condepe-r/reference/condepe_catalog.md)).
 
 - indicator:
 
-  One or more `indicador_base` values, exactly as listed by
+  Um ou mais valores de `indicador_base`, exatamente como listados por
   [`condepe_indicators()`](https://strategicprojects.github.io/condepe-r/reference/condepe_indicators.md).
 
 - code:
 
-  IBGE codes: 7 digits for municipalities, `"26"` for the State. `NULL`
-  keeps every locality.
+  Códigos IBGE: 7 dígitos para municípios, `"26"` para o Estado. `NULL`
+  mantém todas as localidades.
 
 - years:
 
-  Years to keep; `NULL` keeps all.
+  Anos a manter; `NULL` mantém todos.
 
 - refresh:
 
-  If `TRUE`, download again even if a verified copy is cached.
+  Se `TRUE`, baixa de novo mesmo que haja cópia conferida em cache.
 
 ## Value
 
-A tibble in the long format of
+Um tibble no formato longo de
 [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md),
-sorted by locality, year and month.
+ordenado por localidade, ano e mês.
 
 ## Examples
 
 ``` r
 if (FALSE) { # interactive()
-# Population of Recife (IBGE 2611606) since 2020
+# População do Recife (IBGE 2611606) desde 2020
 condepe_series(
   "sidra_populacao_estimada", "Populacao residente estimada",
   code = "2611606", years = 2020:2026

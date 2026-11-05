@@ -1,28 +1,28 @@
 # Package index
 
-## Discover
+## Descobrir
 
-What the Observatory publishes, and where.
+O que o Observatório publica.
 
 - [`condepe_catalog()`](https://strategicprojects.github.io/condepe-r/reference/condepe_catalog.md)
-  : List the sources published by the Observatory
+  : Fontes publicadas pelo Observatório
 - [`condepe_indicators()`](https://strategicprojects.github.io/condepe-r/reference/condepe_indicators.md)
-  : List the indicators of a source
+  : Indicadores de uma fonte
 - [`condepe_localities()`](https://strategicprojects.github.io/condepe-r/reference/condepe_localities.md)
-  : Municipalities of Pernambuco and the State, with IBGE codes
+  : Municípios de Pernambuco e o Estado, com código IBGE
 
-## Retrieve data
+## Obter os dados
 
 - [`condepe_series()`](https://strategicprojects.github.io/condepe-r/reference/condepe_series.md)
-  : Series of one or more indicators
+  : Série de um ou mais indicadores
 - [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md)
-  : Download a whole source
+  : Uma fonte inteira
 
-## Cache and options
+## Cache e opções
 
 - [`condepe_cache_dir()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cache_dir.md)
   [`condepe_cache_clear()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cache_dir.md)
-  : Cache directory used by condepe
+  : Pasta de cache do condepe
 - [`condepe`](https://strategicprojects.github.io/condepe-r/reference/condepe-package.md)
   [`condepe-package`](https://strategicprojects.github.io/condepe-r/reference/condepe-package.md)
   : condepe: Access the Open Data of the Pernambuco Observatory

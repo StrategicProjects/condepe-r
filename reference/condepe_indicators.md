@@ -1,6 +1,6 @@
-# List the indicators of a source
+# Indicadores de uma fonte
 
-List the indicators of a source
+Indicadores de uma fonte
 
 ## Usage
 
@@ -12,18 +12,18 @@ condepe_indicators(source, refresh = FALSE)
 
 - source:
 
-  Source id, e.g. `"sidra_populacao_estimada"` (see
+  Identificador da fonte, por exemplo `"sidra_populacao_estimada"` (veja
   [`condepe_catalog()`](https://strategicprojects.github.io/condepe-r/reference/condepe_catalog.md)).
 
 - refresh:
 
-  If `TRUE`, download again even if a verified copy is cached.
+  Se `TRUE`, baixa de novo mesmo que haja cópia conferida em cache.
 
 ## Value
 
-A tibble with one row per `indicador_base` and its `unidade`,
-`natureza`, `mensal` (monthly series), number of `observacoes` and
-`localidades`, and `ano_inicio`/`ano_fim`.
+Um tibble com uma linha por `indicador_base` e sua `unidade`,
+`natureza`, `mensal` (série mensal), número de `observacoes` e de
+`localidades`, e `ano_inicio`/`ano_fim`.
 
 ## Examples
 
