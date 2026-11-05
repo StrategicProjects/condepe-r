@@ -12,7 +12,9 @@ columns), so one set of functions covers all of them, returning tibbles.
 ## Installation
 
 ```r
-# Not yet on CRAN; for now:
+install.packages("condepe")   # once on CRAN
+
+# development version:
 # install.packages("pak")
 pak::pak("StrategicProjects/condepe-r")
 ```
