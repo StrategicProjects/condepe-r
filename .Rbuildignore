@@ -1,0 +1,9 @@
+^\.github$
+^\.claude$
+^.*\.Rcheck$
+^LICENSE\.md$
+^cran-comments\.md$
+^README\.Rmd$
+^CLAUDE\.md$
+^.*\.Rproj$
+^\.Rproj\.user$

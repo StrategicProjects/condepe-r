@@ -1,0 +1,50 @@
+Package: condepe
+Title: Access the Open Data of the Pernambuco Observatory
+Version: 0.0.0.9000
+Authors@R: c(
+    person("André", "Leite", email = "leite@castlab.org", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-4718-9766")),
+    person("Marcos", "Wasiliew", email = "marcos.wasiliew@gmail.com", role = "aut",
+           comment = c(ORCID = "0009-0004-4694-3159")),
+    person("Hugo", "Vasconcelos", email = "hugo.vasconcelos@ufpe.br", role = "aut",
+           comment = c(ORCID = "0000-0001-6249-0920")),
+    person("Carlos", "Amorim", email = "carlos.agaf@ufpe.br", role = "aut",
+           comment = c(ORCID = "0000-0001-6315-8305")),
+    person("Diogo", "Bezerra", email = "diogo.bezerra@ufpe.br", role = "aut",
+           comment = c(ORCID = "0000-0002-1216-8674")),
+    person("Júlia", "Nascimento Barreto",
+           email = "juliabarreto@gd.seplag.pe.gov.br", role = "aut",
+           comment = c(ORCID = "0009-0004-2851-7770"))
+  )
+Description: A tidy interface to the open data of the Observatory of
+    Pernambuco, Brazil, published by 'Condepe/Fidem', the State Agency for
+    Planning and Research (<https://cf.pe.gov.br/observatorio>). Municipal
+    series on population, economy, public finance, labour, education,
+    health, security, transport and environment, every source in the same
+    long format, returned as tibbles. Files are read from the canonical
+    endpoint with a 'Hugging Face' mirror as fallback, cached on disk per
+    catalogue version and checked against their published 'SHA-256'.
+    Network failures are handled gracefully.
+License: MIT + file LICENSE
+URL: https://github.com/StrategicProjects/condepe-r,
+    https://cf.pe.gov.br/observatorio
+BugReports: https://github.com/StrategicProjects/condepe-r/issues
+Depends:
+    R (>= 4.1)
+Imports:
+    cli,
+    httr2 (>= 1.0.0),
+    jsonlite,
+    nanoparquet (>= 0.3.0),
+    openssl,
+    rlang (>= 1.1.0),
+    tibble,
+    tools
+Suggests:
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0
