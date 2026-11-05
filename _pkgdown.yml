@@ -1,0 +1,46 @@
+url: https://strategicprojects.github.io/condepe-r/
+
+template:
+  bootstrap: 5
+  light-switch: true
+  bslib:
+    primary: "#0c2856"
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github, lightswitch]
+
+home:
+  title: "condepe: open data of the Pernambuco Observatory in R"
+  description: >
+    Tidy access to the open data of the Observatory of Pernambuco, Brazil
+    (Condepe/Fidem): municipal series on population, economy, public
+    finance, labour, education, health, security, transport and
+    environment, every source in the same long format.
+
+reference:
+- title: Discover
+  desc: What the Observatory publishes, and where.
+  contents:
+  - condepe_catalog
+  - condepe_indicators
+  - condepe_localities
+- title: Retrieve data
+  contents:
+  - condepe_series
+  - condepe_data
+- title: Cache and options
+  contents:
+  - condepe_cache_dir
+  - condepe-package
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - condepe
+  - examples
+
+news:
+  releases: []

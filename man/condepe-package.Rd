@@ -6,6 +6,8 @@
 \alias{condepe-package}
 \title{condepe: Access the Open Data of the Pernambuco Observatory}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 A tidy interface to the open data of the Observatory of Pernambuco, Brazil, published by 'Condepe/Fidem', the State Agency for Planning and Research (\url{https://cf.pe.gov.br/observatorio}). Municipal series on population, economy, public finance, labour, education, health, security, transport and environment, every source in the same long format, returned as tibbles. Files are read from the canonical endpoint with a 'Hugging Face' mirror as fallback, cached on disk per catalogue version and checked against their published 'SHA-256'. Network failures are handled gracefully.
 }
 \section{Package options}{
@@ -29,6 +31,7 @@ exponential backoff) and request timeout in seconds (default 60).
 Useful links:
 \itemize{
   \item \url{https://github.com/StrategicProjects/condepe-r}
+  \item \url{https://strategicprojects.github.io/condepe-r/}
   \item \url{https://cf.pe.gov.br/observatorio}
   \item Report bugs at \url{https://github.com/StrategicProjects/condepe-r/issues}
 }

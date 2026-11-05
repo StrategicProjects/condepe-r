@@ -7,3 +7,8 @@
 ^CLAUDE\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^vignettes/.*\.Rmd\.orig$
+^vignettes/precompile\.R$

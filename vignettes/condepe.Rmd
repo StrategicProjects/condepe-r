@@ -1,0 +1,214 @@
+---
+title: "Getting started with condepe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with condepe}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+The **Observatório de Pernambuco** is the statistical database of
+Condepe/Fidem, the planning and research agency of the State of Pernambuco,
+Brazil. It gathers series from IBGE, the ministries of health, education,
+labour and finance, the electoral court, state agencies and others, for the
+185 municipalities of Pernambuco and the State as a whole. Every source is
+published in the **same long format**, so a handful of functions covers all
+of them.
+
+
+``` r
+library(condepe)
+```
+
+## What is there
+
+`condepe_catalog()` lists the sources: one row each, with the axis and theme
+it belongs to, who originally publishes it, how many rows, indicators and
+localities it has, and the years it covers.
+
+
+``` r
+cat <- condepe_catalog()
+cat[, c("id_fonte", "tema", "indicadores", "ano_inicio", "ano_fim")]
+#> # A tibble: 75 × 5
+#>   id_fonte                 tema               indicadores ano_inicio ano_fim
+#>   <chr>                    <chr>                    <int>      <int>   <int>
+#> 1 sidra_populacao_estimada Demografia                   1       2001    2026
+#> 2 sidra_pib_municipal      PIB                          7       2002    2023
+#> 3 sidra_censo_2022         Demografia                   3       2022    2022
+#> 4 sidra_area_densidade     Posição e Extensão           2       2010    2010
+#> 5 sidra_pam                Agropecuária               243       2020    2025
+#> 6 sidra_ppm_rebanho        Agropecuária                10       2020    2025
+#> # ℹ 69 more rows
+```
+
+The catalogue is versioned; the version and the citation to use travel with
+it:
+
+
+``` r
+attr(cat, "version")
+#> [1] "2026-11-05_171049"
+attr(cat, "citation")
+#> [1] "Condepe/Fidem, Observatório de Pernambuco — Base de Dados do Estado, version 2026-11-05_171049, https://cf.pe.gov.br/observatorio (CC BY 4.0)."
+```
+
+To find a source by subject, filter the catalogue like any data frame:
+
+
+``` r
+cat[cat$tema == "Saúde", c("id_fonte", "descricao")]
+#> # A tibble: 9 × 2
+#>   id_fonte                     descricao                                        
+#>   <chr>                        <chr>                                            
+#> 1 datasus_sim                  Óbitos por residência (total, infantis, por caus…
+#> 2 datasus_sinasc               Nascidos vivos por residência (sexo, parto, peso…
+#> 3 datasus_mortalidade_infantil Taxa de mortalidade infantil (óbitos de menores …
+#> 4 datasus_estabelecimentos     Estabelecimentos de saúde por tipo de unidade    
+#> 5 datasus_profissionais        Vínculos de profissionais de saúde por ocupação …
+#> 6 datasus_leitos               Leitos existentes, SUS e contratados por tipo; l…
+#> 7 datasus_equipamentos         Equipamentos de saúde em uso: total e grupos (to…
+#> 8 datasus_equipes              Equipes de saúde ativas em dezembro, total e por…
+#> 9 datasus_internacoes          Internações hospitalares do SUS: mensais por esp…
+```
+
+## The indicators of a source
+
+
+``` r
+condepe_indicators("datasus_mortalidade_infantil")
+#> # A tibble: 1 × 8
+#>   indicador_base      unidade natureza mensal observacoes localidades ano_inicio
+#>   <chr>               <chr>   <chr>    <lgl>        <int>       <int>      <int>
+#> 1 Taxa de mortalidad… Por mi… estoque  FALSE         1480         185       2017
+#> # ℹ 1 more variable: ano_fim <int>
+```
+
+
+``` r
+ind <- condepe_indicators("sidra_populacao_estimada")
+ind
+#> # A tibble: 1 × 8
+#>   indicador_base      unidade natureza mensal observacoes localidades ano_inicio
+#>   <chr>               <chr>   <chr>    <lgl>        <int>       <int>      <int>
+#> 1 Populacao resident… Pessoas estoque  FALSE         4070         185       2001
+#> # ℹ 1 more variable: ano_fim <int>
+```
+
+## A series
+
+`condepe_series()` filters a source by indicator and, optionally, by IBGE
+code (7 digits for municipalities, `"26"` for the State) and by year. The
+population of Recife (2611606):
+
+
+``` r
+recife <- condepe_series(
+  "sidra_populacao_estimada", "Populacao residente estimada",
+  code = "2611606", years = 2015:2026
+)
+recife[, c("nm_municipio", "ano", "valor", "unidade")]
+#> # A tibble: 10 × 4
+#>    nm_municipio   ano   valor unidade
+#>    <chr>        <int>   <dbl> <chr>  
+#>  1 Recife        2015 1617183 Pessoas
+#>  2 Recife        2016 1625583 Pessoas
+#>  3 Recife        2017 1633697 Pessoas
+#>  4 Recife        2018 1637834 Pessoas
+#>  5 Recife        2019 1645727 Pessoas
+#>  6 Recife        2020 1653461 Pessoas
+#>  7 Recife        2021 1661017 Pessoas
+#>  8 Recife        2024 1587707 Pessoas
+#>  9 Recife        2025 1588376 Pessoas
+#> 10 Recife        2026 1588983 Pessoas
+```
+
+Look up codes with `condepe_localities()`:
+
+
+``` r
+loc <- condepe_localities()
+loc[grepl("Petrolina|Caruaru", loc$nm_municipio), ]
+#> # A tibble: 2 × 2
+#>   cd_municipio_ibge nm_municipio
+#>   <chr>             <chr>       
+#> 1 2604106           Caruaru     
+#> 2 2611101           Petrolina
+```
+
+## Monthly series
+
+Monthly sources carry the period twice: in `mes`, and in the full label
+`indicador` (`"... [MM/YYYY]"`). Filter by `indicador_base`, the label
+without the period:
+
+
+``` r
+suape <- condepe_series(
+  "porto_suape_carga", "Porto de Suape - Carga bruta total",
+  years = 2026
+)
+suape[, c("ano", "mes", "indicador", "valor", "unidade")]
+#> # A tibble: 9 × 5
+#>     ano   mes indicador                                       valor unidade
+#>   <int> <int> <chr>                                           <dbl> <chr>  
+#> 1  2026     1 Porto de Suape - Carga bruta total [01/2026] 2193515. t      
+#> 2  2026     2 Porto de Suape - Carga bruta total [02/2026] 2084475. t      
+#> 3  2026     3 Porto de Suape - Carga bruta total [03/2026] 2223492. t      
+#> 4  2026     4 Porto de Suape - Carga bruta total [04/2026] 2360768. t      
+#> 5  2026     5 Porto de Suape - Carga bruta total [05/2026] 2403538. t      
+#> 6  2026     6 Porto de Suape - Carga bruta total [06/2026] 2445490. t      
+#> 7  2026     7 Porto de Suape - Carga bruta total [07/2026] 2363978. t      
+#> 8  2026     8 Porto de Suape - Carga bruta total [08/2026] 2726020. t      
+#> 9  2026     9 Porto de Suape - Carga bruta total [09/2026] 2453353. t
+```
+
+## Whole sources and the columns
+
+`condepe_data()` returns a source in full. The 15 columns keep the
+Portuguese names under which the Observatory publishes them, so a result can
+always be traced back to the official files:
+
+
+``` r
+nasc <- condepe_data("datasus_sinasc")
+names(nasc)
+#>  [1] "cd_municipio_ibge" "nm_municipio"      "ano"              
+#>  [4] "mes"               "indicador"         "indicador_base"   
+#>  [7] "valor"             "unidade"           "natureza"         
+#> [10] "id_fonte"          "eixo"              "tema"             
+#> [13] "assunto"           "fonte_original"    "arquivo_origem"
+```
+
+| Column | Meaning |
+|---|---|
+| `cd_municipio_ibge`, `nm_municipio` | IBGE code (7 digits; `"26"` is the State) and name |
+| `ano`, `mes` | year; month for monthly series (`NA` otherwise) |
+| `indicador`, `indicador_base` | full label (with `[MM/YYYY]` when monthly) and label without the period |
+| `valor`, `unidade`, `natureza` | value, unit, `estoque` (stock) or `fluxo` (flow) |
+| `id_fonte`, `eixo`, `tema`, `assunto` | source and its place in the catalogue |
+| `fonte_original`, `arquivo_origem` | original publisher and the file or API call the value came from |
+
+A missing value never becomes zero: what the original source does not publish
+is simply absent.
+
+## Cache, mirror and failures
+
+Files are downloaded once per catalogue version and kept in
+`condepe_cache_dir()`, checked against the SHA-256 published in the
+catalogue; when a new version comes out, the old files are dropped. The
+catalogue itself is trusted for six hours (`refresh = TRUE` asks again).
+
+Data come from the canonical endpoint,
+<https://cf.pe.gov.br/observatorio/dados/atual/>. If it does not answer, the
+package reads the same files from the Hugging Face mirror
+[`mlkwy/observatorio-pernambuco`](https://huggingface.co/datasets/mlkwy/observatorio-pernambuco).
+If neither answers, functions warn and return zero-row tibbles with the
+documented columns, so scripts degrade instead of breaking.
+
+## Citation and license
+
+The data are published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
+cite Condepe/Fidem and the version (`attr(condepe_catalog(), "citation")`).

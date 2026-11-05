@@ -1,0 +1,138 @@
+---
+title: "Getting started with condepe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with condepe}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+options(condepe.quiet = TRUE, tibble.print_min = 6)
+```
+
+The **Observatório de Pernambuco** is the statistical database of
+Condepe/Fidem, the planning and research agency of the State of Pernambuco,
+Brazil. It gathers series from IBGE, the ministries of health, education,
+labour and finance, the electoral court, state agencies and others, for the
+185 municipalities of Pernambuco and the State as a whole. Every source is
+published in the **same long format**, so a handful of functions covers all
+of them.
+
+```{r setup}
+library(condepe)
+```
+
+## What is there
+
+`condepe_catalog()` lists the sources: one row each, with the axis and theme
+it belongs to, who originally publishes it, how many rows, indicators and
+localities it has, and the years it covers.
+
+```{r}
+cat <- condepe_catalog()
+cat[, c("id_fonte", "tema", "indicadores", "ano_inicio", "ano_fim")]
+```
+
+The catalogue is versioned; the version and the citation to use travel with
+it:
+
+```{r}
+attr(cat, "version")
+attr(cat, "citation")
+```
+
+To find a source by subject, filter the catalogue like any data frame:
+
+```{r}
+cat[cat$tema == "Saúde", c("id_fonte", "descricao")]
+```
+
+## The indicators of a source
+
+```{r}
+condepe_indicators("datasus_mortalidade_infantil")
+```
+
+```{r}
+ind <- condepe_indicators("sidra_populacao_estimada")
+ind
+```
+
+## A series
+
+`condepe_series()` filters a source by indicator and, optionally, by IBGE
+code (7 digits for municipalities, `"26"` for the State) and by year. The
+population of Recife (2611606):
+
+```{r}
+recife <- condepe_series(
+  "sidra_populacao_estimada", "Populacao residente estimada",
+  code = "2611606", years = 2015:2026
+)
+recife[, c("nm_municipio", "ano", "valor", "unidade")]
+```
+
+Look up codes with `condepe_localities()`:
+
+```{r}
+loc <- condepe_localities()
+loc[grepl("Petrolina|Caruaru", loc$nm_municipio), ]
+```
+
+## Monthly series
+
+Monthly sources carry the period twice: in `mes`, and in the full label
+`indicador` (`"... [MM/YYYY]"`). Filter by `indicador_base`, the label
+without the period:
+
+```{r}
+suape <- condepe_series(
+  "porto_suape_carga", "Porto de Suape - Carga bruta total",
+  years = 2026
+)
+suape[, c("ano", "mes", "indicador", "valor", "unidade")]
+```
+
+## Whole sources and the columns
+
+`condepe_data()` returns a source in full. The 15 columns keep the
+Portuguese names under which the Observatory publishes them, so a result can
+always be traced back to the official files:
+
+```{r}
+nasc <- condepe_data("datasus_sinasc")
+names(nasc)
+```
+
+| Column | Meaning |
+|---|---|
+| `cd_municipio_ibge`, `nm_municipio` | IBGE code (7 digits; `"26"` is the State) and name |
+| `ano`, `mes` | year; month for monthly series (`NA` otherwise) |
+| `indicador`, `indicador_base` | full label (with `[MM/YYYY]` when monthly) and label without the period |
+| `valor`, `unidade`, `natureza` | value, unit, `estoque` (stock) or `fluxo` (flow) |
+| `id_fonte`, `eixo`, `tema`, `assunto` | source and its place in the catalogue |
+| `fonte_original`, `arquivo_origem` | original publisher and the file or API call the value came from |
+
+A missing value never becomes zero: what the original source does not publish
+is simply absent.
+
+## Cache, mirror and failures
+
+Files are downloaded once per catalogue version and kept in
+`condepe_cache_dir()`, checked against the SHA-256 published in the
+catalogue; when a new version comes out, the old files are dropped. The
+catalogue itself is trusted for six hours (`refresh = TRUE` asks again).
+
+Data come from the canonical endpoint,
+<https://cf.pe.gov.br/observatorio/dados/atual/>. If it does not answer, the
+package reads the same files from the Hugging Face mirror
+[`mlkwy/observatorio-pernambuco`](https://huggingface.co/datasets/mlkwy/observatorio-pernambuco).
+If neither answers, functions warn and return zero-row tibbles with the
+documented columns, so scripts degrade instead of breaking.
+
+## Citation and license
+
+The data are published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
+cite Condepe/Fidem and the version (`attr(condepe_catalog(), "citation")`).
