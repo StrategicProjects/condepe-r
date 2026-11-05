@@ -18,9 +18,10 @@
   SHA-256 do manifesto, ou a malha do IBGE), dissolvida em regiões com
   `level`;
   [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)
-  com dez regionalizações (Regiões de Desenvolvimento, meso e
+  com onze regionalizações (Regiões de Desenvolvimento, meso e
   microrregiões, regiões imediatas e intermediárias, regiões e
-  macrorregiões de saúde, GRE, regiões fiscais, regiões metropolitanas);
+  macrorregiões de saúde, GRE, regiões fiscais, DRO do DER, regiões
+  metropolitanas);
   [`condepe_add_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_add_geometry.md)
   junta os dados à malha. Quatro guias: primeiros passos, exemplos,
   mapas e a relação das fontes.

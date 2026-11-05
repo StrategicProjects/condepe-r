@@ -1,6 +1,6 @@
 # Regionalizações dos municípios de Pernambuco
 
-A que região pertence cada município, em dez regionalizações oficiais:
+A que região pertence cada município, em onze regionalizações oficiais:
 
 ## Usage
 
@@ -41,6 +41,9 @@ metropolitana ficam com `NA` em `rm`.
   juntas)
 
 - `regiao_fiscal`: Regiões fiscais (SEFAZ-PE)
+
+- `dro`: Diretorias Regionais de Operações do DER-PE (Noronha é o 1º
+  DOD)
 
 - `rm`: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
 

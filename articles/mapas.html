@@ -225,15 +225,16 @@ plot of chunk populacao
 <h2 id="regiões">Regiões<a class="anchor" aria-label="anchor" href="#regi%C3%B5es"></a>
 </h2>
 <p><code><a href="../reference/condepe_regions.html">condepe_regions()</a></code> diz a que região pertence cada
-município em dez regionalizações: Regiões de Desenvolvimento (RD) da
+município em onze regionalizações: Regiões de Desenvolvimento (RD) da
 Condepe/Fidem, meso e microrregiões e regiões imediatas e intermediárias
 do IBGE, regiões e macrorregiões de saúde, Gerências Regionais de
-Educação (GRE), regiões fiscais da SEFAZ e regiões metropolitanas. A
-tabela vai com o pacote, sem rede:</p>
+Educação (GRE), regiões fiscais da SEFAZ, Diretorias Regionais de
+Operações (DRO) do DER e regiões metropolitanas. A tabela vai com o
+pacote, sem rede:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_regions.html">condepe_regions</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">reg</span></span>
-<span><span class="co">#&gt; # A tibble: 185 × 12</span></span>
+<span><span class="co">#&gt; # A tibble: 185 × 13</span></span>
 <span><span class="co">#&gt;   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;             &lt;chr&gt;                 &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;       </span></span>
 <span><span class="co">#&gt; 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      </span></span>
@@ -251,7 +252,7 @@ tabela vai com o pacote, sem rede:</p>
 <span><span class="co">#&gt; 5 Recife               Palmares            III Região … Metropolitana      Mata…</span></span>
 <span><span class="co">#&gt; 6 Caruaru              Garanhuns           V Região de… Agreste            Agre…</span></span>
 <span><span class="co">#&gt; # ℹ 179 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 2 more variables: regiao_fiscal &lt;chr&gt;, rm &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: regiao_fiscal &lt;chr&gt;, dro &lt;chr&gt;, rm &lt;chr&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">reg</span><span class="op">$</span><span class="va">rd</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                Agreste Central             Agreste Meridional </span></span>
