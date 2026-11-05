@@ -16,8 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # macOS left out: the package is pure R and GitHub's macOS arm64
+        # runners were unavailable (jobs cancelled after 15 min in the queue).
         config:
-          - {os: macos-latest, r: 'release'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest, r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest, r: 'release'}
