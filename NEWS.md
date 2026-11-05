@@ -1,6 +1,7 @@
 # condepe 0.1.0
 
-* Initial CRAN submission: `condepe_catalog()`, `condepe_indicators()`, `condepe_data()`,
-  `condepe_series()` and `condepe_localities()`, reading the Observatory open
-  data (canonical endpoint, Hugging Face mirror as fallback) with a disk cache
-  per catalogue version and SHA-256 verification.
+* Primeira submissão ao CRAN: `condepe_catalog()`, `condepe_indicators()`, `condepe_data()`,
+  `condepe_series()` e `condepe_localities()`, que leem os dados abertos do
+  Observatório (endereço canônico, espelho no Hugging Face como reserva) com
+  cache em disco por versão do catálogo e conferência por SHA-256. Quatro guias:
+  primeiros passos, exemplos, mapas e a relação das fontes.

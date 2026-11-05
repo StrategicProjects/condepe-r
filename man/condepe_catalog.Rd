@@ -2,24 +2,24 @@
 % Please edit documentation in R/data.R
 \name{condepe_catalog}
 \alias{condepe_catalog}
-\title{List the sources published by the Observatory}
+\title{Fontes publicadas pelo Observatório}
 \usage{
 condepe_catalog(refresh = FALSE)
 }
 \arguments{
-\item{refresh}{If \code{TRUE}, ignore the cached catalogue (trusted for 6
-hours) and ask the server.}
+\item{refresh}{Se \code{TRUE}, ignora o catálogo em cache (válido por 6 horas)
+e consulta o servidor.}
 }
 \value{
-A tibble with columns \code{id_fonte}, \code{eixo}, \code{tema}, \code{assunto},
+Um tibble com as colunas \code{id_fonte}, \code{eixo}, \code{tema}, \code{assunto},
 \code{descricao}, \code{fonte_original}, \code{linhas}, \code{indicadores}, \code{localidades},
-\code{ano_inicio}, \code{ano_fim}. Zero rows (with a warning) if the
-Observatory cannot be reached.
+\code{ano_inicio}, \code{ano_fim}. Zero linhas (com aviso) se o Observatório não
+responder.
 }
 \description{
-One row per source, with axis, theme, description, original publisher,
-number of rows, indicators and localities, and the years covered. The
-catalogue version is in \code{attr(x, "version")} and the citation to use in
+Uma linha por fonte, com eixo, tema, descrição, órgão de origem, número
+de linhas, de indicadores e de localidades, e os anos cobertos. A versão
+do catálogo fica em \code{attr(x, "version")} e a citação a usar, em
 \code{attr(x, "citation")}.
 }
 \examples{

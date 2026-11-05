@@ -1,4 +1,5 @@
 url: https://strategicprojects.github.io/condepe-r/
+lang: pt
 
 template:
   bootstrap: 5
@@ -10,37 +11,59 @@ navbar:
   structure:
     left:  [intro, reference, articles, news]
     right: [search, github, lightswitch]
+  components:
+    intro:
+      text: Primeiros passos
+      href: articles/condepe.html
+    reference:
+      text: Funções
+      href: reference/index.html
+    articles:
+      text: Guias
+      menu:
+      - text: Exemplos
+        href: articles/exemplos.html
+      - text: Mapas
+        href: articles/mapas.html
+      - text: "---"
+      - text: Fontes do Observatório
+        href: articles/fontes.html
+    news:
+      text: Novidades
+      href: news/index.html
 
 home:
-  title: "condepe: open data of the Pernambuco Observatory in R"
+  title: "condepe: dados abertos do Observatório de Pernambuco no R"
   description: >
-    Tidy access to the open data of the Observatory of Pernambuco, Brazil
-    (Condepe/Fidem): municipal series on population, economy, public
-    finance, labour, education, health, security, transport and
-    environment, every source in the same long format.
+    Acesso aos dados abertos do Observatório de Pernambuco (Condepe/Fidem):
+    séries municipais de população, economia, finanças públicas, trabalho,
+    educação, saúde, segurança, transporte e meio ambiente, todas no mesmo
+    formato longo.
 
 reference:
-- title: Discover
-  desc: What the Observatory publishes, and where.
+- title: Descobrir
+  desc: O que o Observatório publica.
   contents:
   - condepe_catalog
   - condepe_indicators
   - condepe_localities
-- title: Retrieve data
+- title: Obter os dados
   contents:
   - condepe_series
   - condepe_data
-- title: Cache and options
+- title: Cache e opções
   contents:
   - condepe_cache_dir
   - condepe-package
 
 articles:
-- title: Articles
+- title: Guias
   navbar: ~
   contents:
   - condepe
-  - examples
+  - exemplos
+  - mapas
+  - fontes
 
 news:
   releases: []

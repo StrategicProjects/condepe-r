@@ -10,20 +10,21 @@
 
 A tidy interface to the open data of the Observatory of Pernambuco, Brazil, published by 'Condepe/Fidem', the State Agency for Planning and Research (\url{https://cf.pe.gov.br/observatorio}). Municipal series on population, economy, public finance, labour, education, health, security, transport and environment, every source in the same long format, returned as tibbles. Files are read from the canonical endpoint with a 'Hugging Face' mirror as fallback, cached on disk per catalogue version and checked against their published 'SHA-256'. Network failures are handled gracefully.
 }
-\section{Package options}{
+\section{Opções do pacote}{
 
 \itemize{
-\item \code{condepe.quiet}: suppress informational messages. Defaults to \code{TRUE}
-in non-interactive sessions.
-\item \code{condepe.cache_dir}: cache location. Defaults to
-\code{tools::R_user_dir("condepe", "cache")}.
-\item \code{condepe.catalog_max_age}: seconds a cached catalogue is trusted
-without asking the server. Defaults to 6 hours.
-\item \code{condepe.base_url}, \code{condepe.mirror_url}: the canonical endpoint and
-the mirror (also \code{CONDEPE_URL} / \code{CONDEPE_MIRROR_URL}); an empty
-mirror disables the fallback.
-\item \code{condepe.max_tries}, \code{condepe.timeout}: retry attempts (default 3,
-exponential backoff) and request timeout in seconds (default 60).
+\item \code{condepe.quiet}: silencia as mensagens informativas. Padrão \code{TRUE} em
+sessões não interativas.
+\item \code{condepe.cache_dir}: local do cache. Padrão
+\code{tools::R_user_dir("condepe", "cache")} (ou \code{CONDEPE_CACHE_DIR}).
+\item \code{condepe.catalog_max_age}: segundos em que o catálogo em cache vale sem
+consultar o servidor. Padrão 6 horas.
+\item \code{condepe.base_url}, \code{condepe.mirror_url}: o endereço canônico e o
+espelho (também \code{CONDEPE_URL} / \code{CONDEPE_MIRROR_URL}); espelho vazio
+desliga o fallback.
+\item \code{condepe.max_tries}, \code{condepe.timeout}: tentativas (padrão 3, com
+espera exponencial) e tempo limite de cada requisição em segundos
+(padrão 60).
 }
 }
 

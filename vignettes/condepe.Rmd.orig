@@ -1,91 +1,127 @@
 ---
-title: "Getting started with condepe"
+title: "Primeiros passos"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with condepe}
+  %\VignetteIndexEntry{Primeiros passos}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
-options(condepe.quiet = TRUE, tibble.print_min = 6)
+knitr::opts_chunk$set(
+  collapse = TRUE, comment = "#>", fig.width = 7, fig.height = 3.8,
+  fig.path = "condepe-", dpi = 96, fig.align = "center"
+)
+options(condepe.quiet = TRUE, tibble.print_min = 6, tibble.width = 90)
 ```
 
-The **Observatório de Pernambuco** is the statistical database of
-Condepe/Fidem, the planning and research agency of the State of Pernambuco,
-Brazil. It gathers series from IBGE, the ministries of health, education,
-labour and finance, the electoral court, state agencies and others, for the
-185 municipalities of Pernambuco and the State as a whole. Every source is
-published in the **same long format**, so a handful of functions covers all
-of them.
+O **Observatório de Pernambuco** é a base de dados estatísticos da
+Condepe/Fidem, a Agência Estadual de Planejamento e Pesquisas de
+Pernambuco. Ele reúne séries do IBGE, dos ministérios da Saúde, da Educação,
+do Trabalho e da Fazenda, da Justiça Eleitoral, de órgãos estaduais e de
+outras fontes, para os 185 municípios de Pernambuco e para o Estado. A
+consulta pelo navegador fica em <https://cf.pe.gov.br/observatorio>; os
+arquivos completos, em <https://cf.pe.gov.br/observatorio/dados/atual/>.
+
+Todas as fontes são publicadas no **mesmo formato longo** — uma observação
+por linha, 15 colunas —, e por isso meia dúzia de funções dá conta de todas:
+
+| Função | Para quê |
+|---|---|
+| `condepe_catalog()` | o que existe: as fontes, com tema, período e tamanho |
+| `condepe_indicators()` | os indicadores de uma fonte |
+| `condepe_series()` | a série de um indicador, filtrada por município e ano |
+| `condepe_data()` | uma fonte inteira |
+| `condepe_localities()` | os municípios e seus códigos IBGE |
 
 ```{r setup}
 library(condepe)
 ```
 
-## What is there
+## O que existe
 
-`condepe_catalog()` lists the sources: one row each, with the axis and theme
-it belongs to, who originally publishes it, how many rows, indicators and
-localities it has, and the years it covers.
+`condepe_catalog()` devolve uma linha por fonte. A relação completa, agrupada
+por eixo e tema, está na vignette `vignette("fontes", package = "condepe")`.
 
 ```{r}
 cat <- condepe_catalog()
 cat[, c("id_fonte", "tema", "indicadores", "ano_inicio", "ano_fim")]
 ```
 
-The catalogue is versioned; the version and the citation to use travel with
-it:
+O catálogo é versionado: cada publicação do Observatório tem uma versão, e a
+citação a usar acompanha o resultado.
 
 ```{r}
 attr(cat, "version")
 attr(cat, "citation")
 ```
 
-To find a source by subject, filter the catalogue like any data frame:
+Quantas fontes há em cada eixo, e quantos indicadores:
+
+```{r}
+aggregate(cbind(fontes = 1, indicadores) ~ eixo, data = cat, FUN = sum)
+```
+
+Para achar uma fonte por assunto, filtre o catálogo como qualquer tabela:
 
 ```{r}
 cat[cat$tema == "Saúde", c("id_fonte", "descricao")]
+cat[grepl("escola|ensino|IDEB", cat$descricao, ignore.case = TRUE), c("id_fonte", "descricao")]
 ```
 
-## The indicators of a source
+## Os indicadores de uma fonte
 
 ```{r}
 condepe_indicators("datasus_mortalidade_infantil")
 ```
 
+Fontes grandes têm centenas de indicadores; procure pelo nome:
+
 ```{r}
-ind <- condepe_indicators("sidra_populacao_estimada")
-ind
+ind <- condepe_indicators("datasus_sinasc")
+ind$indicador_base
 ```
 
-## A series
+A coluna `natureza` diz como somar no tempo: `estoque` é uma foto (população,
+leitos em dezembro) e não se soma entre anos; `fluxo` é o que aconteceu no
+período (nascimentos, internações) e se soma.
 
-`condepe_series()` filters a source by indicator and, optionally, by IBGE
-code (7 digits for municipalities, `"26"` for the State) and by year. The
-population of Recife (2611606):
+## Uma série
+
+`condepe_series()` filtra uma fonte por indicador e, se pedido, por código
+IBGE — 7 dígitos para município, `"26"` para o Estado — e por ano. A
+população do Recife (2611606):
 
 ```{r}
 recife <- condepe_series(
   "sidra_populacao_estimada", "Populacao residente estimada",
-  code = "2611606", years = 2015:2026
+  code = "2611606", years = 2010:2026
 )
 recife[, c("nm_municipio", "ano", "valor", "unidade")]
 ```
 
-Look up codes with `condepe_localities()`:
+```{r populacao-recife}
+plot(
+  recife$ano, recife$valor / 1e6, type = "b", pch = 19, col = "#0c2856",
+  xlab = "", ylab = "milhões de pessoas", main = "Recife, população estimada"
+)
+```
+
+O IBGE não estimou a população municipal em 2022 e 2023 (ano do Censo e o
+seguinte); esses anos simplesmente não aparecem — ausência nunca vira zero.
+
+Os códigos IBGE ficam em `condepe_localities()`:
 
 ```{r}
 loc <- condepe_localities()
-loc[grepl("Petrolina|Caruaru", loc$nm_municipio), ]
+loc[grepl("Petrolina|Caruaru|Garanhuns", loc$nm_municipio), ]
 ```
 
-## Monthly series
+## Séries mensais
 
-Monthly sources carry the period twice: in `mes`, and in the full label
-`indicador` (`"... [MM/YYYY]"`). Filter by `indicador_base`, the label
-without the period:
+Fontes mensais trazem o período duas vezes: em `mes` e no rótulo completo,
+`indicador` (`"... [MM/AAAA]"`). Filtre por `indicador_base`, o rótulo sem o
+período:
 
 ```{r}
 suape <- condepe_series(
@@ -95,44 +131,53 @@ suape <- condepe_series(
 suape[, c("ano", "mes", "indicador", "valor", "unidade")]
 ```
 
-## Whole sources and the columns
+## Uma fonte inteira e as colunas
 
-`condepe_data()` returns a source in full. The 15 columns keep the
-Portuguese names under which the Observatory publishes them, so a result can
-always be traced back to the official files:
+`condepe_data()` devolve a fonte completa. As 15 colunas mantêm os nomes com
+que o Observatório publica, para que todo resultado possa ser rastreado até
+os arquivos oficiais:
 
 ```{r}
 nasc <- condepe_data("datasus_sinasc")
 names(nasc)
 ```
 
-| Column | Meaning |
+| Coluna | Significado |
 |---|---|
-| `cd_municipio_ibge`, `nm_municipio` | IBGE code (7 digits; `"26"` is the State) and name |
-| `ano`, `mes` | year; month for monthly series (`NA` otherwise) |
-| `indicador`, `indicador_base` | full label (with `[MM/YYYY]` when monthly) and label without the period |
-| `valor`, `unidade`, `natureza` | value, unit, `estoque` (stock) or `fluxo` (flow) |
-| `id_fonte`, `eixo`, `tema`, `assunto` | source and its place in the catalogue |
-| `fonte_original`, `arquivo_origem` | original publisher and the file or API call the value came from |
+| `cd_municipio_ibge`, `nm_municipio` | código IBGE (7 dígitos; `"26"` é o Estado) e nome |
+| `ano`, `mes` | ano; mês nas séries mensais (`NA` nas demais) |
+| `indicador`, `indicador_base` | rótulo completo (com `[MM/AAAA]` se mensal) e rótulo sem o período |
+| `valor`, `unidade`, `natureza` | valor, unidade, `estoque` ou `fluxo` |
+| `id_fonte`, `eixo`, `tema`, `assunto` | a fonte e seu lugar no catálogo |
+| `fonte_original`, `arquivo_origem` | órgão de origem e o arquivo ou a consulta de onde o valor veio |
 
-A missing value never becomes zero: what the original source does not publish
-is simply absent.
+Para passar ao formato largo (um indicador por coluna), use `reshape()` ou
+`tidyr::pivot_wider()`:
 
-## Cache, mirror and failures
+```{r}
+largo <- reshape(
+  as.data.frame(nasc[nasc$ano == 2024 & grepl("^Nascidos vivos por residência - (Total|Parto)", nasc$indicador_base),
+                     c("nm_municipio", "indicador_base", "valor")]),
+  idvar = "nm_municipio", timevar = "indicador_base", direction = "wide"
+)
+head(largo)
+```
 
-Files are downloaded once per catalogue version and kept in
-`condepe_cache_dir()`, checked against the SHA-256 published in the
-catalogue; when a new version comes out, the old files are dropped. The
-catalogue itself is trusted for six hours (`refresh = TRUE` asks again).
+## Cache, espelho e falhas
 
-Data come from the canonical endpoint,
-<https://cf.pe.gov.br/observatorio/dados/atual/>. If it does not answer, the
-package reads the same files from the Hugging Face mirror
+Os arquivos são baixados uma vez por versão do catálogo e guardados em
+`condepe_cache_dir()`, conferidos pelo SHA-256 publicado no catálogo; quando
+sai uma versão nova, os arquivos antigos são apagados. O próprio catálogo
+vale por seis horas (`refresh = TRUE` consulta de novo).
+
+Os dados vêm do endereço canônico,
+<https://cf.pe.gov.br/observatorio/dados/atual/>. Se ele não responder, o
+pacote lê os mesmos arquivos do espelho no Hugging Face,
 [`mlkwy/observatorio-pernambuco`](https://huggingface.co/datasets/mlkwy/observatorio-pernambuco).
-If neither answers, functions warn and return zero-row tibbles with the
-documented columns, so scripts degrade instead of breaking.
+Se nenhum responder, as funções avisam e devolvem tibbles vazios com as
+colunas documentadas: o script degrada em vez de quebrar.
 
-## Citation and license
+## Citação e licença
 
-The data are published under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
-cite Condepe/Fidem and the version (`attr(condepe_catalog(), "citation")`).
+Os dados são publicados sob [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br):
+cite a Condepe/Fidem e a versão (`attr(condepe_catalog(), "citation")`).

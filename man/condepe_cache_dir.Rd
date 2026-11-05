@@ -3,20 +3,21 @@
 \name{condepe_cache_dir}
 \alias{condepe_cache_dir}
 \alias{condepe_cache_clear}
-\title{Cache directory used by condepe}
+\title{Pasta de cache do condepe}
 \usage{
 condepe_cache_dir()
 
 condepe_cache_clear()
 }
 \value{
-The cache directory path, invisibly for \code{condepe_cache_clear()}.
+O caminho da pasta de cache (invisível em \code{condepe_cache_clear()}).
 }
 \description{
-The catalogue and the Parquet files of the Observatory are cached on
-disk, one folder per catalogue version; files of older versions are
-removed when a newer one is downloaded. The location follows
-\code{\link[tools:R_user_dir]{tools::R_user_dir()}}, as required by CRAN policy.
+O catálogo e os arquivos Parquet do Observatório ficam em cache em disco,
+uma pasta por versão do catálogo; os arquivos de versões antigas são
+apagados quando uma versão nova é baixada. O local segue
+\code{\link[tools:R_user_dir]{tools::R_user_dir()}}, como exige a política do CRAN.
+\code{condepe_cache_clear()} apaga o cache.
 }
 \examples{
 condepe_cache_dir()

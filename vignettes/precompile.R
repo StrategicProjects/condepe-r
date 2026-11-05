@@ -9,7 +9,7 @@
 #
 # Usage: Rscript vignettes/precompile.R
 
-vignettes <- c("condepe", "examples")
+vignettes <- c("condepe", "exemplos", "mapas", "fontes")
 
 pkgload::load_all(quiet = TRUE)
 withr::with_dir("vignettes", {

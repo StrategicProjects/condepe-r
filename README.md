@@ -1,76 +1,81 @@
-# condepe <img src="man/figures/logo.svg" align="right" height="139" alt="condepe hex logo" />
+# condepe <img src="man/figures/logo.svg" align="right" height="139" alt="logo do condepe" />
 
-R access to the open data of the **Observatório de Pernambuco**, published by
-[Condepe/Fidem](https://cf.pe.gov.br) (the Pernambuco State Agency for Planning
-and Research): municipal series on population, economy, public finance, labour,
-education, health, security, transport and environment for the 185
-municipalities of Pernambuco, Brazil.
+Acesso, pelo R, aos dados abertos do **Observatório de Pernambuco**, publicados
+pela [Condepe/Fidem](https://cf.pe.gov.br) (Agência Estadual de Planejamento e
+Pesquisas de Pernambuco): séries municipais de população, economia, finanças
+públicas, trabalho, educação, saúde, segurança, transporte e meio ambiente para
+os 185 municípios de Pernambuco.
 
-Every source is published in the same long format (one observation per row, 15
-columns), so one set of functions covers all of them, returning tibbles.
+Todas as fontes são publicadas no mesmo formato longo (uma observação por
+linha, 15 colunas), e por isso um único conjunto de funções atende a todas,
+devolvendo tibbles.
 
-## Installation
+## Instalação
 
 ```r
-install.packages("condepe")   # once on CRAN
+install.packages("condepe")   # quando estiver no CRAN
 
-# development version:
+# versão em desenvolvimento:
 # install.packages("pak")
 pak::pak("StrategicProjects/condepe-r")
 ```
 
-## Usage
+## Uso
 
 ```r
 library(condepe)
 
-# Sources available (one row each), with the catalogue version
+# Fontes disponíveis (uma por linha) e a versão do catálogo
 cat <- condepe_catalog()
 attr(cat, "version")
 
-# Indicators of a source
+# Indicadores de uma fonte
 condepe_indicators("sidra_populacao_estimada")
 
-# A series: Recife (IBGE 2611606), 2020 onwards
+# Uma série: Recife (IBGE 2611606), de 2020 em diante
 condepe_series(
   "sidra_populacao_estimada", "Populacao residente estimada",
   code = "2611606", years = 2020:2026
 )
 
-# A whole source, and the municipality list
+# Uma fonte inteira e a lista de municípios
 condepe_data("datasus_sinasc")
 condepe_localities()
 ```
 
-Column names are kept in Portuguese, as published, so results stay traceable to
-the official files: `cd_municipio_ibge`, `nm_municipio`, `ano`, `mes`,
-`indicador`, `indicador_base`, `valor`, `unidade`, `natureza`, `id_fonte`,
-`eixo`, `tema`, `assunto`, `fonte_original`, `arquivo_origem`. Monthly series
-carry the period in `indicador` (`"... [MM/YYYY]"`) and `mes`; `indicador_base`
-is the label without it.
+Os nomes das colunas ficam em português, como publicados, para que todo
+resultado possa ser rastreado até os arquivos oficiais: `cd_municipio_ibge`,
+`nm_municipio`, `ano`, `mes`, `indicador`, `indicador_base`, `valor`,
+`unidade`, `natureza`, `id_fonte`, `eixo`, `tema`, `assunto`, `fonte_original`,
+`arquivo_origem`. Séries mensais trazem o período em `indicador`
+(`"... [MM/AAAA]"`) e em `mes`; `indicador_base` é o rótulo sem ele.
 
-## Where the data come from
+Guias: [primeiros passos](https://strategicprojects.github.io/condepe-r/articles/condepe.html),
+[exemplos](https://strategicprojects.github.io/condepe-r/articles/exemplos.html),
+[mapas](https://strategicprojects.github.io/condepe-r/articles/mapas.html) e a
+[relação das fontes](https://strategicprojects.github.io/condepe-r/articles/fontes.html).
 
-- **Canonical:** <https://cf.pe.gov.br/observatorio/dados/atual/>
-- **Mirror (fallback):** the Hugging Face dataset
+## De onde vêm os dados
+
+- **Canônico:** <https://cf.pe.gov.br/observatorio/dados/atual/>
+- **Espelho (reserva):** o dataset do Hugging Face
   [`mlkwy/observatorio-pernambuco`](https://huggingface.co/datasets/mlkwy/observatorio-pernambuco),
-  with the same relative paths.
+  com os mesmos caminhos.
 
-Files are cached on disk per catalogue version (`condepe_cache_dir()`) and
-checked against the SHA-256 published in the catalogue; the catalogue itself is
-trusted for 6 hours. If neither backend answers, functions warn and return a
-zero-row tibble with the documented columns. Options are listed in
-`?condepe`.
+Os arquivos ficam em cache em disco por versão do catálogo
+(`condepe_cache_dir()`) e são conferidos pelo SHA-256 publicado no catálogo; o
+catálogo vale por 6 horas. Se nenhum dos dois endereços responder, as funções
+avisam e devolvem um tibble vazio com as colunas documentadas. As opções estão
+em `?condepe`.
 
-Documentation: <https://strategicprojects.github.io/condepe-r/>.
+## Citação e licença
 
-## Citation and license
+Dados: Condepe/Fidem, *Observatório de Pernambuco — Base de Dados do Estado*,
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br). A citação
+com a versão em uso está em `attr(condepe_catalog(), "citation")`.
 
-Data: Condepe/Fidem, *Observatório de Pernambuco — Base de Dados do Estado*,
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The citation with
-the version in use is in `attr(condepe_catalog(), "citation")`.
-
-Code: MIT. To read or write *private* buckets on `s3.pe.gov.br` with an
-access key, see [`s3pe`](https://github.com/StrategicProjects/s3pe); `condepe`
-needs no key, since the Observatory open data are public. A Python package with the same functions is
-[`condepe` for Python](https://github.com/StrategicProjects/condepe-py).
+Código: MIT. Para ler ou gravar buckets *privados* do `s3.pe.gov.br` com chave
+de acesso, veja o [`s3pe`](https://github.com/StrategicProjects/s3pe); o
+`condepe` não precisa de chave, porque os dados abertos do Observatório são
+públicos. Há um pacote Python com as mesmas funções:
+[`condepe` para Python](https://github.com/StrategicProjects/condepe-py).

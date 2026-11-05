@@ -1,11 +1,12 @@
-#' Cache directory used by condepe
+#' Pasta de cache do condepe
 #'
-#' The catalogue and the Parquet files of the Observatory are cached on
-#' disk, one folder per catalogue version; files of older versions are
-#' removed when a newer one is downloaded. The location follows
-#' [tools::R_user_dir()], as required by CRAN policy.
+#' O catálogo e os arquivos Parquet do Observatório ficam em cache em disco,
+#' uma pasta por versão do catálogo; os arquivos de versões antigas são
+#' apagados quando uma versão nova é baixada. O local segue
+#' [tools::R_user_dir()], como exige a política do CRAN.
+#' `condepe_cache_clear()` apaga o cache.
 #'
-#' @returns The cache directory path, invisibly for `condepe_cache_clear()`.
+#' @returns O caminho da pasta de cache (invisível em `condepe_cache_clear()`).
 #' @examples
 #' condepe_cache_dir()
 #' @export

@@ -2,24 +2,24 @@
 % Please edit documentation in R/data.R
 \name{condepe_indicators}
 \alias{condepe_indicators}
-\title{List the indicators of a source}
+\title{Indicadores de uma fonte}
 \usage{
 condepe_indicators(source, refresh = FALSE)
 }
 \arguments{
-\item{source}{Source id, e.g. \code{"sidra_populacao_estimada"} (see
-\code{\link[=condepe_catalog]{condepe_catalog()}}).}
+\item{source}{Identificador da fonte, por exemplo
+\code{"sidra_populacao_estimada"} (veja \code{\link[=condepe_catalog]{condepe_catalog()}}).}
 
-\item{refresh}{If \code{TRUE}, download again even if a verified copy is
-cached.}
+\item{refresh}{Se \code{TRUE}, baixa de novo mesmo que haja cópia conferida
+em cache.}
 }
 \value{
-A tibble with one row per \code{indicador_base} and its \code{unidade},
-\code{natureza}, \code{mensal} (monthly series), number of \code{observacoes} and
-\code{localidades}, and \code{ano_inicio}/\code{ano_fim}.
+Um tibble com uma linha por \code{indicador_base} e sua \code{unidade},
+\code{natureza}, \code{mensal} (série mensal), número de \code{observacoes} e de
+\code{localidades}, e \code{ano_inicio}/\code{ano_fim}.
 }
 \description{
-List the indicators of a source
+Indicadores de uma fonte
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

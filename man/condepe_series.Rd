@@ -2,35 +2,35 @@
 % Please edit documentation in R/data.R
 \name{condepe_series}
 \alias{condepe_series}
-\title{Series of one or more indicators}
+\title{Série de um ou mais indicadores}
 \usage{
 condepe_series(source, indicator, code = NULL, years = NULL, refresh = FALSE)
 }
 \arguments{
-\item{source}{Source id, e.g. \code{"sidra_populacao_estimada"} (see
-\code{\link[=condepe_catalog]{condepe_catalog()}}).}
+\item{source}{Identificador da fonte, por exemplo
+\code{"sidra_populacao_estimada"} (veja \code{\link[=condepe_catalog]{condepe_catalog()}}).}
 
-\item{indicator}{One or more \code{indicador_base} values, exactly as listed
-by \code{\link[=condepe_indicators]{condepe_indicators()}}.}
+\item{indicator}{Um ou mais valores de \code{indicador_base}, exatamente como
+listados por \code{\link[=condepe_indicators]{condepe_indicators()}}.}
 
-\item{code}{IBGE codes: 7 digits for municipalities, \code{"26"} for the
-State. \code{NULL} keeps every locality.}
+\item{code}{Códigos IBGE: 7 dígitos para municípios, \code{"26"} para o
+Estado. \code{NULL} mantém todas as localidades.}
 
-\item{years}{Years to keep; \code{NULL} keeps all.}
+\item{years}{Anos a manter; \code{NULL} mantém todos.}
 
-\item{refresh}{If \code{TRUE}, download again even if a verified copy is
-cached.}
+\item{refresh}{Se \code{TRUE}, baixa de novo mesmo que haja cópia conferida
+em cache.}
 }
 \value{
-A tibble in the long format of \code{\link[=condepe_data]{condepe_data()}}, sorted by
-locality, year and month.
+Um tibble no formato longo de \code{\link[=condepe_data]{condepe_data()}}, ordenado por
+localidade, ano e mês.
 }
 \description{
-Filters a source by indicator and, optionally, by locality and year.
+Filtra uma fonte por indicador e, se pedido, por localidade e ano.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Population of Recife (IBGE 2611606) since 2020
+# População do Recife (IBGE 2611606) desde 2020
 condepe_series(
   "sidra_populacao_estimada", "Populacao residente estimada",
   code = "2611606", years = 2020:2026

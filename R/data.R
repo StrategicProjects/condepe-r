@@ -22,19 +22,19 @@ condepe_empty_data <- function() {
   )
 }
 
-#' List the sources published by the Observatory
+#' Fontes publicadas pelo Observatório
 #'
-#' One row per source, with axis, theme, description, original publisher,
-#' number of rows, indicators and localities, and the years covered. The
-#' catalogue version is in `attr(x, "version")` and the citation to use in
+#' Uma linha por fonte, com eixo, tema, descrição, órgão de origem, número
+#' de linhas, de indicadores e de localidades, e os anos cobertos. A versão
+#' do catálogo fica em `attr(x, "version")` e a citação a usar, em
 #' `attr(x, "citation")`.
 #'
-#' @param refresh If `TRUE`, ignore the cached catalogue (trusted for 6
-#'   hours) and ask the server.
-#' @returns A tibble with columns `id_fonte`, `eixo`, `tema`, `assunto`,
+#' @param refresh Se `TRUE`, ignora o catálogo em cache (válido por 6 horas)
+#'   e consulta o servidor.
+#' @returns Um tibble com as colunas `id_fonte`, `eixo`, `tema`, `assunto`,
 #'   `descricao`, `fonte_original`, `linhas`, `indicadores`, `localidades`,
-#'   `ano_inicio`, `ano_fim`. Zero rows (with a warning) if the
-#'   Observatory cannot be reached.
+#'   `ano_inicio`, `ano_fim`. Zero linhas (com aviso) se o Observatório não
+#'   responder.
 #' @examplesIf interactive()
 #' cat <- condepe_catalog()
 #' attr(cat, "version")
@@ -83,23 +83,23 @@ condepe_citation <- function(version) {
   )
 }
 
-#' Download a whole source
+#' Uma fonte inteira
 #'
-#' All indicators, localities and periods of a source, in the 15-column
-#' long format of the Observatory. The Parquet file is cached on disk for
-#' the current catalogue version and verified against the SHA-256 published
-#' in the catalogue.
+#' Todos os indicadores, localidades e períodos de uma fonte, no formato
+#' longo de 15 colunas do Observatório. O arquivo Parquet fica em cache em
+#' disco para a versão corrente do catálogo e é conferido pelo SHA-256
+#' publicado no catálogo.
 #'
-#' @param source Source id, e.g. `"sidra_populacao_estimada"` (see
-#'   [condepe_catalog()]).
-#' @param refresh If `TRUE`, download again even if a verified copy is
-#'   cached.
-#' @returns A tibble with columns `cd_municipio_ibge`, `nm_municipio`,
+#' @param source Identificador da fonte, por exemplo
+#'   `"sidra_populacao_estimada"` (veja [condepe_catalog()]).
+#' @param refresh Se `TRUE`, baixa de novo mesmo que haja cópia conferida
+#'   em cache.
+#' @returns Um tibble com as colunas `cd_municipio_ibge`, `nm_municipio`,
 #'   `ano`, `mes`, `indicador`, `indicador_base`, `valor`, `unidade`,
 #'   `natureza`, `id_fonte`, `eixo`, `tema`, `assunto`, `fonte_original`,
-#'   `arquivo_origem`. Monthly series carry the period in `indicador`
-#'   (`"... [MM/YYYY]"`) and in `mes`. Zero rows (with a warning) if the
-#'   Observatory cannot be reached.
+#'   `arquivo_origem`. Séries mensais trazem o período em `indicador`
+#'   (`"... [MM/AAAA]"`) e em `mes`. Zero linhas (com aviso) se o
+#'   Observatório não responder.
 #' @examplesIf interactive()
 #' condepe_data("datasus_sinasc")
 #' @export
@@ -145,12 +145,12 @@ condepe_data <- function(source, refresh = FALSE) {
   out
 }
 
-#' List the indicators of a source
+#' Indicadores de uma fonte
 #'
 #' @inheritParams condepe_data
-#' @returns A tibble with one row per `indicador_base` and its `unidade`,
-#'   `natureza`, `mensal` (monthly series), number of `observacoes` and
-#'   `localidades`, and `ano_inicio`/`ano_fim`.
+#' @returns Um tibble com uma linha por `indicador_base` e sua `unidade`,
+#'   `natureza`, `mensal` (série mensal), número de `observacoes` e de
+#'   `localidades`, e `ano_inicio`/`ano_fim`.
 #' @examplesIf interactive()
 #' condepe_indicators("sidra_populacao_estimada")
 #' @export
@@ -172,20 +172,20 @@ condepe_indicators <- function(source, refresh = FALSE) {
   out
 }
 
-#' Series of one or more indicators
+#' Série de um ou mais indicadores
 #'
-#' Filters a source by indicator and, optionally, by locality and year.
+#' Filtra uma fonte por indicador e, se pedido, por localidade e ano.
 #'
 #' @inheritParams condepe_data
-#' @param indicator One or more `indicador_base` values, exactly as listed
-#'   by [condepe_indicators()].
-#' @param code IBGE codes: 7 digits for municipalities, `"26"` for the
-#'   State. `NULL` keeps every locality.
-#' @param years Years to keep; `NULL` keeps all.
-#' @returns A tibble in the long format of [condepe_data()], sorted by
-#'   locality, year and month.
+#' @param indicator Um ou mais valores de `indicador_base`, exatamente como
+#'   listados por [condepe_indicators()].
+#' @param code Códigos IBGE: 7 dígitos para municípios, `"26"` para o
+#'   Estado. `NULL` mantém todas as localidades.
+#' @param years Anos a manter; `NULL` mantém todos.
+#' @returns Um tibble no formato longo de [condepe_data()], ordenado por
+#'   localidade, ano e mês.
 #' @examplesIf interactive()
-#' # Population of Recife (IBGE 2611606) since 2020
+#' # População do Recife (IBGE 2611606) desde 2020
 #' condepe_series(
 #'   "sidra_populacao_estimada", "Populacao residente estimada",
 #'   code = "2611606", years = 2020:2026
@@ -220,14 +220,14 @@ condepe_series <- function(source, indicator, code = NULL, years = NULL,
   out
 }
 
-#' Municipalities of Pernambuco and the State, with IBGE codes
+#' Municípios de Pernambuco e o Estado, com código IBGE
 #'
-#' Taken from the population estimates source, which covers all 185
-#' municipalities (Fernando de Noronha included); the State (`"26"`) comes
-#' first.
+#' Tirados da fonte de estimativas de população, que cobre os 185
+#' municípios (Fernando de Noronha incluído); o Estado (`"26"`) vem
+#' primeiro.
 #'
 #' @inheritParams condepe_data
-#' @returns A tibble with `cd_municipio_ibge` and `nm_municipio`.
+#' @returns Um tibble com `cd_municipio_ibge` e `nm_municipio`.
 #' @examplesIf interactive()
 #' condepe_localities()
 #' @export

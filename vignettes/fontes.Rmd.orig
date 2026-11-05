@@ -1,0 +1,61 @@
+---
+title: "Fontes do Observatório"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Fontes do Observatório}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = FALSE)
+options(condepe.quiet = TRUE)
+library(condepe)
+cat <- condepe_catalog()
+```
+
+Relação das fontes publicadas pelo Observatório de Pernambuco na versão
+**`r attr(cat, "version")`** do catálogo: **`r nrow(cat)` fontes** e
+**`r format(sum(cat$indicadores), big.mark = ".", decimal.mark = ",")` indicadores**, num total
+de **`r format(sum(cat$linhas), big.mark = ".", decimal.mark = ",")` observações**. A lista
+abaixo foi gerada com `condepe_catalog()`; o identificador (`id_fonte`) é o
+que se passa às demais funções. Cada fonte também tem uma ficha em
+<https://cf.pe.gov.br/observatorio>.
+
+```{r, results = "asis"}
+cat$periodo <- ifelse(cat$ano_inicio == cat$ano_fim, cat$ano_inicio,
+                      paste0(cat$ano_inicio, "–", cat$ano_fim))
+for (e in sort(unique(cat$eixo))) {
+  cat("\n## ", e, "\n", sep = "")
+  sub_e <- cat[cat$eixo == e, ]
+  for (t in sort(unique(sub_e$tema))) {
+    cat("\n### ", t, "\n\n", sep = "")
+    d <- sub_e[sub_e$tema == t, ]
+    d <- d[order(d$id_fonte), ]
+    abrangencia <- ifelse(d$localidades == 1, "só Pernambuco",
+                   ifelse(d$localidades >= 184, "", paste(d$localidades, "municípios")))
+    print(knitr::kable(
+      data.frame(
+        Fonte = paste0("`", d$id_fonte, "`"),
+        `Descrição e origem` = paste0(
+          d$descricao, ". <br><small>", d$fonte_original,
+          ifelse(abrangencia == "", "", paste0(" · ", abrangencia)), "</small>"
+        ),
+        Período = d$periodo,
+        Indicadores = format(d$indicadores, big.mark = ".", decimal.mark = ","),
+        check.names = FALSE
+      ),
+      row.names = FALSE, align = "llcr", escape = FALSE
+    ))
+  }
+}
+```
+
+## Como usar
+
+```r
+library(condepe)
+condepe_indicators("datasus_sinasc")      # os indicadores de uma fonte
+condepe_series("datasus_sinasc",          # a série de um indicador
+  "Nascidos vivos por residência - Total", code = "2611606")
+```

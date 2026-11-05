@@ -2,21 +2,21 @@
 % Please edit documentation in R/data.R
 \name{condepe_localities}
 \alias{condepe_localities}
-\title{Municipalities of Pernambuco and the State, with IBGE codes}
+\title{Municípios de Pernambuco e o Estado, com código IBGE}
 \usage{
 condepe_localities(refresh = FALSE)
 }
 \arguments{
-\item{refresh}{If \code{TRUE}, download again even if a verified copy is
-cached.}
+\item{refresh}{Se \code{TRUE}, baixa de novo mesmo que haja cópia conferida
+em cache.}
 }
 \value{
-A tibble with \code{cd_municipio_ibge} and \code{nm_municipio}.
+Um tibble com \code{cd_municipio_ibge} e \code{nm_municipio}.
 }
 \description{
-Taken from the population estimates source, which covers all 185
-municipalities (Fernando de Noronha included); the State (\code{"26"}) comes
-first.
+Tirados da fonte de estimativas de população, que cobre os 185
+municípios (Fernando de Noronha incluído); o Estado (\code{"26"}) vem
+primeiro.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

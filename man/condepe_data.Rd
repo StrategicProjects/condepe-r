@@ -2,30 +2,30 @@
 % Please edit documentation in R/data.R
 \name{condepe_data}
 \alias{condepe_data}
-\title{Download a whole source}
+\title{Uma fonte inteira}
 \usage{
 condepe_data(source, refresh = FALSE)
 }
 \arguments{
-\item{source}{Source id, e.g. \code{"sidra_populacao_estimada"} (see
-\code{\link[=condepe_catalog]{condepe_catalog()}}).}
+\item{source}{Identificador da fonte, por exemplo
+\code{"sidra_populacao_estimada"} (veja \code{\link[=condepe_catalog]{condepe_catalog()}}).}
 
-\item{refresh}{If \code{TRUE}, download again even if a verified copy is
-cached.}
+\item{refresh}{Se \code{TRUE}, baixa de novo mesmo que haja cópia conferida
+em cache.}
 }
 \value{
-A tibble with columns \code{cd_municipio_ibge}, \code{nm_municipio},
+Um tibble com as colunas \code{cd_municipio_ibge}, \code{nm_municipio},
 \code{ano}, \code{mes}, \code{indicador}, \code{indicador_base}, \code{valor}, \code{unidade},
 \code{natureza}, \code{id_fonte}, \code{eixo}, \code{tema}, \code{assunto}, \code{fonte_original},
-\code{arquivo_origem}. Monthly series carry the period in \code{indicador}
-(\code{"... [MM/YYYY]"}) and in \code{mes}. Zero rows (with a warning) if the
-Observatory cannot be reached.
+\code{arquivo_origem}. Séries mensais trazem o período em \code{indicador}
+(\code{"... [MM/AAAA]"}) e em \code{mes}. Zero linhas (com aviso) se o
+Observatório não responder.
 }
 \description{
-All indicators, localities and periods of a source, in the 15-column
-long format of the Observatory. The Parquet file is cached on disk for
-the current catalogue version and verified against the SHA-256 published
-in the catalogue.
+Todos os indicadores, localidades e períodos de uma fonte, no formato
+longo de 15 colunas do Observatório. O arquivo Parquet fica em cache em
+disco para a versão corrente do catálogo e é conferido pelo SHA-256
+publicado no catálogo.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
