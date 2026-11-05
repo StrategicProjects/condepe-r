@@ -81,3 +81,42 @@ condepe_fetch <- function(path, error_call = rlang::caller_env()) {
   )
   NULL
 }
+
+#' Fetch from a single address (no mirror), with the same retries and the
+#' same graceful failure as `condepe_fetch()`. Used for the municipal
+#' meshes, which live outside the open data tree.
+#'
+#' @param base Base URL.
+#' @param path Relative path, or a query string starting with `?`.
+#' @returns A raw vector, or `NULL` with a warning.
+#' @noRd
+condepe_fetch_url <- function(base, path, error_call = rlang::caller_env()) {
+  url <- if (startsWith(path, "?")) paste0(base, path) else paste0(base, "/", utils::URLencode(path))
+  req <- httr2::request(url) |>
+    httr2::req_user_agent(
+      "condepe R package (https://github.com/StrategicProjects/condepe-r)"
+    ) |>
+    httr2::req_timeout(getOption("condepe.timeout", 60)) |>
+    httr2::req_retry(
+      max_tries = getOption("condepe.max_tries", 3),
+      backoff = function(i) 2^i,
+      is_transient = function(resp) {
+        httr2::resp_status(resp) %in% c(429L, 500L, 502L, 503L, 504L)
+      }
+    ) |>
+    httr2::req_error(is_error = function(resp) FALSE)
+  resp <- tryCatch(httr2::req_perform(req), error = function(cnd) cnd)
+  if (!rlang::is_condition(resp) && httr2::resp_status(resp) == 200L) {
+    return(httr2::resp_body_raw(resp))
+  }
+  motivo <- if (rlang::is_condition(resp)) conditionMessage(resp) else paste("HTTP", httr2::resp_status(resp))
+  cli::cli_warn(
+    c(
+      "!" = "Could not download {.url {url}}.",
+      "i" = "Returning {.code NULL}. {motivo}"
+    ),
+    class = "condepe_error_http",
+    call = error_call
+  )
+  NULL
+}

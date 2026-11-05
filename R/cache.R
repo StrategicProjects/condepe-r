@@ -94,7 +94,7 @@ condepe_cached_file <- function(path, sha256, version, refresh = FALSE,
   file.rename(tmp, dest)
   # Files of other catalogue versions are superseded.
   pastas <- list.dirs(condepe_cache_dir(), recursive = FALSE, full.names = FALSE)
-  unlink(file.path(condepe_cache_dir(), setdiff(pastas, version)), recursive = TRUE)
+  unlink(file.path(condepe_cache_dir(), setdiff(pastas, c(version, "malha"))), recursive = TRUE)
   dest
 }
 

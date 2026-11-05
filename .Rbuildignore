@@ -13,3 +13,4 @@
 ^README\.Rmd$
 ^vignettes/.*\.Rmd\.orig$
 ^vignettes/precompile\.R$
+^data-raw$

@@ -1,0 +1,97 @@
+/* Tabelas no estilo do Notion: bordas finas, cabeçalho cinza discreto,
+   linhas zebradas, tema como etiqueta colorida. Vale para a tabela das
+   fontes (classe fontes-notion) e para as tabelas markdown das vignettes. */
+
+:root {
+  --cn-borda: #e9e9e7;
+  --cn-cabecalho: #f7f6f3;
+  --cn-zebra: #fbfbfa;
+  --cn-hover: #f1f1ef;
+  --cn-texto: #37352f;
+  --cn-suave: #787774;
+}
+[data-bs-theme="dark"] {
+  --cn-borda: #373737;
+  --cn-cabecalho: #252525;
+  --cn-zebra: #1f1f1f;
+  --cn-hover: #2c2c2c;
+  --cn-texto: #e6e6e4;
+  --cn-suave: #9b9b9b;
+}
+
+.fontes-notion-wrap { overflow-x: auto; margin: .5rem 0 1.5rem; }
+
+table.fontes-notion,
+main table.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+  line-height: 1.45;
+  color: var(--cn-texto);
+  border: 1px solid var(--cn-borda);
+  border-radius: 4px;
+}
+table.fontes-notion th,
+table.fontes-notion td,
+main table.table th,
+main table.table td {
+  border: 1px solid var(--cn-borda);
+  padding: .45rem .65rem;
+  vertical-align: top;
+  background: transparent;
+}
+table.fontes-notion thead th,
+main table.table thead th {
+  background: var(--cn-cabecalho);
+  color: var(--cn-suave);
+  font-weight: 500;
+  font-size: .8rem;
+  text-align: left;
+  white-space: nowrap;
+}
+table.fontes-notion tbody tr:nth-child(even),
+main table.table tbody tr:nth-child(even) { background: var(--cn-zebra); }
+table.fontes-notion tbody tr:hover,
+main table.table tbody tr:hover { background: var(--cn-hover); }
+main table.table > :not(caption) > * > * { box-shadow: none; }
+
+table.fontes-notion .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.fontes-notion code { white-space: normal; font-size: .8rem; color: var(--cn-texto); background: transparent; }
+table.fontes-notion .origem { color: var(--cn-suave); font-size: .78rem; margin-top: .15rem; }
+table.fontes-notion td:first-child { width: 12rem; }
+table.fontes-notion td:nth-child(2) { min-width: 14rem; }
+
+/* Etiquetas: as nove cores das etiquetas do Notion */
+.pill { display: inline-block; padding: 0 .45rem; border-radius: 3px; font-size: .78rem; line-height: 1.5rem; white-space: nowrap; }
+.pill-0 { background: #e3e2e0; color: #32302c; }
+.pill-1 { background: #eee0da; color: #442a1e; }
+.pill-2 { background: #fadec9; color: #49290e; }
+.pill-3 { background: #fdecc8; color: #402c1b; }
+.pill-4 { background: #dbeddb; color: #1c3829; }
+.pill-5 { background: #d3e5ef; color: #183347; }
+.pill-6 { background: #e8deee; color: #412454; }
+.pill-7 { background: #f5e0e9; color: #4c2337; }
+.pill-8 { background: #ffe2dd; color: #5d1715; }
+[data-bs-theme="dark"] .pill-0 { background: #373737; color: #e6e6e4; }
+[data-bs-theme="dark"] .pill-1 { background: #4a3228; color: #f0e2d9; }
+[data-bs-theme="dark"] .pill-2 { background: #5c3b23; color: #fbe3cf; }
+[data-bs-theme="dark"] .pill-3 { background: #564328; color: #fbedd0; }
+[data-bs-theme="dark"] .pill-4 { background: #243d30; color: #d7ecdc; }
+[data-bs-theme="dark"] .pill-5 { background: #143a4e; color: #d3e8f3; }
+[data-bs-theme="dark"] .pill-6 { background: #3c2d49; color: #ebdff3; }
+[data-bs-theme="dark"] .pill-7 { background: #4e2c3c; color: #f6dfe9; }
+[data-bs-theme="dark"] .pill-8 { background: #522e2a; color: #fde2de; }
+
+/* Eixos recolhíveis, como os "toggles" do Notion */
+details.fontes-eixo { border-bottom: 1px solid var(--cn-borda); padding: .35rem 0; }
+details.fontes-eixo > summary { cursor: pointer; padding: .3rem 0; list-style-position: outside; }
+details.fontes-eixo > summary .eixo { font-weight: 600; font-size: 1.05rem; }
+details.fontes-eixo > summary .resumo,
+p.resumo-eixo { color: var(--cn-suave); font-size: .85rem; margin-left: .4rem; }
+p.resumo-eixo { margin: -.4rem 0 .2rem; margin-left: 0; }
+details.fontes-eixo > summary:focus-visible { outline: 2px solid #3d84df; outline-offset: 2px; border-radius: 3px; }
+
+/* Larguras: a descrição fica com o espaço; fonte, período e contagem
+   ocupam só o necessário. */
+table.fontes-notion td:first-child code { display: inline-block; margin-top: .3rem; }
+table.fontes-notion th.num, table.fontes-notion td.num { width: 1%; }

@@ -41,6 +41,15 @@ condepe_series(
 # Uma fonte inteira e a lista de municípios
 condepe_data("datasus_sinasc")
 condepe_localities()
+
+# Mapas (requer o pacote sf): malha da Condepe/Fidem ou do IBGE,
+# regionalizações do estado e junção dos dados pelo código IBGE
+malha <- condepe_geometry(noronha = FALSE)
+rd <- condepe_geometry("rd")            # Regiões de Desenvolvimento
+condepe_regions("regiao_saude")         # a que região pertence cada município
+mapa <- condepe_add_geometry(condepe_series(
+  "sidra_populacao_estimada", "Populacao residente estimada", years = 2025
+))
 ```
 
 Os nomes das colunas ficam em português, como publicados, para que todo

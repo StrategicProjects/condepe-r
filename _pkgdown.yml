@@ -51,6 +51,12 @@ reference:
   contents:
   - condepe_series
   - condepe_data
+- title: Mapas e regiões
+  desc: Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
+  contents:
+  - condepe_geometry
+  - condepe_add_geometry
+  - condepe_regions
 - title: Cache e opções
   contents:
   - condepe_cache_dir

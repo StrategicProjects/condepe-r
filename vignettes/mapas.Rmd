@@ -11,8 +11,10 @@ vignette: >
 
 Toda observação do Observatório traz o código IBGE do município
 (`cd_municipio_ibge`), e isso basta para juntar os dados a uma malha
-municipal e fazer mapas. Esta vignette usa `sf` e `ggplot2`, que não são
-dependências do pacote:
+municipal e fazer mapas. O pacote traz a malha (`condepe_geometry()`), a
+junção (`condepe_add_geometry()`) e as regionalizações do estado
+(`condepe_regions()`). Esta vignette usa `sf` e `ggplot2`, que não são
+dependências obrigatórias do pacote:
 
 ```r
 install.packages(c("sf", "ggplot2"))
@@ -27,51 +29,37 @@ library(ggplot2)
 
 ## A malha municipal
 
-A malha vem da API de malhas do IBGE, em GeoJSON, com o código do município
-na propriedade `codarea` — o mesmo código de `cd_municipio_ibge`. A
-qualidade intermediária é leve (cerca de 200 KB para Pernambuco) e
-suficiente para mapas do estado inteiro:
-
-
-``` r
-url <- paste0(
-  "https://servicodados.ibge.gov.br/api/v3/malhas/estados/26",
-  "?formato=application/vnd.geo%2Bjson&intrarregiao=municipio&qualidade=intermediaria"
-)
-malha <- read_sf(url)
-malha
-#> Simple feature collection with 185 features and 1 field
-#> Geometry type: MULTIPOLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: -41.3583 ymin: -9.4829 xmax: -32.3971 ymax: -3.8358
-#> Geodetic CRS:  WGS 84
-#> # A tibble: 185 × 2
-#>   codarea
-#>   <chr>  
-#> 1 2600054
-#> 2 2600104
-#> 3 2600203
-#> 4 2600302
-#> 5 2600401
-#> 6 2600500
-#>                                                                         geometry
-#>                                                               <MULTIPOLYGON [°]>
-#> 1 (((-35.031 -7.9298, -35.0254 -7.9258, -35.0238 -7.9182, -35.0183 -7.9158, -34…
-#> 2 (((-37.7048 -7.6169, -37.7001 -7.6244, -37.6898 -7.6337, -37.6801 -7.6454, -3…
-#> 3 (((-41.3583 -8.7076, -41.3435 -8.722, -41.3344 -8.7277, -41.3209 -8.7282, -41…
-#> 4 (((-35.9686 -8.5359, -35.9687 -8.5488, -35.9604 -8.5482, -35.9476 -8.5352, -3…
-#> 5 (((-35.3416 -8.725, -35.4037 -8.7137, -35.3945 -8.6831, -35.474 -8.6279, -35.…
-#> 6 (((-37.1691 -9.2657, -37.1643 -9.2757, -37.1424 -9.2681, -37.1299 -9.2601, -3…
-#> # ℹ 179 more rows
-```
+`condepe_geometry()` baixa a Malha Municipal de Pernambuco publicada pela
+Condepe/Fidem (a edição corrente, conferida pelo SHA-256 e guardada em
+cache). Com `source = "ibge"`, a malha vem da API de malhas do IBGE.
 
 Fernando de Noronha (2605459) fica a 545 km da costa; num mapa do estado
 inteiro ele espreme o continente para a esquerda. Os mapas abaixo o deixam
-de fora:
+de fora com `noronha = FALSE`:
 
 
 ``` r
-malha <- malha[malha$codarea != "2605459", ]
+malha <- condepe_geometry(noronha = FALSE)
+attr(malha, "version")
+#> [1] "2025-v3"
+malha
+#> Simple feature collection with 184 features and 2 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: -41.35834 ymin: -9.482897 xmax: -34.80669 ymax: -7.272954
+#> Geodetic CRS:  WGS 84
+#> First 10 features:
+#>    cd_municipio_ibge          nm_municipio                       geometry
+#> 1            2600054          Abreu e Lima MULTIPOLYGON (((-34.9148 -7...
+#> 2            2600104 Afogados da Ingazeira MULTIPOLYGON (((-37.52795 -...
+#> 3            2600203               Afrânio MULTIPOLYGON (((-40.76417 -...
+#> 4            2600302             Agrestina MULTIPOLYGON (((-35.98255 -...
+#> 5            2600401            Água Preta MULTIPOLYGON (((-35.5714 -8...
+#> 6            2600500           Águas Belas MULTIPOLYGON (((-37.15559 -...
+#> 7            2600609             Alagoinha MULTIPOLYGON (((-36.75877 -...
+#> 8            2600708               Aliança MULTIPOLYGON (((-35.16596 -...
+#> 9            2600807               Altinho MULTIPOLYGON (((-36.13812 -...
+#> 10           2600906               Amaraji MULTIPOLYGON (((-35.39472 -...
 ```
 
 Um tema limpo para os mapas, nas cores do Observatório:
@@ -97,7 +85,7 @@ tmi <- condepe_series(
   years = 2022:2024
 )
 media <- aggregate(valor ~ cd_municipio_ibge, data = tmi, FUN = mean)
-mapa <- merge(malha, media, by.x = "codarea", by.y = "cd_municipio_ibge", all.x = TRUE)
+mapa <- condepe_add_geometry(media, geometry = malha)
 summary(mapa$valor)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>    0.00   10.70   13.26   13.78   16.59   26.73
@@ -125,8 +113,7 @@ ggplot(mapa) +
 ideb <- condepe_series(
   "inep_ideb_anos_iniciais", "IDEB observado - Municipal", years = 2025
 )
-mapa <- merge(malha, ideb[, c("cd_municipio_ibge", "valor")],
-              by.x = "codarea", by.y = "cd_municipio_ibge", all.x = TRUE)
+mapa <- condepe_add_geometry(ideb, geometry = malha)
 ```
 
 
@@ -162,7 +149,7 @@ w <- reshape(as.data.frame(pop[, c("cd_municipio_ibge", "ano", "valor")]),
 w$var <- 100 * (w$valor.2022 / w$valor.2010 - 1)
 w$classe <- cut(w$var, c(-Inf, -5, 0, 5, 15, Inf),
                 labels = c("queda > 5%", "queda até 5%", "alta até 5%", "alta de 5 a 15%", "alta > 15%"))
-mapa <- merge(malha, w, by.x = "codarea", by.y = "cd_municipio_ibge", all.x = TRUE)
+mapa <- condepe_add_geometry(w, geometry = malha)
 table(mapa$classe)
 #> 
 #>      queda > 5%    queda até 5%     alta até 5% alta de 5 a 15%      alta > 15% 
@@ -185,6 +172,120 @@ ggplot(mapa) +
 <p class="caption">plot of chunk populacao</p>
 </div>
 
+## Regiões
+
+`condepe_regions()` diz a que região pertence cada município em oito
+regionalizações: Regiões de Desenvolvimento (RD) da Condepe/Fidem, meso e
+microrregiões e regiões imediatas e intermediárias do IBGE, regiões e
+macrorregiões de saúde e regiões metropolitanas. A tabela vai com o pacote,
+sem rede:
+
+
+``` r
+reg <- condepe_regions()
+reg
+#> # A tibble: 185 × 10
+#>   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao
+#>   <chr>             <chr>                 <chr>         <chr>       <chr>       
+#> 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      
+#> 2 2600104           Afogados da Ingazeira Sertão do Pa… Sertão Per… Pajeú       
+#> 3 2600203           Afrânio               Sertão do Sã… São Franci… Petrolina   
+#> 4 2600302           Agrestina             Agreste Cent… Agreste Pe… Brejo Perna…
+#> 5 2600401           Água Preta            Mata Sul      Mata Perna… Mata Meridi…
+#> 6 2600500           Águas Belas           Agreste Meri… Agreste Pe… Vale do Ipa…
+#>   regiao_intermediaria regiao_imediata     regiao_saude macrorregiao_saude rm   
+#>   <chr>                <chr>               <chr>        <chr>              <chr>
+#> 1 Recife               Recife              I Região de… Metropolitana      Regi…
+#> 2 Serra Talhada        Afogados da Ingaze… X Região de… Sertão             <NA> 
+#> 3 Petrolina            Petrolina           VIII Região… Vale do São Franc… <NA> 
+#> 4 Caruaru              Caruaru             IV Região d… Agreste            <NA> 
+#> 5 Recife               Palmares            III Região … Metropolitana      <NA> 
+#> 6 Caruaru              Garanhuns           V Região de… Agreste            <NA> 
+#> # ℹ 179 more rows
+table(reg$rd)
+#> 
+#>                Agreste Central             Agreste Meridional 
+#>                             27                             26 
+#>           Agreste Setentrional              Distrito Estadual 
+#>                             19                              1 
+#>                     Mata Norte                       Mata Sul 
+#>                             19                             23 
+#> Região Metropolitana do Recife                 Sertão Central 
+#>                             14                              8 
+#>            Sertão de Itaparica              Sertão do Araripe 
+#>                              7                             10 
+#>               Sertão do Moxotó                Sertão do Pajeú 
+#>                              7                             17 
+#>        Sertão do São Francisco 
+#>                              7
+```
+
+Para mapear uma região, agregue os dados por região numa coluna `regiao` e
+passe `level` a `condepe_add_geometry()`: a malha municipal é dissolvida na
+regionalização pedida, com as mesmas divisas. População estimada de 2025 por
+Região de Desenvolvimento:
+
+
+``` r
+pop <- condepe_series("sidra_populacao_estimada", "Populacao residente estimada",
+                      years = 2025)
+pop <- merge(pop, condepe_regions("rd")[, c("cd_municipio_ibge", "regiao")])
+por_rd <- aggregate(valor ~ regiao, data = pop, FUN = sum)
+por_rd[order(-por_rd$valor), ]
+#>                            regiao   valor
+#> 7  Região Metropolitana do Recife 3961730
+#> 1                 Agreste Central 1214544
+#> 2              Agreste Meridional  702044
+#> 6                        Mata Sul  671469
+#> 5                      Mata Norte  610969
+#> 13        Sertão do São Francisco  569327
+#> 3            Agreste Setentrional  567121
+#> 12                Sertão do Pajeú  345392
+#> 10              Sertão do Araripe  336359
+#> 11               Sertão do Moxotó  251957
+#> 8                  Sertão Central  184722
+#> 9             Sertão de Itaparica  143032
+#> 4               Distrito Estadual    3341
+mapa <- condepe_add_geometry(por_rd, level = "rd", noronha = FALSE)
+```
+
+
+``` r
+ggplot(mapa) +
+  geom_sf(aes(fill = valor / 1e6), colour = "white", linewidth = 0.4) +
+  scale_fill_gradientn(colours = azuis, name = "milhões de habitantes") +
+  labs(title = "População estimada por Região de Desenvolvimento, 2025",
+       caption = "Fonte: IBGE (estimativas) e Condepe/Fidem (RD)") +
+  tema_mapa
+```
+
+<div class="figure" style="text-align: center">
+<img src="mapas-rd-1.png" alt="plot of chunk rd"  />
+<p class="caption">plot of chunk rd</p>
+</div>
+
+Os contornos das regiões também servem de camada sobre um mapa municipal.
+Os municípios coloridos pela taxa de mortalidade infantil e, por cima, as
+doze regiões de saúde (as Geres):
+
+
+``` r
+geres <- condepe_geometry("regiao_saude", noronha = FALSE)
+ggplot() +
+  geom_sf(data = condepe_add_geometry(media, geometry = malha),
+          aes(fill = valor), colour = NA) +
+  geom_sf(data = geres, fill = NA, colour = "white", linewidth = 0.5) +
+  scale_fill_gradientn(colours = azuis, name = "por mil nascidos vivos", na.value = "grey85") +
+  labs(title = "Mortalidade infantil (2022 a 2024) e regiões de saúde",
+       caption = "Fonte: SIM e SINASC; regiões de saúde da SES-PE") +
+  tema_mapa
+```
+
+<div class="figure" style="text-align: center">
+<img src="mapas-saude-1.png" alt="plot of chunk saude"  />
+<p class="caption">plot of chunk saude</p>
+</div>
+
 ## Região Metropolitana do Recife
 
 Para ver um recorte, filtre a malha antes de desenhar. Os 15 municípios da
@@ -193,9 +294,8 @@ Região Metropolitana do Recife (Goiana entrou em 2018) e os leitos de UTI por
 
 
 ``` r
-rmr <- c("2600054", "2601052", "2602902", "2603454", "2606200", "2606804",
-         "2607208", "2607604", "2607752", "2607901", "2609402", "2609600",
-         "2610707", "2611606", "2613701")
+reg_rm <- condepe_regions("rm")
+rmr <- reg_rm$cd_municipio_ibge[reg_rm$regiao %in% "Região Metropolitana do Recife"]
 uti <- condepe_series("datasus_leitos", "Leitos de UTI - Total", code = rmr, years = 2024)
 pop <- condepe_series("sidra_populacao_estimada", "Populacao residente estimada",
                       code = rmr, years = 2024)
@@ -221,7 +321,7 @@ d[order(-d$por_100mil), c("nm_municipio", "valor_uti", "por_100mil")]
 #> 7                  Ipojuca         0    0.00000
 #> 8        Ilha de Itamaracá         0    0.00000
 #> 9               Itapissuma         0    0.00000
-mapa <- merge(malha[malha$codarea %in% rmr, ], d, by.x = "codarea", by.y = "cd_municipio_ibge")
+mapa <- condepe_add_geometry(d, geometry = malha, all = FALSE)
 mapa$rotulo <- ifelse(mapa$por_100mil >= 40, mapa$nm_municipio, "")  # os demais, na tabela acima
 ```
 
