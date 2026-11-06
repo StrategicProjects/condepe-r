@@ -1,8 +1,8 @@
 # Fontes do Observatório
 
 Relação das fontes publicadas pelo Observatório de Pernambuco na versão
-**2026-11-05_171049** do catálogo: **75 fontes** e **113.497
-indicadores**, num total de **8.890.619 observações**. A lista abaixo
+**2026-11-06_182408** do catálogo: **83 fontes** e **113.859
+indicadores**, num total de **9.037.977 observações**. A lista abaixo
 foi gerada com
 [`condepe_catalog()`](https://strategicprojects.github.io/condepe-r/reference/condepe_catalog.md);
 o identificador (`id_fonte`) é o que se passa às demais funções. Cada
@@ -16,19 +16,19 @@ fonte também tem uma ficha em <https://cf.pe.gov.br/observatorio>.
 
 ## Infraestrutura
 
-2 fontes · 29 indicadores
+3 fontes · 39 indicadores
 
 [TABLE]
 
 ## Social
 
-44 fontes · 15.060 indicadores
+45 fontes · 15.062 indicadores
 
 [TABLE]
 
 ## Território
 
-3 fontes · 9.034 indicadores
+9 fontes · 9.384 indicadores
 
 [TABLE]
 

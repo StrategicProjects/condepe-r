@@ -39,6 +39,8 @@ Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
   : Malha rodoviária de Pernambuco
 - [`condepe_hydrography()`](https://strategicprojects.github.io/condepe-r/reference/condepe_hydrography.md)
   : Hidrografia de Pernambuco
+- [`condepe_layer()`](https://strategicprojects.github.io/condepe-r/reference/condepe_layer.md)
+  : Camadas geográficas publicadas pelo Observatório
 
 ## Cache e opções
 

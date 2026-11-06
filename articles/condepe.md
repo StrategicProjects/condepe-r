@@ -37,7 +37,7 @@ tema, está na vignette
 
 cat <- condepe_catalog()
 cat[, c("id_fonte", "tema", "indicadores", "ano_inicio", "ano_fim")]
-#> # A tibble: 75 × 5
+#> # A tibble: 83 × 5
 #>   id_fonte                 tema               indicadores ano_inicio ano_fim
 #>   <chr>                    <chr>                    <int>      <int>   <int>
 #> 1 sidra_populacao_estimada Demografia                   1       2001    2026
@@ -46,7 +46,7 @@ cat[, c("id_fonte", "tema", "indicadores", "ano_inicio", "ano_fim")]
 #> 4 sidra_area_densidade     Posição e Extensão           2       2010    2010
 #> 5 sidra_pam                Agropecuária               243       2020    2025
 #> 6 sidra_ppm_rebanho        Agropecuária                10       2020    2025
-#> # ℹ 69 more rows
+#> # ℹ 77 more rows
 ```
 
 O catálogo é versionado: cada publicação do Observatório tem uma versão,
@@ -55,9 +55,9 @@ e a citação a usar acompanha o resultado.
 ``` r
 
 attr(cat, "version")
-#> [1] "2026-11-05_171049"
+#> [1] "2026-11-06_182408"
 attr(cat, "citation")
-#> [1] "Condepe/Fidem, Observatório de Pernambuco — Base de Dados do Estado, version 2026-11-05_171049, https://cf.pe.gov.br/observatorio (CC BY 4.0)."
+#> [1] "Fontes originais indicadas em cada série (coluna fonte_original); dados coletados, padronizados e organizados pela Condepe/Fidem no Observatório de Pernambuco, versão 2026-11-06_182408, https://cf.pe.gov.br/observatorio."
 ```
 
 Quantas fontes há em cada eixo, e quantos indicadores:
@@ -67,9 +67,9 @@ Quantas fontes há em cada eixo, e quantos indicadores:
 aggregate(cbind(fontes = 1, indicadores) ~ eixo, data = cat, FUN = sum)
 #>             eixo fontes indicadores
 #> 1       Economia     26       89374
-#> 2 Infraestrutura      2          29
-#> 3         Social     44       15060
-#> 4     Território      3        9034
+#> 2 Infraestrutura      3          39
+#> 3         Social     45       15062
+#> 4     Território      9        9384
 ```
 
 Para achar uma fonte por assunto, filtre o catálogo como qualquer

@@ -170,7 +170,7 @@ plot of chunk populacao
 ## Regiões
 
 [`condepe_regions()`](https://strategicprojects.github.io/condepe-r/reference/condepe_regions.md)
-diz a que região pertence cada município em onze regionalizações:
+diz a que região pertence cada município em doze regionalizações:
 Regiões de Desenvolvimento (RD) da Condepe/Fidem, meso e microrregiões e
 regiões imediatas e intermediárias do IBGE, regiões e macrorregiões de
 saúde, Gerências Regionais de Educação (GRE), regiões fiscais da SEFAZ,
@@ -184,7 +184,7 @@ essa):
 
 reg <- condepe_regions()
 reg
-#> # A tibble: 185 × 13
+#> # A tibble: 185 × 14
 #>   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao
 #>   <chr>             <chr>                 <chr>         <chr>       <chr>       
 #> 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      
@@ -202,7 +202,7 @@ reg
 #> 5 Recife               Palmares            III Região … Metropolitana      Mata…
 #> 6 Caruaru              Garanhuns           V Região de… Agreste            Agre…
 #> # ℹ 179 more rows
-#> # ℹ 3 more variables: regiao_fiscal <chr>, dro <chr>, rm <chr>
+#> # ℹ 4 more variables: regiao_fiscal <chr>, dro <chr>, rm <chr>, up_perh <chr>
 table(reg$rd)
 #> 
 #>                Agreste Central             Agreste Meridional 
@@ -346,3 +346,55 @@ plot of chunk rmr
 Os leitos concentram-se no Recife, que atende pacientes de toda a
 região: o indicador mede oferta no município, não acesso de quem mora
 nele.
+
+## Camadas geográficas
+
+Além da malha, o Observatório publica camadas de referência em
+GeoParquet, e o pacote as lê como `sf` em WGS 84: a malha rodoviária do
+DER-PE
+([`condepe_roads()`](https://strategicprojects.github.io/condepe-r/reference/condepe_roads.md),
+por tipo de trecho), a hidrografia da ANA
+([`condepe_hydrography()`](https://strategicprojects.github.io/condepe-r/reference/condepe_hydrography.md):
+rios, rios principais, massas d’água, reservatórios acompanhados e
+unidades de planejamento) e qualquer outra camada do catálogo
+([`condepe_layer()`](https://strategicprojects.github.io/condepe-r/reference/condepe_layer.md),
+como as terras indígenas da FUNAI). Sobrepostas à malha municipal:
+
+``` r
+
+rodovias <- condepe_roads(type = c("estaduais", "federais"))
+rios <- condepe_hydrography("rios_principais")
+reservatorios <- condepe_hydrography("reservatorios")
+ti <- condepe_layer("terras_indigenas")
+c(trechos = nrow(rodovias), rios = nrow(rios), reservatorios = nrow(reservatorios),
+  terras_indigenas = nrow(ti))
+#>          trechos             rios    reservatorios terras_indigenas 
+#>              814              965               23               16
+# A malha rodoviária inclui as vias de Noronha, que esticariam o mapa: fica o continente
+rodovias <- suppressWarnings(sf::st_crop(rodovias, sf::st_bbox(malha)))
+```
+
+``` r
+
+ggplot() +
+  geom_sf(data = malha, fill = "grey96", colour = "white", linewidth = 0.2) +
+  geom_sf(data = rios, colour = "#00B7FF", linewidth = 0.35) +
+  geom_sf(data = rodovias, colour = "grey40", linewidth = 0.25) +
+  geom_sf(data = reservatorios, fill = "#0068FF", colour = "#0068FF", size = 1.2) +
+  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.7) +
+  labs(title = "Rodovias, rios principais, reservatórios e terras indígenas",
+       caption = "Fontes: DER-PE, ANA e FUNAI; malha da Condepe/Fidem") +
+  tema_mapa
+```
+
+![plot of chunk camadas-mapa](mapas-camadas-mapa-1.png)
+
+plot of chunk camadas-mapa
+
+As camadas vêm no mesmo CRS da malha, então
+[`sf::st_intersection()`](https://r-spatial.github.io/sf/reference/geos_binary_ops.html)
+e
+[`sf::st_join()`](https://r-spatial.github.io/sf/reference/st_join.html)
+resolvem perguntas como “quantos quilômetros de rodovia estadual cruzam
+cada município” — é assim que o Observatório calcula as fontes derivadas
+`der_malha_rodoviaria` e `ana_hidrografia`.

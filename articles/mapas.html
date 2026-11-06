@@ -225,7 +225,7 @@ plot of chunk populacao
 <h2 id="regiões">Regiões<a class="anchor" aria-label="anchor" href="#regi%C3%B5es"></a>
 </h2>
 <p><code><a href="../reference/condepe_regions.html">condepe_regions()</a></code> diz a que região pertence cada
-município em onze regionalizações: Regiões de Desenvolvimento (RD) da
+município em doze regionalizações: Regiões de Desenvolvimento (RD) da
 Condepe/Fidem, meso e microrregiões e regiões imediatas e intermediárias
 do IBGE, regiões e macrorregiões de saúde, Gerências Regionais de
 Educação (GRE), regiões fiscais da SEFAZ, Diretorias Regionais de
@@ -237,7 +237,7 @@ as fontes; sem rede, vale a cópia que vai com o pacote
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_regions.html">condepe_regions</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">reg</span></span>
-<span><span class="co">#&gt; # A tibble: 185 × 13</span></span>
+<span><span class="co">#&gt; # A tibble: 185 × 14</span></span>
 <span><span class="co">#&gt;   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;             &lt;chr&gt;                 &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;       </span></span>
 <span><span class="co">#&gt; 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      </span></span>
@@ -255,7 +255,7 @@ as fontes; sem rede, vale a cópia que vai com o pacote
 <span><span class="co">#&gt; 5 Recife               Palmares            III Região … Metropolitana      Mata…</span></span>
 <span><span class="co">#&gt; 6 Caruaru              Garanhuns           V Região de… Agreste            Agre…</span></span>
 <span><span class="co">#&gt; # ℹ 179 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 3 more variables: regiao_fiscal &lt;chr&gt;, dro &lt;chr&gt;, rm &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; # ℹ 4 more variables: regiao_fiscal &lt;chr&gt;, dro &lt;chr&gt;, rm &lt;chr&gt;, up_perh &lt;chr&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">reg</span><span class="op">$</span><span class="va">rd</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                Agreste Central             Agreste Meridional </span></span>
@@ -384,6 +384,49 @@ plot of chunk rmr
 <p>Os leitos concentram-se no Recife, que atende pacientes de toda a
 região: o indicador mede oferta no município, não acesso de quem mora
 nele.</p>
+</div>
+<div class="section level2">
+<h2 id="camadas-geográficas">Camadas geográficas<a class="anchor" aria-label="anchor" href="#camadas-geogr%C3%A1ficas"></a>
+</h2>
+<p>Além da malha, o Observatório publica camadas de referência em
+GeoParquet, e o pacote as lê como <code>sf</code> em WGS 84: a malha
+rodoviária do DER-PE (<code><a href="../reference/condepe_roads.html">condepe_roads()</a></code>, por tipo de trecho),
+a hidrografia da ANA (<code><a href="../reference/condepe_hydrography.html">condepe_hydrography()</a></code>: rios, rios
+principais, massas d’água, reservatórios acompanhados e unidades de
+planejamento) e qualquer outra camada do catálogo
+(<code><a href="../reference/condepe_layer.html">condepe_layer()</a></code>, como as terras indígenas da FUNAI).
+Sobrepostas à malha municipal:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rodovias</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_roads.html">condepe_roads</a></span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"estaduais"</span>, <span class="st">"federais"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">rios</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_hydrography.html">condepe_hydrography</a></span><span class="op">(</span><span class="st">"rios_principais"</span><span class="op">)</span></span>
+<span><span class="va">reservatorios</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_hydrography.html">condepe_hydrography</a></span><span class="op">(</span><span class="st">"reservatorios"</span><span class="op">)</span></span>
+<span><span class="va">ti</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_layer.html">condepe_layer</a></span><span class="op">(</span><span class="st">"terras_indigenas"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>trechos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">rodovias</span><span class="op">)</span>, rios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">rios</span><span class="op">)</span>, reservatorios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">reservatorios</span><span class="op">)</span>,</span>
+<span>  terras_indigenas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ti</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          trechos             rios    reservatorios terras_indigenas </span></span>
+<span><span class="co">#&gt;              814              965               23               16</span></span>
+<span><span class="co"># A malha rodoviária inclui as vias de Noronha, que esticariam o mapa: fica o continente</span></span>
+<span><span class="va">rodovias</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crop.html" class="external-link">st_crop</a></span><span class="op">(</span><span class="va">rodovias</span>, <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="va">malha</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">malha</span>, fill <span class="op">=</span> <span class="st">"grey96"</span>, colour <span class="op">=</span> <span class="st">"white"</span>, linewidth <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rios</span>, colour <span class="op">=</span> <span class="st">"#00B7FF"</span>, linewidth <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rodovias</span>, colour <span class="op">=</span> <span class="st">"grey40"</span>, linewidth <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">reservatorios</span>, fill <span class="op">=</span> <span class="st">"#0068FF"</span>, colour <span class="op">=</span> <span class="st">"#0068FF"</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ti</span>, fill <span class="op">=</span> <span class="st">"#FF6700"</span>, colour <span class="op">=</span> <span class="st">"#FF6700"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Rodovias, rios principais, reservatórios e terras indígenas"</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Fontes: DER-PE, ANA e FUNAI; malha da Condepe/Fidem"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="va">tema_mapa</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="mapas-camadas-mapa-1.png" alt="plot of chunk camadas-mapa"><p class="caption">
+plot of chunk camadas-mapa
+</p>
+</div>
+<p>As camadas vêm no mesmo CRS da malha, então
+<code><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html" class="external-link">sf::st_intersection()</a></code> e <code><a href="https://r-spatial.github.io/sf/reference/st_join.html" class="external-link">sf::st_join()</a></code> resolvem
+perguntas como “quantos quilômetros de rodovia estadual cruzam cada
+município” — é assim que o Observatório calcula as fontes derivadas
+<code>der_malha_rodoviaria</code> e <code>ana_hidrografia</code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

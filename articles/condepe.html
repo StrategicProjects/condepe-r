@@ -134,7 +134,7 @@ completa, agrupada por eixo e tema, está na vignette
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_catalog.html">condepe_catalog</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">cat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id_fonte"</span>, <span class="st">"tema"</span>, <span class="st">"indicadores"</span>, <span class="st">"ano_inicio"</span>, <span class="st">"ano_fim"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; # A tibble: 75 × 5</span></span>
+<span><span class="co">#&gt; # A tibble: 83 × 5</span></span>
 <span><span class="co">#&gt;   id_fonte                 tema               indicadores ano_inicio ano_fim</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                    &lt;chr&gt;                    &lt;int&gt;      &lt;int&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 sidra_populacao_estimada Demografia                   1       2001    2026</span></span>
@@ -143,22 +143,22 @@ completa, agrupada por eixo e tema, está na vignette
 <span><span class="co">#&gt; 4 sidra_area_densidade     Posição e Extensão           2       2010    2010</span></span>
 <span><span class="co">#&gt; 5 sidra_pam                Agropecuária               243       2020    2025</span></span>
 <span><span class="co">#&gt; 6 sidra_ppm_rebanho        Agropecuária                10       2020    2025</span></span>
-<span><span class="co">#&gt; # ℹ 69 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt; # ℹ 77 more rows</span></span></code></pre></div>
 <p>O catálogo é versionado: cada publicação do Observatório tem uma
 versão, e a citação a usar acompanha o resultado.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cat</span>, <span class="st">"version"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "2026-11-05_171049"</span></span>
+<span><span class="co">#&gt; [1] "2026-11-06_182408"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cat</span>, <span class="st">"citation"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Condepe/Fidem, Observatório de Pernambuco — Base de Dados do Estado, version 2026-11-05_171049, https://cf.pe.gov.br/observatorio (CC BY 4.0)."</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Fontes originais indicadas em cada série (coluna fonte_original); dados coletados, padronizados e organizados pela Condepe/Fidem no Observatório de Pernambuco, versão 2026-11-06_182408, https://cf.pe.gov.br/observatorio."</span></span></code></pre></div>
 <p>Quantas fontes há em cada eixo, e quantos indicadores:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>fontes <span class="op">=</span> <span class="fl">1</span>, <span class="va">indicadores</span><span class="op">)</span> <span class="op">~</span> <span class="va">eixo</span>, data <span class="op">=</span> <span class="va">cat</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             eixo fontes indicadores</span></span>
 <span><span class="co">#&gt; 1       Economia     26       89374</span></span>
-<span><span class="co">#&gt; 2 Infraestrutura      2          29</span></span>
-<span><span class="co">#&gt; 3         Social     44       15060</span></span>
-<span><span class="co">#&gt; 4     Território      3        9034</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 Infraestrutura      3          39</span></span>
+<span><span class="co">#&gt; 3         Social     45       15062</span></span>
+<span><span class="co">#&gt; 4     Território      9        9384</span></span></code></pre></div>
 <p>Para achar uma fonte por assunto, filtre o catálogo como qualquer
 tabela:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">

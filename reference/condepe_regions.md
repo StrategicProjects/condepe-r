@@ -1,6 +1,6 @@
 # Regionalizações dos municípios de Pernambuco
 
-A que região pertence cada município, em onze regionalizações oficiais:
+A que região pertence cada município, em doze regionalizações oficiais:
 
 ## Usage
 
@@ -56,6 +56,9 @@ veio: a versão do catálogo ou `"embutida"`.
   DOD)
 
 - `rm`: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
+
+- `up_perh`: Unidades de Planejamento do PERH (APAC; a UP de maior área
+  no município)
 
 A tabela é publicada pelo Observatório junto com os dados abertos
 (`referencia/regioes.parquet`, listada no catálogo), e é lida de lá como
