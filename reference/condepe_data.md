@@ -29,7 +29,8 @@ Um tibble com as colunas `cd_municipio_ibge`, `nm_municipio`, `ano`,
 `id_fonte`, `eixo`, `tema`, `assunto`, `fonte_original`,
 `arquivo_origem`. Séries mensais trazem o período em `indicador`
 (`"... [MM/AAAA]"`) e em `mes`. Zero linhas (com aviso) se o
-Observatório não responder.
+Observatório não responder. `attr(x, "citation")` traz a citação da
+fonte original, com o Observatório como organizador.
 
 ## Examples
 

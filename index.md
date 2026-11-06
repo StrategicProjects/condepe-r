@@ -72,7 +72,7 @@ fontes](https://strategicprojects.github.io/condepe-r/articles/fontes.md).
 
 ## Fontes do Observatório
 
-Versão **`2026-11-05_171049`** do catálogo: **75 fontes**, **113.497
+Versão **`2026-11-05_235518`** do catálogo: **75 fontes**, **113.497
 indicadores** e **8.890.619 observações**. O identificador da fonte é o
 que se passa às funções do pacote; clique num eixo para abrir a lista. A
 relação também está no guia [Fontes do
@@ -108,12 +108,29 @@ e são conferidos pelo SHA-256 publicado no catálogo; o catálogo vale por
 devolvem um tibble vazio com as colunas documentadas. As opções estão em
 [`?condepe`](https://strategicprojects.github.io/condepe-r/reference/condepe-package.md).
 
-## Citação e licença
+## Fontes, citação e licença
 
-Dados: Condepe/Fidem, *Observatório de Pernambuco — Base de Dados do
-Estado*, [CC BY
-4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br). A citação
-com a versão em uso está em `attr(condepe_catalog(), "citation")`.
+Os números **não são produzidos pela Condepe/Fidem**: cada série vem de
+uma fonte pública oficial (IBGE, Ministério da Saúde, INEP, Ministério
+do Trabalho, Tesouro Nacional, TCE-PE, Banco Central, entre outras),
+indicada em toda linha pelas colunas `fonte_original` e
+`arquivo_origem`. A Condepe/Fidem coleta, confere, padroniza e organiza
+essas séries no Observatório de Pernambuco.
+
+Ao usar os dados, cite **a fonte original** e o Observatório como
+organizador, com a versão do catálogo.
+`attr(condepe_data(fonte), "citation")` traz a citação pronta de uma
+fonte; `attr(condepe_catalog(), "citation")`, a do acervo. Por exemplo:
+
+> IBGE - Estimativas da Populacao. Dados organizados pela Condepe/Fidem
+> no Observatório de Pernambuco (fonte `sidra_populacao_estimada`),
+> versão 2026-11-05_235518,
+> <https://cf.pe.gov.br/observatorio/fontes/sidra_populacao_estimada>.
+
+A organização (padronização, estrutura, catálogo e metadados) é
+publicada sob [CC BY
+4.0](https://creativecommons.org/licenses/by/4.0/deed.pt-br); os dados
+de cada fonte seguem os termos de uso de quem os publicou.
 
 Código: MIT. Para ler ou gravar buckets *privados* do `s3.pe.gov.br` com
 chave de acesso, veja o
