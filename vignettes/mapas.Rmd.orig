@@ -242,15 +242,17 @@ reservatorios <- condepe_hydrography("reservatorios")
 ti <- condepe_layer("terras_indigenas")
 c(trechos = nrow(rodovias), rios = nrow(rios), reservatorios = nrow(reservatorios),
   terras_indigenas = nrow(ti))
+# A malha rodoviária inclui as vias de Noronha, que esticariam o mapa: fica o continente
+rodovias <- suppressWarnings(sf::st_crop(rodovias, sf::st_bbox(malha)))
 ```
 
 ```{r camadas-mapa, fig.height = 4}
 ggplot() +
   geom_sf(data = malha, fill = "grey96", colour = "white", linewidth = 0.2) +
   geom_sf(data = rios, colour = "#00B7FF", linewidth = 0.35) +
-  geom_sf(data = reservatorios, fill = "#0068FF", colour = NA) +
   geom_sf(data = rodovias, colour = "grey40", linewidth = 0.25) +
-  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.6) +
+  geom_sf(data = reservatorios, fill = "#0068FF", colour = "#0068FF", size = 1.2) +
+  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.7) +
   labs(title = "Rodovias, rios principais, reservatórios e terras indígenas",
        caption = "Fontes: DER-PE, ANA e FUNAI; malha da Condepe/Fidem") +
   tema_mapa

@@ -12,6 +12,9 @@
 vignettes <- c("condepe", "exemplos", "mapas", "fontes")
 
 pkgload::load_all(quiet = TRUE)
+# The catalogue of the day, not the cached one (trusted for 6 h): a layer
+# published today would otherwise be missing from the knitted output.
+invisible(condepe_catalog(refresh = TRUE))
 withr::with_dir("vignettes", {
   for (v in vignettes) {
     knitr::knit(paste0(v, ".Rmd.orig"), output = paste0(v, ".Rmd"))

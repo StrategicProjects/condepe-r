@@ -186,16 +186,42 @@ sem rede, vale a cópia que vai com o pacote (`offline = TRUE` força essa):
 
 ``` r
 reg <- condepe_regions()
-#> Error in `condepe_regions_published()` at condepe-r/R/regions.R:50:3:
-#> ! 'referencia/regioes.parquet' does not match the SHA-256 in the
-#>   catalogue.
-#> ℹ The publication may be in progress; try again in a few minutes.
 reg
-#> Error:
-#> ! objeto 'reg' não encontrado
+#> # A tibble: 185 × 14
+#>   cd_municipio_ibge nm_municipio          rd            mesorregiao microrregiao
+#>   <chr>             <chr>                 <chr>         <chr>       <chr>       
+#> 1 2600054           Abreu e Lima          Região Metro… Metropolit… Recife      
+#> 2 2600104           Afogados da Ingazeira Sertão do Pa… Sertão Per… Pajeú       
+#> 3 2600203           Afrânio               Sertão do Sã… São Franci… Petrolina   
+#> 4 2600302           Agrestina             Agreste Cent… Agreste Pe… Brejo Perna…
+#> 5 2600401           Água Preta            Mata Sul      Mata Perna… Mata Meridi…
+#> 6 2600500           Águas Belas           Agreste Meri… Agreste Pe… Vale do Ipa…
+#>   regiao_intermediaria regiao_imediata     regiao_saude macrorregiao_saude gre  
+#>   <chr>                <chr>               <chr>        <chr>              <chr>
+#> 1 Recife               Recife              I Região de… Metropolitana      Metr…
+#> 2 Serra Talhada        Afogados da Ingaze… X Região de… Sertão             Sert…
+#> 3 Petrolina            Petrolina           VIII Região… Vale do São Franc… Sert…
+#> 4 Caruaru              Caruaru             IV Região d… Agreste            Agre…
+#> 5 Recife               Palmares            III Região … Metropolitana      Mata…
+#> 6 Caruaru              Garanhuns           V Região de… Agreste            Agre…
+#> # ℹ 179 more rows
+#> # ℹ 4 more variables: regiao_fiscal <chr>, dro <chr>, rm <chr>, up_perh <chr>
 table(reg$rd)
-#> Error:
-#> ! objeto 'reg' não encontrado
+#> 
+#>                Agreste Central             Agreste Meridional 
+#>                             27                             26 
+#>           Agreste Setentrional              Distrito Estadual 
+#>                             19                              1 
+#>                     Mata Norte                       Mata Sul 
+#>                             19                             23 
+#> Região Metropolitana do Recife                 Sertão Central 
+#>                             14                              8 
+#>            Sertão de Itaparica              Sertão do Araripe 
+#>                              7                             10 
+#>               Sertão do Moxotó                Sertão do Pajeú 
+#>                              7                             17 
+#>        Sertão do São Francisco 
+#>                              7
 ```
 
 Para mapear uma região, agregue os dados por região numa coluna `regiao` e
@@ -208,19 +234,23 @@ Região de Desenvolvimento:
 pop <- condepe_series("sidra_populacao_estimada", "Populacao residente estimada",
                       years = 2025)
 pop <- merge(pop, condepe_regions("rd")[, c("cd_municipio_ibge", "regiao")])
-#> Error in `condepe_regions_published()` at condepe-r/R/regions.R:50:3:
-#> ! 'referencia/regioes.parquet' does not match the SHA-256 in the
-#>   catalogue.
-#> ℹ The publication may be in progress; try again in a few minutes.
 por_rd <- aggregate(valor ~ regiao, data = pop, FUN = sum)
-#> Error:
-#> ! objeto 'regiao' não encontrado
 por_rd[order(-por_rd$valor), ]
-#> Error:
-#> ! objeto 'por_rd' não encontrado
+#>                            regiao   valor
+#> 7  Região Metropolitana do Recife 3961730
+#> 1                 Agreste Central 1214544
+#> 2              Agreste Meridional  702044
+#> 6                        Mata Sul  671469
+#> 5                      Mata Norte  610969
+#> 13        Sertão do São Francisco  569327
+#> 3            Agreste Setentrional  567121
+#> 12                Sertão do Pajeú  345392
+#> 10              Sertão do Araripe  336359
+#> 11               Sertão do Moxotó  251957
+#> 8                  Sertão Central  184722
+#> 9             Sertão de Itaparica  143032
+#> 4               Distrito Estadual    3341
 mapa <- condepe_add_geometry(por_rd, level = "rd", noronha = FALSE)
-#> Error:
-#> ! objeto 'por_rd' não encontrado
 ```
 
 
@@ -231,12 +261,12 @@ ggplot(mapa) +
   labs(title = "População estimada por Região de Desenvolvimento, 2025",
        caption = "Fonte: IBGE (estimativas) e Condepe/Fidem (RD)") +
   tema_mapa
-#> Error in `geom_sf()`:
-#> ! Problem while computing aesthetics.
-#> ℹ Error occurred in the 1st layer.
-#> Caused by error:
-#> ! objeto 'valor' não encontrado
 ```
+
+<div class="figure" style="text-align: center">
+<img src="mapas-rd-1.png" alt="plot of chunk rd"  />
+<p class="caption">plot of chunk rd</p>
+</div>
 
 Os contornos das regiões também servem de camada sobre um mapa municipal.
 Os municípios coloridos pela taxa de mortalidade infantil e, por cima, as
@@ -245,10 +275,6 @@ doze regiões de saúde (as Geres):
 
 ``` r
 geres <- condepe_geometry("regiao_saude", noronha = FALSE)
-#> Error in `condepe_regions_published()` at condepe-r/R/regions.R:50:3:
-#> ! 'referencia/regioes.parquet' does not match the SHA-256 in the
-#>   catalogue.
-#> ℹ The publication may be in progress; try again in a few minutes.
 ggplot() +
   geom_sf(data = condepe_add_geometry(media, geometry = malha),
           aes(fill = valor), colour = NA) +
@@ -257,9 +283,12 @@ ggplot() +
   labs(title = "Mortalidade infantil (2022 a 2024) e regiões de saúde",
        caption = "Fonte: SIM e SINASC; regiões de saúde da SES-PE") +
   tema_mapa
-#> Error:
-#> ! objeto 'geres' não encontrado
 ```
+
+<div class="figure" style="text-align: center">
+<img src="mapas-saude-1.png" alt="plot of chunk saude"  />
+<p class="caption">plot of chunk saude</p>
+</div>
 
 ## Região Metropolitana do Recife
 
@@ -270,54 +299,34 @@ Região Metropolitana do Recife (Goiana entrou em 2018) e os leitos de UTI por
 
 ``` r
 reg_rm <- condepe_regions("rm")
-#> Error in `condepe_regions_published()` at condepe-r/R/regions.R:50:3:
-#> ! 'referencia/regioes.parquet' does not match the SHA-256 in the
-#>   catalogue.
-#> ℹ The publication may be in progress; try again in a few minutes.
 rmr <- reg_rm$cd_municipio_ibge[reg_rm$regiao %in% "Região Metropolitana do Recife"]
-#> Error:
-#> ! objeto 'reg_rm' não encontrado
 uti <- condepe_series("datasus_leitos", "Leitos de UTI - Total", code = rmr, years = 2024)
-#> Error:
-#> ! objeto 'rmr' não encontrado
 pop <- condepe_series("sidra_populacao_estimada", "Populacao residente estimada",
                       code = rmr, years = 2024)
-#> Error:
-#> ! objeto 'rmr' não encontrado
 d <- merge(pop[, c("cd_municipio_ibge", "nm_municipio", "valor")],
            uti[, c("cd_municipio_ibge", "valor")],
            by = "cd_municipio_ibge", suffixes = c("_pop", "_uti"), all.x = TRUE)
-#> Error:
-#> ! objeto 'uti' não encontrado
 d$valor_uti[is.na(d$valor_uti)] <- 0  # município sem leito no CNES-LT: zero leitos de UTI
-#> Warning: Unknown or uninitialised column: `valor_uti`.
-#> Unknown or uninitialised column: `valor_uti`.
-#> Error in `$<-`:
-#> ! Assigned data `<dbl>` must be compatible with existing data.
-#> ✖ Existing data has 370 rows.
-#> ✖ Assigned data has 0 rows.
-#> ℹ Only vectors of size 1 are recycled.
-#> Caused by error in `vectbl_recycle_rhs_rows()`:
-#> ! Can't recycle input of size 0 to size 370.
 d$por_100mil <- 1e5 * d$valor_uti / d$valor_pop
-#> Warning: Unknown or uninitialised column: `valor_uti`.
-#> Warning: Unknown or uninitialised column: `valor_pop`.
-#> Error in `$<-`:
-#> ! Assigned data `1e+05 * d$valor_uti/d$valor_pop` must be compatible
-#>   with existing data.
-#> ✖ Existing data has 370 rows.
-#> ✖ Assigned data has 0 rows.
-#> ℹ Only vectors of size 1 are recycled.
-#> Caused by error in `vectbl_recycle_rhs_rows()`:
-#> ! Can't recycle input of size 0 to size 370.
 d[order(-d$por_100mil), c("nm_municipio", "valor_uti", "por_100mil")]
-#> Warning: Unknown or uninitialised column: `por_100mil`.
-#> Error in `-d$por_100mil`:
-#> ! argumento inválido para operador unário
+#>               nm_municipio valor_uti por_100mil
+#> 14                  Recife      1627  102.47483
+#> 12                  Olinda       155   42.41903
+#> 11                  Moreno        20   34.69391
+#> 5                   Goiana        20   23.48520
+#> 3  Cabo de Santo Agostinho        50   23.04477
+#> 15    São Lourenço da Mata        25   21.22980
+#> 1             Abreu e Lima        22   21.16504
+#> 13                Paulista        72   19.83690
+#> 10 Jaboatão dos Guararapes       124   18.14763
+#> 2                Araçoiaba         0    0.00000
+#> 4               Camaragibe         0    0.00000
+#> 6                 Igarassu         0    0.00000
+#> 7                  Ipojuca         0    0.00000
+#> 8        Ilha de Itamaracá         0    0.00000
+#> 9               Itapissuma         0    0.00000
 mapa <- condepe_add_geometry(d, geometry = malha, all = FALSE)
 mapa$rotulo <- ifelse(mapa$por_100mil >= 40, mapa$nm_municipio, "")  # os demais, na tabela acima
-#> Error in `[[<-.data.frame`:
-#> ! substituto tem 0 linha, dados têm 368
 ```
 
 
@@ -332,12 +341,12 @@ ggplot(mapa) +
   tema_mapa +
   theme(legend.position = "right", legend.key.width = unit(0.4, "cm"),
         legend.key.height = unit(1.4, "cm"))
-#> Error in `geom_sf()`:
-#> ! Problem while computing aesthetics.
-#> ℹ Error occurred in the 1st layer.
-#> Caused by error:
-#> ! objeto 'por_100mil' não encontrado
 ```
+
+<div class="figure" style="text-align: center">
+<img src="mapas-rmr-1.png" alt="plot of chunk rmr"  />
+<p class="caption">plot of chunk rmr</p>
+</div>
 
 Os leitos concentram-se no Recife, que atende pacientes de toda a região:
 o indicador mede oferta no município, não acesso de quem mora nele.
@@ -358,14 +367,12 @@ rodovias <- condepe_roads(type = c("estaduais", "federais"))
 rios <- condepe_hydrography("rios_principais")
 reservatorios <- condepe_hydrography("reservatorios")
 ti <- condepe_layer("terras_indigenas")
-#> Warning: O catálogo do Observatório (versão 2026-11-06_145339) ainda não traz a camada
-#> "terras_indigenas".
-#> ℹ Tente `refresh = TRUE`; as camadas com geometria entraram nos dados abertos
-#>   em novembro de 2026.
 c(trechos = nrow(rodovias), rios = nrow(rios), reservatorios = nrow(reservatorios),
   terras_indigenas = nrow(ti))
-#>       trechos          rios reservatorios 
-#>           814           965            23
+#>          trechos             rios    reservatorios terras_indigenas 
+#>              814              965               23               16
+# A malha rodoviária inclui as vias de Noronha, que esticariam o mapa: fica o continente
+rodovias <- suppressWarnings(sf::st_crop(rodovias, sf::st_bbox(malha)))
 ```
 
 
@@ -373,14 +380,12 @@ c(trechos = nrow(rodovias), rios = nrow(rios), reservatorios = nrow(reservatorio
 ggplot() +
   geom_sf(data = malha, fill = "grey96", colour = "white", linewidth = 0.2) +
   geom_sf(data = rios, colour = "#00B7FF", linewidth = 0.35) +
-  geom_sf(data = reservatorios, fill = "#0068FF", colour = NA) +
   geom_sf(data = rodovias, colour = "grey40", linewidth = 0.25) +
-  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.6) +
+  geom_sf(data = reservatorios, fill = "#0068FF", colour = "#0068FF", size = 1.2) +
+  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.7) +
   labs(title = "Rodovias, rios principais, reservatórios e terras indígenas",
        caption = "Fontes: DER-PE, ANA e FUNAI; malha da Condepe/Fidem") +
   tema_mapa
-#> Warning: Removed 23 rows containing missing values or values outside the scale range
-#> (`geom_sf()`).
 ```
 
 <div class="figure" style="text-align: center">
