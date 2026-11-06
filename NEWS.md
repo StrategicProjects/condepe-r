@@ -7,6 +7,8 @@
 * `condepe_hydrography()`: hidrografia de Pernambuco recortada da ANA — rios
   (BHO nível 5), rios principais, massas d'água, reservatórios acompanhados
   (com capacidade e demandas) e Unidades de Planejamento Hídrico — como `sf`.
+* `condepe_layer(id)`: qualquer camada geográfica publicada no catálogo
+  (`terras_indigenas`, `up_perh`…) como `sf`.
 * `condepe_regions()` e `condepe_geometry()` ganham a regionalização `up_perh`
   (Unidades de Planejamento do PERH, APAC): doze regionalizações.
 

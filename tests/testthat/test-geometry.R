@@ -164,3 +164,13 @@ test_that("condepe_hydrography lê uma camada publicada como sf e recusa camada 
   expect_warning(expect_null(condepe_hydrography("uph")), "hidrografia")
   expect_error(condepe_hydrography("lagos"))
 })
+
+test_that("condepe_layer lê qualquer referência com geometria pelo id", {
+  skip_if_not_installed("sf")
+  local_cache()
+  httr2::local_mocked_responses(servidor(rodovias = rodovias_teste()))
+  r <- condepe_layer("reservatorios")
+  expect_s3_class(r, "sf")
+  expect_equal(nrow(r), 3L)
+  expect_warning(expect_null(condepe_layer("inexistente")), "inexistente")
+})
