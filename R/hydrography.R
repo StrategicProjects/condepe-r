@@ -1,11 +1,11 @@
 #' Camadas de hidrografia publicadas pelo Observatório
 #' @noRd
 condepe_hydro_layers <- c(
-  rios = "Rios e riachos (BHO da ANA, nível Otto 5)",
-  rios_principais = "Rios principais (BHO, nível Otto 3)",
-  massas_dagua = "Massas d'água: açudes, lagoas e reservatórios",
-  reservatorios = "Reservatórios do semiárido acompanhados pela ANA (pontos, com capacidade e demandas)",
-  uph = "Unidades de Planejamento Hídrico da ANA que alcançam Pernambuco"
+  rios = "Rios e riachos (BHO da ANA, n\u00edvel Otto 5)",
+  rios_principais = "Rios principais (BHO, n\u00edvel Otto 3)",
+  massas_dagua = "Massas d'\u00e1gua: a\u00e7udes, lagoas e reservat\u00f3rios",
+  reservatorios = "Reservat\u00f3rios do semi\u00e1rido acompanhados pela ANA (pontos, com capacidade e demandas)",
+  uph = "Unidades de Planejamento H\u00eddrico da ANA que alcan\u00e7am Pernambuco"
 )
 
 #' Hidrografia de Pernambuco
@@ -55,7 +55,7 @@ condepe_geo_reference <- function(id, refresh = FALSE, rotulo = id,
   if (length(ref) == 0L) {
     if (!is.null(cat)) {
       cli::cli_warn(c(
-        paste0("O catálogo do Observatório (versão {cat$versao}) ainda não traz ", rotulo, "."),
+        paste0("O cat\u00e1logo do Observat\u00f3rio (vers\u00e3o {cat$versao}) ainda n\u00e3o traz ", rotulo, "."),
         i = "Tente {.code refresh = TRUE}; as camadas com geometria entraram nos dados abertos em novembro de 2026."
       ), .envir = environment())
     }
@@ -74,7 +74,7 @@ condepe_geo_reference <- function(id, refresh = FALSE, rotulo = id,
   }
   r <- as.data.frame(nanoparquet::read_parquet(local))
   if (!"geom" %in% names(r) || !is.list(r$geom)) {
-    cli::cli_warn("O arquivo publicado não tem a geometria esperada (coluna {.field geom}).")
+    cli::cli_warn("O arquivo publicado n\u00e3o tem a geometria esperada (coluna {.field geom}).")
     return(NULL)
   }
   geometria <- sf::st_as_sfc(structure(r$geom, class = "WKB"), crs = 4326)

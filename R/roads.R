@@ -33,7 +33,7 @@
 #' tapply(pav$extensao_km, pav$dro, sum)
 #' @export
 condepe_roads <- function(type = NULL, refresh = FALSE) {
-  rlang::check_installed("sf", reason = "para ler a malha rodoviária.")
+  rlang::check_installed("sf", reason = "para ler a malha rodovi\u00e1ria.")
   tipos <- c("estaduais", "federais", "vicinais", "acessos")
   if (!is.null(type)) {
     type <- rlang::arg_match(type, tipos, multiple = TRUE)
