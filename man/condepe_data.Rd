@@ -19,7 +19,8 @@ Um tibble com as colunas \code{cd_municipio_ibge}, \code{nm_municipio},
 \code{natureza}, \code{id_fonte}, \code{eixo}, \code{tema}, \code{assunto}, \code{fonte_original},
 \code{arquivo_origem}. Séries mensais trazem o período em \code{indicador}
 (\code{"... [MM/AAAA]"}) e em \code{mes}. Zero linhas (com aviso) se o
-Observatório não responder.
+Observatório não responder. \code{attr(x, "citation")} traz a citação da
+fonte original, com o Observatório como organizador.
 }
 \description{
 Todos os indicadores, localidades e períodos de uma fonte, no formato

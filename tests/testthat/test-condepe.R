@@ -5,7 +5,18 @@ test_that("catalogue has version and citation", {
   expect_s3_class(cat, "tbl_df")
   expect_equal(cat$id_fonte, "sidra_populacao_estimada")
   expect_equal(attr(cat, "version"), "2026-11-05_171049")
-  expect_match(attr(cat, "citation"), "CC BY 4.0")
+  expect_match(attr(cat, "citation"), "fonte_original")
+  expect_match(attr(cat, "citation"), "2026-11-05_171049")
+})
+
+test_that("data and series cite the original source first", {
+  local_cache()
+  httr2::local_mocked_responses(servidor())
+  df <- condepe_data("sidra_populacao_estimada")
+  expect_match(attr(df, "citation"), "^IBGE\\. Dados organizados pela Condepe/Fidem")
+  expect_match(attr(df, "citation"), "observatorio/fontes/sidra_populacao_estimada")
+  s <- condepe_series("sidra_populacao_estimada", "Pop")
+  expect_identical(attr(s, "citation"), attr(df, "citation"))
 })
 
 test_that("data are verified and then served from the cache", {

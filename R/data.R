@@ -74,12 +74,25 @@ condepe_catalog <- function(refresh = FALSE) {
   out
 }
 
+#' Citation of one source: the original publisher first, the Observatory as
+#' the organiser
+#' @noRd
+condepe_source_citation <- function(entrada, version) {
+  paste0(
+    entrada$fonte_original, ". Dados organizados pela Condepe/Fidem no ",
+    "Observat\u00f3rio de Pernambuco (fonte ", entrada$id_fonte, "), vers\u00e3o ",
+    version, ", https://cf.pe.gov.br/observatorio/fontes/", entrada$id_fonte, "."
+  )
+}
+
 #' Citation of a catalogue version
 #' @noRd
 condepe_citation <- function(version) {
   paste0(
-    "Condepe/Fidem, Observat\u00f3rio de Pernambuco \u2014 Base de Dados do ",
-    "Estado, version ", version, ", https://cf.pe.gov.br/observatorio (CC BY 4.0)."
+    "Fontes originais indicadas em cada s\u00e9rie (coluna fonte_original); ",
+    "dados coletados, padronizados e organizados pela Condepe/Fidem no ",
+    "Observat\u00f3rio de Pernambuco, vers\u00e3o ", version,
+    ", https://cf.pe.gov.br/observatorio."
   )
 }
 
@@ -99,7 +112,8 @@ condepe_citation <- function(version) {
 #'   `natureza`, `id_fonte`, `eixo`, `tema`, `assunto`, `fonte_original`,
 #'   `arquivo_origem`. Séries mensais trazem o período em `indicador`
 #'   (`"... [MM/AAAA]"`) e em `mes`. Zero linhas (com aviso) se o
-#'   Observatório não responder.
+#'   Observatório não responder. `attr(x, "citation")` traz a citação da
+#'   fonte original, com o Observatório como organizador.
 #' @examplesIf interactive()
 #' condepe_data("datasus_sinasc")
 #' @export
@@ -139,6 +153,7 @@ condepe_data <- function(source, refresh = FALSE) {
   out$ano <- as.integer(out$ano)
   out$mes <- as.integer(out$mes)
   attr(out, "version") <- cat$versao
+  attr(out, "citation") <- condepe_source_citation(entrada, cat$versao)
   condepe_inform(c(
     "v" = "{.val {source}}: {format(nrow(out), big.mark = ',')} observations (version {cat$versao})."
   ))
@@ -214,6 +229,7 @@ condepe_series <- function(source, indicator, code = NULL, years = NULL,
   out <- df[manter, , drop = FALSE]
   out <- out[order(out$cd_municipio_ibge, out$ano, out$mes, na.last = FALSE), , drop = FALSE]
   attr(out, "version") <- attr(df, "version")
+  attr(out, "citation") <- attr(df, "citation")
   if (nrow(out) == 0L) {
     condepe_inform(c("i" = "No observations match these filters."))
   }
