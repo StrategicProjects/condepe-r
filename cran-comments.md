@@ -7,7 +7,8 @@ Pernambuco, Brazil, published by the State Agency for Planning and Research
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes locally (macOS, R 4.6.0, `--as-cran`) and on
-GitHub Actions (Windows release; Ubuntu release, devel and oldrel-1).
+GitHub Actions (Windows release; Ubuntu release, devel and oldrel-1), and on
+win-builder (R-devel, 2026-11-05 r90840 ucrt).
 
 With the CRAN incoming checks (`_R_CHECK_CRAN_INCOMING_=true`), the only
 NOTE is the expected "New submission".
