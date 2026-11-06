@@ -1,6 +1,6 @@
 Package: condepe
 Title: Access the Open Data of the Pernambuco Observatory
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("André", "Leite", email = "leite@castlab.org", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4718-9766")),

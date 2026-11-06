@@ -122,3 +122,33 @@ test_that("condepe_geometry(level) dissolve a malha por região", {
   expect_equal(mp$valor[mp$regiao == rmr], 1)
   expect_error(condepe_add_geometry(data.frame(x = 1), level = "rd"), "regiao")
 })
+
+test_that("condepe_roads lê o GeoParquet publicado como sf e filtra por tipo", {
+  skip_if_not_installed("sf")
+  local_cache()
+  httr2::local_mocked_responses(servidor(rodovias = rodovias_teste()))
+  r <- condepe_roads()
+  expect_s3_class(r, "sf")
+  expect_equal(nrow(r), 3L)
+  expect_equal(as.character(sf::st_geometry_type(r, by_geometry = FALSE)), "MULTILINESTRING")
+  expect_equal(sf::st_crs(r)$epsg, 4326L)
+  expect_equal(attr(r, "version"), "2026-11-05_171049")
+  expect_equal(condepe_roads(type = "federais")$rodovia, "BR-101")
+  expect_equal(nrow(condepe_roads(type = c("estaduais", "vicinais"))), 2L)
+  expect_error(condepe_roads(type = "municipais"))
+})
+
+test_that("condepe_roads avisa e devolve NULL sem a malha no catálogo ou sem rede", {
+  skip_if_not_installed("sf")
+  local_cache()
+  httr2::local_mocked_responses(servidor())
+  expect_warning(r <- condepe_roads(), "malha rodovi")
+  expect_null(r)
+  httr2::local_mocked_responses(servidor(ativos = character()))
+  # Sem rede: o aviso HTTP e, como o catálogo em cache não traz a malha, o aviso dela.
+  expect_warning(
+    expect_warning(r <- condepe_roads(refresh = TRUE), class = "condepe_error_http"),
+    "malha rodovi"
+  )
+  expect_null(r)
+})

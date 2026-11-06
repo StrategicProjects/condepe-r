@@ -20,7 +20,7 @@ parquet_teste <- function() {
 
 caminho_teste <- "sidra_populacao_estimada/sidra_populacao_estimada.parquet"
 
-catalogo_teste <- function(raw, sha = NULL, regioes = NULL) {
+catalogo_teste <- function(raw, sha = NULL, regioes = NULL, rodovias = NULL) {
   out <- list(
     versao = "2026-11-05_171049",
     fontes = list(list(
@@ -44,7 +44,38 @@ catalogo_teste <- function(raw, sha = NULL, regioes = NULL) {
       ))
     ))
   }
+  if (!is.null(rodovias)) {
+    out$referencias <- c(out$referencias, list(list(
+      id = "rodovias", descricao = "Malha rodovi\u00e1ria", linhas = 3L, unidade = "trechos",
+      arquivos = list(list(
+        caminho = "referencia/rodovias.parquet", formato = "parquet",
+        sha256 = paste(unclass(openssl::sha256(rodovias)), collapse = "")
+      ))
+    )))
+  }
   out
+}
+
+# Três trechos com geometria em WKB (como o GeoParquet publicado), em Parquet.
+rodovias_teste <- function() {
+  linha <- function(x0, y0, x1, y1) {
+    sf::st_multilinestring(list(rbind(c(x0, y0), c(x1, y1))))
+  }
+  geoms <- sf::st_sfc(linha(-35, -8, -35.1, -8.1), linha(-36, -8.5, -36.2, -8.4), linha(-38, -9, -38.3, -9))
+  wkb <- lapply(sf::st_as_binary(geoms), function(b) b)
+  df <- data.frame(
+    codigo_sre = c("027EPE0010", "101BPE0350", "072VPE0010"),
+    rodovia = c("PE-027", "BR-101", "PE-072"),
+    tipo = c("estaduais", "federais", "vicinais"),
+    situacao = c("PAVIMENTADA", "DUPLICADA", "LEITO NATURAL"),
+    extensao_km = c(14.25, 7.77, 3),
+    dro = "1\u00ba DRO - RECIFE",
+    stringsAsFactors = FALSE
+  )
+  df$geom <- I(wkb)
+  f <- tempfile(fileext = ".parquet")
+  nanoparquet::write_parquet(df, f)
+  readBin(f, "raw", file.size(f))
 }
 
 # A tabela de regiões embutida, com a RD do Recife trocada, em Parquet: prova
@@ -59,9 +90,10 @@ regioes_teste <- function() {
 }
 
 # Mock that answers for the given backends and fails (503) for the others.
-servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes = NULL) {
+servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes = NULL,
+                     rodovias = NULL) {
   raw <- parquet_teste()
-  cat_json <- charToRaw(jsonlite::toJSON(catalogo_teste(raw, sha, regioes), auto_unbox = TRUE))
+  cat_json <- charToRaw(jsonlite::toJSON(catalogo_teste(raw, sha, regioes, rodovias), auto_unbox = TRUE))
   chamadas$n <- 0L
   function(req) {
     chamadas$n <- chamadas$n + 1L
@@ -73,6 +105,8 @@ servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes
       cat_json
     } else if (grepl("regioes\\.parquet$", req$url)) {
       regioes
+    } else if (grepl("rodovias\\.parquet$", req$url)) {
+      rodovias
     } else {
       raw
     }
