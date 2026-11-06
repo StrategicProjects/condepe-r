@@ -51,6 +51,10 @@ reference:
   contents:
   - condepe_series
   - condepe_data
+- title: Citar
+  desc: A fonte original primeiro, o Observatório como organizador.
+  contents:
+  - condepe_cite
 - title: Mapas e regiões
   desc: Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
   contents:

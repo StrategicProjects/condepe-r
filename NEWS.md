@@ -13,3 +13,6 @@
   (`referencia/regioes.parquet`, com cache e SHA-256) ou da cópia embutida,
   sem rede ou com `offline = TRUE`; `condepe_add_geometry()` junta os dados à malha. Quatro guias:
   primeiros passos, exemplos, mapas e a relação das fontes.
+* `condepe_cite()`: a citação com a fonte original primeiro e o Observatório
+  como organizador — de um resultado (também depois de `filter()` ou
+  `bind_rows()`), de identificadores de fonte ou do acervo.

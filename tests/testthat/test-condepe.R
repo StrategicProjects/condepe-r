@@ -80,3 +80,29 @@ test_that("cache can be cleared", {
   condepe_cache_clear()
   expect_false(dir.exists(condepe_cache_dir()))
 })
+
+test_that("condepe_cite cita a fonte original, num pipe, por id ou o acervo", {
+  local_cache()
+  httr2::local_mocked_responses(servidor())
+  df <- condepe_data("sidra_populacao_estimada")
+  cit <- condepe_cite(df)
+  expect_named(cit, "sidra_populacao_estimada")
+  expect_s3_class(cit, "condepe_citation")
+  expect_identical(unname(as.character(cit)), attr(df, "citation"))
+  expect_output(print(cit), "Dados organizados")
+  # depois de perder os atributos (como num summarise), ainda pelas colunas
+  sem_attr <- as.data.frame(df)[df$ano == 2025L, ]
+  attributes(sem_attr)$version <- NULL
+  expect_match(condepe_cite(sem_attr), "^IBGE\\. Dados organizados")
+  expect_match(condepe_cite(sem_attr), "2026-11-05_171049")
+  # duas fontes juntas: uma citação por fonte
+  outro <- df
+  outro$id_fonte <- "outra_fonte"
+  outro$fonte_original <- "INEP"
+  expect_length(condepe_cite(rbind(df, outro)), 2L)
+  expect_identical(condepe_cite("sidra_populacao_estimada"), cit)
+  expect_match(condepe_cite(), "fonte_original")
+  expect_error(condepe_cite("nao_existe"), "desconhecida")
+  expect_error(condepe_cite(data.frame(a = 1)), "id_fonte")
+  expect_length(condepe_cite(df[0, ]), 0L)
+})
