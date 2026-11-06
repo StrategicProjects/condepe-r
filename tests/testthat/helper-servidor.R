@@ -20,8 +20,8 @@ parquet_teste <- function() {
 
 caminho_teste <- "sidra_populacao_estimada/sidra_populacao_estimada.parquet"
 
-catalogo_teste <- function(raw, sha = NULL) {
-  list(
+catalogo_teste <- function(raw, sha = NULL, regioes = NULL) {
+  out <- list(
     versao = "2026-11-05_171049",
     fontes = list(list(
       id_fonte = "sidra_populacao_estimada", eixo = "Social",
@@ -35,12 +35,33 @@ catalogo_teste <- function(raw, sha = NULL) {
       ))
     ))
   )
+  if (!is.null(regioes)) {
+    out$referencias <- list(list(
+      id = "regioes", descricao = "Regionaliza\u00e7\u00f5es", linhas = 185L,
+      arquivos = list(list(
+        caminho = "referencia/regioes.parquet", formato = "parquet",
+        sha256 = paste(unclass(openssl::sha256(regioes)), collapse = "")
+      ))
+    ))
+  }
+  out
+}
+
+# A tabela de regiões embutida, com a RD do Recife trocada, em Parquet: prova
+# que a versão publicada é a que vale quando o catálogo a traz.
+regioes_teste <- function() {
+  r <- utils::read.csv(system.file("extdata", "regioes.csv", package = "condepe"),
+                       colClasses = "character", na.strings = "")
+  r$rd[r$cd_municipio_ibge == "2611606"] <- "RD publicada"
+  f <- tempfile(fileext = ".parquet")
+  nanoparquet::write_parquet(r, f)
+  readBin(f, "raw", file.size(f))
 }
 
 # Mock that answers for the given backends and fails (503) for the others.
-servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env()) {
+servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes = NULL) {
   raw <- parquet_teste()
-  cat_json <- charToRaw(jsonlite::toJSON(catalogo_teste(raw, sha), auto_unbox = TRUE))
+  cat_json <- charToRaw(jsonlite::toJSON(catalogo_teste(raw, sha, regioes), auto_unbox = TRUE))
   chamadas$n <- 0L
   function(req) {
     chamadas$n <- chamadas$n + 1L
@@ -48,7 +69,13 @@ servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env()) {
     if (!host %in% ativos) {
       return(httr2::response(status_code = 503L))
     }
-    corpo <- if (grepl("catalogo\\.json$", req$url)) cat_json else raw
+    corpo <- if (grepl("catalogo\\.json$", req$url)) {
+      cat_json
+    } else if (grepl("regioes\\.parquet$", req$url)) {
+      regioes
+    } else {
+      raw
+    }
     httr2::response(status_code = 200L, body = corpo)
   }
 }

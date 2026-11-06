@@ -9,6 +9,7 @@
   regiões com `level`; `condepe_regions()` com onze regionalizações (Regiões
   de Desenvolvimento, meso e microrregiões, regiões imediatas e
   intermediárias, regiões e macrorregiões de saúde, GRE, regiões fiscais, DRO do DER,
-  regiões metropolitanas);
-  `condepe_add_geometry()` junta os dados à malha. Quatro guias:
+  regiões metropolitanas), lida da tabela publicada pelo Observatório
+  (`referencia/regioes.parquet`, com cache e SHA-256) ou da cópia embutida,
+  sem rede ou com `offline = TRUE`; `condepe_add_geometry()` junta os dados à malha. Quatro guias:
   primeiros passos, exemplos, mapas e a relação das fontes.

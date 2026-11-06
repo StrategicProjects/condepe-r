@@ -68,7 +68,8 @@ test_that("condepe_add_geometry junta pelo código e descarta o Estado", {
 })
 
 test_that("condepe_regions cobre os 185 municípios em cada regionalização", {
-  r <- condepe_regions()
+  r <- condepe_regions(offline = TRUE)
+  expect_equal(attr(r, "version"), "embutida")
   expect_equal(nrow(r), 185L)
   expect_equal(anyDuplicated(r$cd_municipio_ibge), 0L)
   esperado <- c(rd = 13L, mesorregiao = 5L, microrregiao = 19L,
@@ -81,9 +82,27 @@ test_that("condepe_regions cobre os 185 municípios em cada regionalização", {
   # só rm tem municípios fora de toda região
   expect_true(all(!is.na(r[, setdiff(names(esperado), "rm")])))
   expect_equal(sum(r$rm == "Região Metropolitana do Recife", na.rm = TRUE), 15L)
-  rd <- condepe_regions("rd")
+  rd <- condepe_regions("rd", offline = TRUE)
   expect_named(rd, c("cd_municipio_ibge", "nm_municipio", "regiao"))
   expect_error(condepe_regions("ais"))
+})
+
+test_that("condepe_regions lê a tabela publicada e cai na embutida sem ela", {
+  local_cache()
+  httr2::local_mocked_responses(servidor(regioes = regioes_teste()))
+  r <- condepe_regions("rd")
+  expect_equal(attr(r, "version"), "2026-11-05_171049")
+  expect_equal(r$regiao[r$cd_municipio_ibge == "2611606"], "RD publicada")
+  expect_true(is.na(condepe_regions()$rm[condepe_regions()$cd_municipio_ibge == "2600104"]))
+
+  local_cache()
+  httr2::local_mocked_responses(servidor())  # catálogo antigo, sem `referencias`
+  expect_equal(attr(condepe_regions("rd"), "version"), "embutida")
+
+  local_cache()
+  httr2::local_mocked_responses(servidor(ativos = character()))  # tudo fora do ar
+  expect_no_warning(r <- condepe_regions("rd"))
+  expect_equal(attr(r, "version"), "embutida")
 })
 
 test_that("condepe_geometry(level) dissolve a malha por região", {
