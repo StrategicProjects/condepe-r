@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
-A tidy interface to the open data of the Observatory of Pernambuco, Brazil, published by 'Condepe/Fidem', the State Agency for Planning and Research (\url{https://cf.pe.gov.br/observatorio}). Municipal series on population, economy, public finance, labour, education, health, security, transport and environment, every source in the same long format, returned as tibbles. Files are read from the canonical endpoint with a 'Hugging Face' mirror as fallback, cached on disk per catalogue version and checked against their published 'SHA-256'. Network failures are handled gracefully.
+A tidy interface to the open data of the Observatory of Pernambuco, Brazil (\url{https://cf.pe.gov.br/observatorio}): municipal series on population, economy, public finance, labour, education, health, security, transport and environment, collected from official public sources (such as the Brazilian Institute of Geography and Statistics and the Ministry of Health, identified in every row) and organised by 'Condepe/Fidem', the State Agency for Planning and Research, every source in the same long format, returned as tibbles. Also provides the municipal boundaries and eleven official regional classifications of the municipalities, ready for maps, and citations that credit the original source. Files are read from the canonical endpoint with a 'Hugging Face' mirror as fallback, cached on disk per catalogue version and checked against their published 'SHA-256'. Network failures are handled gracefully.
 }
 \section{Opções do pacote}{
 
