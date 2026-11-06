@@ -152,3 +152,15 @@ test_that("condepe_roads avisa e devolve NULL sem a malha no catálogo ou sem re
   )
   expect_null(r)
 })
+
+test_that("condepe_hydrography lê uma camada publicada como sf e recusa camada desconhecida", {
+  skip_if_not_installed("sf")
+  local_cache()
+  httr2::local_mocked_responses(servidor(rodovias = rodovias_teste()))
+  r <- condepe_hydrography("reservatorios")
+  expect_s3_class(r, "sf")
+  expect_equal(nrow(r), 3L)
+  expect_equal(attr(r, "version"), "2026-11-05_171049")
+  expect_warning(expect_null(condepe_hydrography("uph")), "hidrografia")
+  expect_error(condepe_hydrography("lagos"))
+})

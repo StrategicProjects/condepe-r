@@ -38,39 +38,15 @@ condepe_roads <- function(type = NULL, refresh = FALSE) {
   if (!is.null(type)) {
     type <- rlang::arg_match(type, tipos, multiple = TRUE)
   }
-  cat <- condepe_catalog_json(refresh = refresh)
-  ref <- Filter(function(x) identical(x$id, "rodovias"), cat$referencias)
-  if (length(ref) == 0L) {
-    if (!is.null(cat)) {
-      cli::cli_warn(c(
-        "O catálogo do Observatório (versão {cat$versao}) ainda não traz a malha rodoviária.",
-        i = "Ela entrou nos dados abertos em novembro de 2026; tente {.code refresh = TRUE}."
-      ))
-    }
+  out <- condepe_geo_reference("rodovias", refresh = refresh, rotulo = "a malha rodovi\u00e1ria")
+  if (is.null(out)) {
     return(NULL)
   }
-  parquet <- Filter(function(a) identical(a$formato, "parquet"), ref[[1]]$arquivos)
-  if (length(parquet) == 0L) {
-    return(NULL)
-  }
-  local <- condepe_cached_file(
-    parquet[[1]]$caminho, parquet[[1]]$sha256, cat$versao, refresh = refresh
-  )
-  if (is.null(local)) {
-    return(NULL)
-  }
-  r <- as.data.frame(nanoparquet::read_parquet(local))
-  if (!"geom" %in% names(r) || !is.list(r$geom)) {
-    cli::cli_warn("O arquivo publicado não tem a geometria esperada (coluna {.field geom}).")
-    return(NULL)
-  }
-  geometria <- sf::st_as_sfc(structure(r$geom, class = "WKB"), crs = 4326)
-  r$geom <- NULL
-  out <- sf::st_sf(r, geometry = geometria)
   if (!is.null(type)) {
+    versao <- attr(out, "version")
     out <- out[out$tipo %in% type, ]
     row.names(out) <- NULL
+    attr(out, "version") <- versao
   }
-  attr(out, "version") <- cat$versao
   out
 }

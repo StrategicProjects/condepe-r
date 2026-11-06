@@ -51,6 +51,12 @@ catalogo_teste <- function(raw, sha = NULL, regioes = NULL, rodovias = NULL) {
         caminho = "referencia/rodovias.parquet", formato = "parquet",
         sha256 = paste(unclass(openssl::sha256(rodovias)), collapse = "")
       ))
+    )), list(list(
+      id = "reservatorios", descricao = "Reservat\u00f3rios", linhas = 3L, unidade = "reservat\u00f3rios",
+      arquivos = list(list(
+        caminho = "referencia/reservatorios.parquet", formato = "parquet",
+        sha256 = paste(unclass(openssl::sha256(rodovias)), collapse = "")
+      ))
     )))
   }
   out
@@ -105,7 +111,7 @@ servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes
       cat_json
     } else if (grepl("regioes\\.parquet$", req$url)) {
       regioes
-    } else if (grepl("rodovias\\.parquet$", req$url)) {
+    } else if (grepl("(rodovias|reservatorios)\\.parquet$", req$url)) {
       rodovias
     } else {
       raw

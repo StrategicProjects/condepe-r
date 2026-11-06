@@ -62,6 +62,7 @@ reference:
   - condepe_add_geometry
   - condepe_regions
   - condepe_roads
+  - condepe_hydrography
 - title: Cache e opções
   contents:
   - condepe_cache_dir
