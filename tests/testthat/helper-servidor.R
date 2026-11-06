@@ -97,7 +97,7 @@ regioes_teste <- function() {
 
 # Mock that answers for the given backends and fails (503) for the others.
 servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes = NULL,
-                     rodovias = NULL) {
+                     rodovias = NULL, atual_diverge = FALSE) {
   raw <- parquet_teste()
   cat_json <- charToRaw(jsonlite::toJSON(catalogo_teste(raw, sha, regioes, rodovias), auto_unbox = TRUE))
   chamadas$n <- 0L
@@ -109,6 +109,8 @@ servidor <- function(ativos = "canon", sha = NULL, chamadas = new.env(), regioes
     }
     corpo <- if (grepl("catalogo\\.json$", req$url)) {
       cat_json
+    } else if (atual_diverge && grepl("/atual/", req$url)) {
+      charToRaw("a newer publication")  # `atual/` moved on; `<versao>/` still matches
     } else if (grepl("regioes\\.parquet$", req$url)) {
       regioes
     } else if (grepl("(rodovias|reservatorios)\\.parquet$", req$url)) {

@@ -11,6 +11,13 @@
   (`terras_indigenas`, `up_perh`…) como `sf`.
 * `condepe_regions()` e `condepe_geometry()` ganham a regionalização `up_perh`
   (Unidades de Planejamento do PERH, APAC): doze regionalizações.
+* Catálogo guardado (até 6 h) e versão nova publicada nesse intervalo: o
+  arquivo em `atual/` já não batia com o SHA-256 do catálogo e a chamada
+  falhava com `condepe_error_integrity`. Agora o cliente lê a árvore imutável
+  da própria versão (`<versão>/…` no canônico, tag no espelho) antes de
+  desistir.
+* Vignette de mapas com a seção "Camadas geográficas" (rodovias, hidrografia e
+  terras indígenas sobre a malha).
 
 # condepe 0.1.0
 

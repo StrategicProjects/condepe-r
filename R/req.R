@@ -23,6 +23,23 @@ condepe_backends <- function() {
   out[nzchar(out)]
 }
 
+#' Address of one published version (immutable), not of `atual`
+#'
+#' The canonical server keeps the last versions beside `atual/`; the Hugging
+#' Face mirror tags each version, so `resolve/main` becomes
+#' `resolve/<version>`. Any other base is assumed to keep `<version>/` next
+#' to the current tree.
+#' @noRd
+condepe_versioned_base <- function(base, version) {
+  if (endsWith(base, "/resolve/main")) {
+    paste0(substr(base, 1L, nchar(base) - nchar("main")), version)
+  } else if (endsWith(base, "/atual")) {
+    paste0(substr(base, 1L, nchar(base) - nchar("atual")), version)
+  } else {
+    paste0(base, "/", version)
+  }
+}
+
 #' Build a request for a relative path on one backend
 #' @noRd
 condepe_req <- function(base, path) {
@@ -48,10 +65,15 @@ condepe_req <- function(base, path) {
 #' `NULL` instead of erroring.
 #'
 #' @param path Relative path in the catalogue, e.g. `"catalogo.json"`.
+#' @param version When given, read the path from that version's immutable
+#'   tree instead of the current one (`condepe_versioned_base()`).
 #' @returns A raw vector, or `NULL` when no backend answered.
 #' @noRd
-condepe_fetch <- function(path, error_call = rlang::caller_env()) {
+condepe_fetch <- function(path, version = NULL, error_call = rlang::caller_env()) {
   backends <- condepe_backends()
+  if (!is.null(version)) {
+    backends <- vapply(backends, condepe_versioned_base, "", version = version, USE.NAMES = FALSE)
+  }
   erros <- character()
   for (i in seq_along(backends)) {
     resp <- tryCatch(

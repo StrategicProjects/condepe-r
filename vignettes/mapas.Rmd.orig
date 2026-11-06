@@ -224,3 +224,39 @@ ggplot(mapa) +
 
 Os leitos concentram-se no Recife, que atende pacientes de toda a região:
 o indicador mede oferta no município, não acesso de quem mora nele.
+
+## Camadas geográficas
+
+Além da malha, o Observatório publica camadas de referência em GeoParquet, e
+o pacote as lê como `sf` em WGS 84: a malha rodoviária do DER-PE
+(`condepe_roads()`, por tipo de trecho), a hidrografia da ANA
+(`condepe_hydrography()`: rios, rios principais, massas d'água, reservatórios
+acompanhados e unidades de planejamento) e qualquer outra camada do catálogo
+(`condepe_layer()`, como as terras indígenas da FUNAI). Sobrepostas à malha
+municipal:
+
+```{r camadas, message = FALSE}
+rodovias <- condepe_roads(type = c("estaduais", "federais"))
+rios <- condepe_hydrography("rios_principais")
+reservatorios <- condepe_hydrography("reservatorios")
+ti <- condepe_layer("terras_indigenas")
+c(trechos = nrow(rodovias), rios = nrow(rios), reservatorios = nrow(reservatorios),
+  terras_indigenas = nrow(ti))
+```
+
+```{r camadas-mapa, fig.height = 4}
+ggplot() +
+  geom_sf(data = malha, fill = "grey96", colour = "white", linewidth = 0.2) +
+  geom_sf(data = rios, colour = "#00B7FF", linewidth = 0.35) +
+  geom_sf(data = reservatorios, fill = "#0068FF", colour = NA) +
+  geom_sf(data = rodovias, colour = "grey40", linewidth = 0.25) +
+  geom_sf(data = ti, fill = "#FF6700", colour = "#FF6700", alpha = 0.6) +
+  labs(title = "Rodovias, rios principais, reservatórios e terras indígenas",
+       caption = "Fontes: DER-PE, ANA e FUNAI; malha da Condepe/Fidem") +
+  tema_mapa
+```
+
+As camadas vêm no mesmo CRS da malha, então `sf::st_intersection()` e
+`sf::st_join()` resolvem perguntas como "quantos quilômetros de rodovia
+estadual cruzam cada município" — é assim que o Observatório calcula as
+fontes derivadas `der_malha_rodoviaria` e `ana_hidrografia`.

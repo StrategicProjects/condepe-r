@@ -10,7 +10,7 @@ vignette: >
 
 
 Relação das fontes publicadas pelo Observatório de Pernambuco na versão
-**2026-11-05_171049** do catálogo: **75 fontes** e
+**2026-11-06_145339** do catálogo: **75 fontes** e
 **113.497 indicadores**, num total
 de **8.890.619 observações**. A lista
 abaixo foi gerada com `condepe_catalog()`; o identificador (`id_fonte`) é o

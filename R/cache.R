@@ -81,11 +81,21 @@ condepe_cached_file <- function(path, sha256, version, refresh = FALSE,
   tmp <- paste0(dest, ".tmp")
   writeBin(raw, tmp)
   if (condepe_sha256(tmp) != sha256) {
+    # The current tree moved on since this catalogue was cached (a new
+    # version was published): the version's own tree is immutable.
+    raw <- tryCatch(
+      suppressWarnings(condepe_fetch(path, version = version, error_call = error_call)),
+      error = function(cnd) NULL
+    )
+    if (!is.null(raw)) writeBin(raw, tmp)
+  }
+  if (condepe_sha256(tmp) != sha256) {
     unlink(tmp)
     cli::cli_abort(
       c(
         "{.path {path}} does not match the SHA-256 in the catalogue.",
-        "i" = "The publication may be in progress; try again in a few minutes."
+        "i" = "The publication may be in progress; try again in a few minutes,
+               or pass {.code refresh = TRUE} to re-read the catalogue."
       ),
       class = "condepe_error_integrity",
       call = error_call

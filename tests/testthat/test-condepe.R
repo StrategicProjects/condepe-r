@@ -37,6 +37,27 @@ test_that("a file that does not match the catalogue SHA-256 is refused", {
   expect_error(condepe_data("sidra_populacao_estimada"), class = "condepe_error_integrity")
 })
 
+test_that("a stale catalogue reads the file from its own version", {
+  local_cache()
+  chamadas <- new.env()
+  httr2::local_mocked_responses(servidor(chamadas = chamadas, atual_diverge = TRUE))
+  df <- condepe_data("sidra_populacao_estimada")
+  expect_equal(nrow(df), 4L)
+  expect_equal(attr(df, "version"), "2026-11-05_171049")
+})
+
+test_that("condepe_versioned_base() addresses each backend", {
+  expect_equal(
+    condepe_versioned_base("https://cf.pe.gov.br/observatorio/dados/atual", "2026-11-06_1"),
+    "https://cf.pe.gov.br/observatorio/dados/2026-11-06_1"
+  )
+  expect_equal(
+    condepe_versioned_base("https://huggingface.co/datasets/x/y/resolve/main", "2026-11-06_1"),
+    "https://huggingface.co/datasets/x/y/resolve/2026-11-06_1"
+  )
+  expect_equal(condepe_versioned_base("https://outro.test/dados", "v"), "https://outro.test/dados/v")
+})
+
 test_that("the mirror is used when the canonical endpoint fails", {
   local_cache()
   httr2::local_mocked_responses(servidor(ativos = "mirror"))

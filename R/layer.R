@@ -18,7 +18,7 @@
 #' tis[, c("nome", "etnia", "fase", "area_ha")]
 #' @export
 condepe_layer <- function(id, refresh = FALSE) {
-  rlang::check_installed("sf", reason = "para ler as camadas geográficas.")
+  rlang::check_installed("sf", reason = "para ler as camadas geogr\u00e1ficas.")
   id <- rlang::arg_match0(id, id)
   rotulo <- paste0("a camada ", cli::format_inline("{.val {id}}"))
   condepe_geo_reference(id, refresh = refresh, rotulo = rotulo)

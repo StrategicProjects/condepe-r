@@ -60,9 +60,9 @@ citação a usar acompanha o resultado.
 
 ``` r
 attr(cat, "version")
-#> [1] "2026-11-05_171049"
+#> [1] "2026-11-06_145339"
 attr(cat, "citation")
-#> [1] "Condepe/Fidem, Observatório de Pernambuco — Base de Dados do Estado, version 2026-11-05_171049, https://cf.pe.gov.br/observatorio (CC BY 4.0)."
+#> [1] "Fontes originais indicadas em cada série (coluna fonte_original); dados coletados, padronizados e organizados pela Condepe/Fidem no Observatório de Pernambuco, versão 2026-11-06_145339, https://cf.pe.gov.br/observatorio."
 ```
 
 Quantas fontes há em cada eixo, e quantos indicadores:
