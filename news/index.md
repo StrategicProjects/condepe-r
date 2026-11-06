@@ -27,3 +27,8 @@
   [`condepe_add_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_add_geometry.md)
   junta os dados à malha. Quatro guias: primeiros passos, exemplos,
   mapas e a relação das fontes.
+- [`condepe_cite()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cite.md):
+  a citação com a fonte original primeiro e o Observatório como
+  organizador — de um resultado (também depois de
+  [`filter()`](https://rdrr.io/r/stats/filter.html) ou `bind_rows()`),
+  de identificadores de fonte ou do acervo.

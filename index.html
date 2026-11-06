@@ -1504,7 +1504,12 @@ IBGE - Áreas Territoriais
 <h2 id="fontes-citação-e-licença">Fontes, citação e licença<a class="anchor" aria-label="anchor" href="#fontes-cita%C3%A7%C3%A3o-e-licen%C3%A7a"></a>
 </h2>
 <p>Os números <strong>não são produzidos pela Condepe/Fidem</strong>: cada série vem de uma fonte pública oficial (IBGE, Ministério da Saúde, INEP, Ministério do Trabalho, Tesouro Nacional, TCE-PE, Banco Central, entre outras), indicada em toda linha pelas colunas <code>fonte_original</code> e <code>arquivo_origem</code>. A Condepe/Fidem coleta, confere, padroniza e organiza essas séries no Observatório de Pernambuco.</p>
-<p>Ao usar os dados, cite <strong>a fonte original</strong> e o Observatório como organizador, com a versão do catálogo. <code>attr(condepe_data(fonte), "citation")</code> traz a citação pronta de uma fonte; <code>attr(condepe_catalog(), "citation")</code>, a do acervo. Por exemplo:</p>
+<p>Ao usar os dados, cite <strong>a fonte original</strong> e o Observatório como organizador, com a versão do catálogo. <code><a href="reference/condepe_cite.html">condepe_cite()</a></code> monta a citação:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/condepe_data.html">condepe_data</a></span><span class="op">(</span><span class="st">"sidra_populacao_estimada"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/condepe_cite.html">condepe_cite</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># uma por fonte presente</span></span>
+<span><span class="fu"><a href="reference/condepe_cite.html">condepe_cite</a></span><span class="op">(</span><span class="st">"datasus_sinasc"</span><span class="op">)</span>                               <span class="co"># pelo identificador</span></span>
+<span><span class="fu"><a href="reference/condepe_cite.html">condepe_cite</a></span><span class="op">(</span><span class="op">)</span>                                               <span class="co"># o acervo inteiro</span></span></code></pre></div>
+<p>Funciona também depois de <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> ou <code>bind_rows()</code>, porque usa as colunas <code>id_fonte</code> e <code>fonte_original</code>. Por exemplo:</p>
 <blockquote>
 <p>IBGE - Estimativas da Populacao. Dados organizados pela Condepe/Fidem no Observatório de Pernambuco (fonte <code>sidra_populacao_estimada</code>), versão 2026-11-05_235518, <a href="https://cf.pe.gov.br/observatorio/fontes/sidra_populacao_estimada" class="external-link uri">https://cf.pe.gov.br/observatorio/fontes/sidra_populacao_estimada</a>.</p>
 </blockquote>

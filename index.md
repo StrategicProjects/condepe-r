@@ -119,8 +119,19 @@ essas séries no Observatório de Pernambuco.
 
 Ao usar os dados, cite **a fonte original** e o Observatório como
 organizador, com a versão do catálogo.
-`attr(condepe_data(fonte), "citation")` traz a citação pronta de uma
-fonte; `attr(condepe_catalog(), "citation")`, a do acervo. Por exemplo:
+[`condepe_cite()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cite.md)
+monta a citação:
+
+``` r
+
+condepe_data("sidra_populacao_estimada") |> condepe_cite()  # uma por fonte presente
+condepe_cite("datasus_sinasc")                               # pelo identificador
+condepe_cite()                                               # o acervo inteiro
+```
+
+Funciona também depois de
+[`filter()`](https://rdrr.io/r/stats/filter.html) ou `bind_rows()`,
+porque usa as colunas `id_fonte` e `fonte_original`. Por exemplo:
 
 > IBGE - Estimativas da Populacao. Dados organizados pela Condepe/Fidem
 > no Observatório de Pernambuco (fonte `sidra_populacao_estimada`),

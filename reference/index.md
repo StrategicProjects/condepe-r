@@ -18,6 +18,13 @@ O que o Observatório publica.
 - [`condepe_data()`](https://strategicprojects.github.io/condepe-r/reference/condepe_data.md)
   : Uma fonte inteira
 
+## Citar
+
+A fonte original primeiro, o Observatório como organizador.
+
+- [`condepe_cite()`](https://strategicprojects.github.io/condepe-r/reference/condepe_cite.md)
+  : Como citar os dados
+
 ## Mapas e regiões
 
 Malha municipal da Condepe/Fidem ou do IBGE e regionalizações do estado.
