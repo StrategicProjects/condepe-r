@@ -21,7 +21,7 @@ região metropolitana ficam com \code{NA} em \code{rm}. \code{attr(x, "version")
 onde veio: a versão do catálogo ou \code{"embutida"}.
 }
 \description{
-A que região pertence cada município, em onze regionalizações oficiais:
+A que região pertence cada município, em doze regionalizações oficiais:
 }
 \details{
 \itemize{
@@ -36,6 +36,7 @@ A que região pertence cada município, em onze regionalizações oficiais:
 \item \code{regiao_fiscal}: Regiões fiscais (SEFAZ-PE)
 \item \code{dro}: Diretorias Regionais de Operações do DER-PE (Noronha é o 1º DOD)
 \item \code{rm}: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
+\item \code{up_perh}: Unidades de Planejamento do PERH (APAC; a UP de maior área no município)
 }
 
 A tabela é publicada pelo Observatório junto com os dados abertos
