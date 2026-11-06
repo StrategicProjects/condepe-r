@@ -5,7 +5,7 @@ A que região pertence cada município, em onze regionalizações oficiais:
 ## Usage
 
 ``` r
-condepe_regions(level = NULL)
+condepe_regions(level = NULL, refresh = FALSE, offline = FALSE)
 ```
 
 ## Arguments
@@ -14,11 +14,21 @@ condepe_regions(level = NULL)
 
   `NULL` (todas, uma coluna por regionalização) ou uma delas.
 
+- refresh:
+
+  Se `TRUE`, baixa a tabela de novo mesmo que haja cópia conferida em
+  cache.
+
+- offline:
+
+  Se `TRUE`, usa só a cópia embutida no pacote, sem rede.
+
 ## Value
 
 Um tibble com `cd_municipio_ibge`, `nm_municipio` e as colunas de região
 (ou só `regiao`, se `level` for dado). Municípios fora de uma região
-metropolitana ficam com `NA` em `rm`.
+metropolitana ficam com `NA` em `rm`. `attr(x, "version")` diz de onde
+veio: a versão do catálogo ou `"embutida"`.
 
 ## Details
 
@@ -47,16 +57,19 @@ metropolitana ficam com `NA` em `rm`.
 
 - `rm`: Regiões metropolitanas: RMR e RIDE Petrolina-Juazeiro
 
-A tabela vai com o pacote (gerada por `data-raw/regioes.R` a partir das
-fontes oficiais), então não precisa de rede. Serve para agregar dados
-por região e, com
+A tabela é publicada pelo Observatório junto com os dados abertos
+(`referencia/regioes.parquet`, listada no catálogo), e é lida de lá como
+as fontes: endereço canônico, espelho como reserva, conferência pelo
+SHA-256 e cache em disco por versão do catálogo. Sem rede, ou com
+`offline = TRUE`, vale a cópia que vai com o pacote (a mesma tabela, na
+versão do pacote instalado). Serve para agregar dados por região e, com
 [`condepe_geometry()`](https://strategicprojects.github.io/condepe-r/reference/condepe_geometry.md),
 para mapear regiões.
 
 ## Examples
 
 ``` r
-condepe_regions("rd")
+condepe_regions("rd", offline = TRUE)
 #> # A tibble: 185 × 3
 #>    cd_municipio_ibge nm_municipio          regiao                        
 #>    <chr>             <chr>                 <chr>                         
@@ -71,7 +84,7 @@ condepe_regions("rd")
 #>  9 2600807           Altinho               Agreste Central               
 #> 10 2600906           Amaraji               Mata Sul                      
 #> # ℹ 175 more rows
-table(condepe_regions()$regiao_saude)
+table(condepe_regions(offline = TRUE)$regiao_saude)
 #> 
 #>    I Região de Saúde   II Região de Saúde  III Região de Saúde 
 #>                   20                   20                   22 
@@ -81,4 +94,7 @@ table(condepe_regions()$regiao_saude)
 #>                   13                    7                    7 
 #>    X Região de Saúde   XI Região de Saúde  XII Região de Saúde 
 #>                   12                   10                   10 
+if (FALSE) { # interactive()
+condepe_regions("gre")   # a versão publicada no Observatório
+}
 ```
