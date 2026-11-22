@@ -332,9 +332,9 @@ plot of chunk saude
 <div class="section level2">
 <h2 id="região-metropolitana-do-recife">Região Metropolitana do Recife<a class="anchor" aria-label="anchor" href="#regi%C3%A3o-metropolitana-do-recife"></a>
 </h2>
-<p>Para ver um recorte, filtre a malha antes de desenhar. Os 15
-municípios da Região Metropolitana do Recife (Goiana entrou em 2018) e
-os leitos de UTI por 100 mil habitantes em dezembro de 2024:</p>
+<p>Para ver um recorte, filtre a malha antes de desenhar. Os 14
+municípios da Região Metropolitana do Recife e os leitos de UTI por 100
+mil habitantes em dezembro de 2024:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reg_rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_regions.html">condepe_regions</a></span><span class="op">(</span><span class="st">"rm"</span><span class="op">)</span></span>
 <span><span class="va">rmr</span> <span class="op">&lt;-</span> <span class="va">reg_rm</span><span class="op">$</span><span class="va">cd_municipio_ibge</span><span class="op">[</span><span class="va">reg_rm</span><span class="op">$</span><span class="va">regiao</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="st">"Região Metropolitana do Recife"</span><span class="op">]</span></span>
@@ -348,21 +348,20 @@ os leitos de UTI por 100 mil habitantes em dezembro de 2024:</p>
 <span><span class="va">d</span><span class="op">$</span><span class="va">por_100mil</span> <span class="op">&lt;-</span> <span class="fl">1e5</span> <span class="op">*</span> <span class="va">d</span><span class="op">$</span><span class="va">valor_uti</span> <span class="op">/</span> <span class="va">d</span><span class="op">$</span><span class="va">valor_pop</span></span>
 <span><span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">d</span><span class="op">$</span><span class="va">por_100mil</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nm_municipio"</span>, <span class="st">"valor_uti"</span>, <span class="st">"por_100mil"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;               nm_municipio valor_uti por_100mil</span></span>
-<span><span class="co">#&gt; 14                  Recife      1627  102.47483</span></span>
-<span><span class="co">#&gt; 12                  Olinda       155   42.41903</span></span>
-<span><span class="co">#&gt; 11                  Moreno        20   34.69391</span></span>
-<span><span class="co">#&gt; 5                   Goiana        20   23.48520</span></span>
+<span><span class="co">#&gt; 13                  Recife      1627  102.47483</span></span>
+<span><span class="co">#&gt; 11                  Olinda       155   42.41903</span></span>
+<span><span class="co">#&gt; 10                  Moreno        20   34.69391</span></span>
 <span><span class="co">#&gt; 3  Cabo de Santo Agostinho        50   23.04477</span></span>
-<span><span class="co">#&gt; 15    São Lourenço da Mata        25   21.22980</span></span>
+<span><span class="co">#&gt; 14    São Lourenço da Mata        25   21.22980</span></span>
 <span><span class="co">#&gt; 1             Abreu e Lima        22   21.16504</span></span>
-<span><span class="co">#&gt; 13                Paulista        72   19.83690</span></span>
-<span><span class="co">#&gt; 10 Jaboatão dos Guararapes       124   18.14763</span></span>
+<span><span class="co">#&gt; 12                Paulista        72   19.83690</span></span>
+<span><span class="co">#&gt; 9  Jaboatão dos Guararapes       124   18.14763</span></span>
 <span><span class="co">#&gt; 2                Araçoiaba         0    0.00000</span></span>
 <span><span class="co">#&gt; 4               Camaragibe         0    0.00000</span></span>
-<span><span class="co">#&gt; 6                 Igarassu         0    0.00000</span></span>
-<span><span class="co">#&gt; 7                  Ipojuca         0    0.00000</span></span>
-<span><span class="co">#&gt; 8        Ilha de Itamaracá         0    0.00000</span></span>
-<span><span class="co">#&gt; 9               Itapissuma         0    0.00000</span></span>
+<span><span class="co">#&gt; 5                 Igarassu         0    0.00000</span></span>
+<span><span class="co">#&gt; 6                  Ipojuca         0    0.00000</span></span>
+<span><span class="co">#&gt; 7        Ilha de Itamaracá         0    0.00000</span></span>
+<span><span class="co">#&gt; 8               Itapissuma         0    0.00000</span></span>
 <span><span class="va">mapa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/condepe_add_geometry.html">condepe_add_geometry</a></span><span class="op">(</span><span class="va">d</span>, geometry <span class="op">=</span> <span class="va">malha</span>, all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">mapa</span><span class="op">$</span><span class="va">rotulo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">mapa</span><span class="op">$</span><span class="va">por_100mil</span> <span class="op">&gt;=</span> <span class="fl">40</span>, <span class="va">mapa</span><span class="op">$</span><span class="va">nm_municipio</span>, <span class="st">""</span><span class="op">)</span>  <span class="co"># os demais, na tabela acima</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
