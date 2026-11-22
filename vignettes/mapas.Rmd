@@ -292,8 +292,8 @@ ggplot() +
 
 ## Região Metropolitana do Recife
 
-Para ver um recorte, filtre a malha antes de desenhar. Os 15 municípios da
-Região Metropolitana do Recife (Goiana entrou em 2018) e os leitos de UTI por
+Para ver um recorte, filtre a malha antes de desenhar. Os 14 municípios da
+Região Metropolitana do Recife e os leitos de UTI por
 100 mil habitantes em dezembro de 2024:
 
 
@@ -310,21 +310,20 @@ d$valor_uti[is.na(d$valor_uti)] <- 0  # município sem leito no CNES-LT: zero le
 d$por_100mil <- 1e5 * d$valor_uti / d$valor_pop
 d[order(-d$por_100mil), c("nm_municipio", "valor_uti", "por_100mil")]
 #>               nm_municipio valor_uti por_100mil
-#> 14                  Recife      1627  102.47483
-#> 12                  Olinda       155   42.41903
-#> 11                  Moreno        20   34.69391
-#> 5                   Goiana        20   23.48520
+#> 13                  Recife      1627  102.47483
+#> 11                  Olinda       155   42.41903
+#> 10                  Moreno        20   34.69391
 #> 3  Cabo de Santo Agostinho        50   23.04477
-#> 15    São Lourenço da Mata        25   21.22980
+#> 14    São Lourenço da Mata        25   21.22980
 #> 1             Abreu e Lima        22   21.16504
-#> 13                Paulista        72   19.83690
-#> 10 Jaboatão dos Guararapes       124   18.14763
+#> 12                Paulista        72   19.83690
+#> 9  Jaboatão dos Guararapes       124   18.14763
 #> 2                Araçoiaba         0    0.00000
 #> 4               Camaragibe         0    0.00000
-#> 6                 Igarassu         0    0.00000
-#> 7                  Ipojuca         0    0.00000
-#> 8        Ilha de Itamaracá         0    0.00000
-#> 9               Itapissuma         0    0.00000
+#> 5                 Igarassu         0    0.00000
+#> 6                  Ipojuca         0    0.00000
+#> 7        Ilha de Itamaracá         0    0.00000
+#> 8               Itapissuma         0    0.00000
 mapa <- condepe_add_geometry(d, geometry = malha, all = FALSE)
 mapa$rotulo <- ifelse(mapa$por_100mil >= 40, mapa$nm_municipio, "")  # os demais, na tabela acima
 ```

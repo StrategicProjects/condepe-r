@@ -189,8 +189,8 @@ ggplot() +
 
 ## Região Metropolitana do Recife
 
-Para ver um recorte, filtre a malha antes de desenhar. Os 15 municípios da
-Região Metropolitana do Recife (Goiana entrou em 2018) e os leitos de UTI por
+Para ver um recorte, filtre a malha antes de desenhar. Os 14 municípios da
+Região Metropolitana do Recife e os leitos de UTI por
 100 mil habitantes em dezembro de 2024:
 
 ```{r}
