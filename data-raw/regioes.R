@@ -60,9 +60,10 @@ nome_rm[cod_rm == "2601"] <- "Região Metropolitana do Recife"
 nome_rm[cod_rm == "2602"] <- "RIDE Petrolina-Juazeiro"
 nome_rm[!cod_rm %in% c("2601", "2602")] <- NA
 municipios$rm <- nome_rm
-# Goiana integra a RMR desde a lei complementar estadual de 2018; a base
-# territorial do DATASUS (jun/2026) ainda lista os 14 municípios anteriores.
-municipios$rm[municipios$cd_municipio_ibge == "2606200"] <- "Região Metropolitana do Recife"
+# Goiana NÃO entra na RMR: a Condepe/Fidem (Diretoria de Planejamento e
+# Ordenamento Territorial, nov/2026) trabalha com os 14 municípios, e Goiana
+# integra a Região de Desenvolvimento da Mata Norte. Até 0.1.x a tabela a
+# incluía por conta da lei complementar estadual de 2018.
 
 rd <- utils::read.csv("data-raw/rd_fidem.csv", colClasses = "character", encoding = "UTF-8")
 municipios$rd <- rd$rd[match(municipios$cd_municipio_ibge, rd$cd_municipio_ibge)]
