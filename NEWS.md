@@ -1,5 +1,18 @@
 # condepe (versão de desenvolvimento)
 
+* `condepe_geometry()` passa a ler a edição padronizada da Malha Municipal
+  (`2025-v4`, campo `corrente` do manifesto), com as colunas já nos nomes do
+  Observatório. O resultado é o mesmo de antes: 185 feições, as mesmas
+  colunas e a mesma geometria. Manifesto sem `corrente` segue funcionando.
+* `condepe_regions()`: seis colunas novas com os códigos oficiais das regiões
+  (`cd_mesorregiao`, `cd_microrregiao`, `cd_regiao_intermediaria`,
+  `cd_regiao_imediata`, do IBGE; `cd_regiao_saude` e `cd_macrorregiao_saude`,
+  do DATASUS), no fim da tabela.
+* Goiana deixa a Região Metropolitana do Recife, que passa a ter 14
+  municípios (Lei Complementar Estadual nº 426/2020).
+* Regiões imediatas "Goiana - Timbaúba" e "Belo Jardim - Pesqueira" sem o
+  "¿" que a API do IBGE devolve no lugar do travessão.
+
 * `condepe_roads()`: a malha rodoviária de Pernambuco (DER-PE, SRE 2026-2027,
   com os trechos federais do SNV/DNIT) como `sf` de linhas, lida do GeoParquet
   `referencia/rodovias.parquet` publicado pelo Observatório, com filtro por
