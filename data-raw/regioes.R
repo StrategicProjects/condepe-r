@@ -33,7 +33,9 @@ municipios <- data.frame(
   mesorregiao = vapply(ibge, function(m) m$microrregiao$mesorregiao$nome, ""),
   microrregiao = vapply(ibge, function(m) m$microrregiao$nome, ""),
   regiao_intermediaria = vapply(ibge, function(m) m$`regiao-imediata`$`regiao-intermediaria`$nome, ""),
-  regiao_imediata = vapply(ibge, function(m) m$`regiao-imediata`$nome, "")
+  # A API devolve o travessão de duas regiões como "¿" ("Goiana ¿ Timbaúba");
+  # as demais compostas vêm com hífen, e é essa a grafia usada.
+  regiao_imediata = gsub(" ¿ ", " - ", vapply(ibge, function(m) m$`regiao-imediata`$nome, ""), fixed = TRUE)
 )
 stopifnot(nrow(municipios) == 185)
 
