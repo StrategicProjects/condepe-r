@@ -1,4 +1,4 @@
-# condepe (versão de desenvolvimento)
+# condepe 0.1.1
 
 * `condepe_geometry()` passa a ler a edição padronizada da Malha Municipal
   (`2025-v4`, campo `corrente` do manifesto), com as colunas já nos nomes do
