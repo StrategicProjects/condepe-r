@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">condepe</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,13 +46,27 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="condepe-011">condepe 0.1.1<a class="anchor" aria-label="anchor" href="#condepe-011"></a></h2>
+<ul><li><p><code><a href="../reference/condepe_geometry.html">condepe_geometry()</a></code> passa a ler a edição padronizada da Malha Municipal (<code>2025-v4</code>, campo <code>corrente</code> do manifesto), com as colunas já nos nomes do Observatório. O resultado é o mesmo de antes: 185 feições, as mesmas colunas e a mesma geometria. Manifesto sem <code>corrente</code> segue funcionando.</p></li>
+<li><p><code><a href="../reference/condepe_regions.html">condepe_regions()</a></code>: seis colunas novas com os códigos oficiais das regiões (<code>cd_mesorregiao</code>, <code>cd_microrregiao</code>, <code>cd_regiao_intermediaria</code>, <code>cd_regiao_imediata</code>, do IBGE; <code>cd_regiao_saude</code> e <code>cd_macrorregiao_saude</code>, do DATASUS), no fim da tabela.</p></li>
+<li><p>Goiana deixa a Região Metropolitana do Recife, que passa a ter 14 municípios (Lei Complementar Estadual nº 426/2020).</p></li>
+<li><p>Regiões imediatas “Goiana - Timbaúba” e “Belo Jardim - Pesqueira” sem o “¿” que a API do IBGE devolve no lugar do travessão.</p></li>
+<li><p><code><a href="../reference/condepe_roads.html">condepe_roads()</a></code>: a malha rodoviária de Pernambuco (DER-PE, SRE 2026-2027, com os trechos federais do SNV/DNIT) como <code>sf</code> de linhas, lida do GeoParquet <code>referencia/rodovias.parquet</code> publicado pelo Observatório, com filtro por tipo (estaduais, federais, vicinais, acessos).</p></li>
+<li><p><code><a href="../reference/condepe_hydrography.html">condepe_hydrography()</a></code>: hidrografia de Pernambuco recortada da ANA — rios (BHO nível 5), rios principais, massas d’água, reservatórios acompanhados (com capacidade e demandas) e Unidades de Planejamento Hídrico — como <code>sf</code>.</p></li>
+<li><p><code>condepe_layer(id)</code>: qualquer camada geográfica publicada no catálogo (<code>terras_indigenas</code>, <code>up_perh</code>…) como <code>sf</code>.</p></li>
+<li><p><code><a href="../reference/condepe_regions.html">condepe_regions()</a></code> e <code><a href="../reference/condepe_geometry.html">condepe_geometry()</a></code> ganham a regionalização <code>up_perh</code> (Unidades de Planejamento do PERH, APAC): doze regionalizações.</p></li>
+<li><p>Catálogo guardado (até 6 h) e versão nova publicada nesse intervalo: o arquivo em <code>atual/</code> já não batia com o SHA-256 do catálogo e a chamada falhava com <code>condepe_error_integrity</code>. Agora o cliente lê a árvore imutável da própria versão (<code>&lt;versão&gt;/…</code> no canônico, tag no espelho) antes de desistir.</p></li>
+<li><p>Vignette de mapas com a seção “Camadas geográficas” (rodovias, hidrografia e terras indígenas sobre a malha).</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="condepe-010">condepe 0.1.0<a class="anchor" aria-label="anchor" href="#condepe-010"></a></h2>
 <ul><li>Primeira submissão ao CRAN: <code><a href="../reference/condepe_catalog.html">condepe_catalog()</a></code>, <code><a href="../reference/condepe_indicators.html">condepe_indicators()</a></code>, <code><a href="../reference/condepe_data.html">condepe_data()</a></code>, <code><a href="../reference/condepe_series.html">condepe_series()</a></code> e <code><a href="../reference/condepe_localities.html">condepe_localities()</a></code>, que leem os dados abertos do Observatório (endereço canônico, espelho no Hugging Face como reserva) com cache em disco por versão do catálogo e conferência por SHA-256.</li>
 <li>Mapas: <code><a href="../reference/condepe_geometry.html">condepe_geometry()</a></code> (Malha Municipal de Pernambuco da Condepe/Fidem, conferida pelo SHA-256 do manifesto, ou a malha do IBGE), dissolvida em regiões com <code>level</code>; <code><a href="../reference/condepe_regions.html">condepe_regions()</a></code> com onze regionalizações (Regiões de Desenvolvimento, meso e microrregiões, regiões imediatas e intermediárias, regiões e macrorregiões de saúde, GRE, regiões fiscais, DRO do DER, regiões metropolitanas), lida da tabela publicada pelo Observatório (<code>referencia/regioes.parquet</code>, com cache e SHA-256) ou da cópia embutida, sem rede ou com <code>offline = TRUE</code>; <code><a href="../reference/condepe_add_geometry.html">condepe_add_geometry()</a></code> junta os dados à malha. Quatro guias: primeiros passos, exemplos, mapas e a relação das fontes.</li>
 <li>
 <code><a href="../reference/condepe_cite.html">condepe_cite()</a></code>: a citação com a fonte original primeiro e o Observatório como organizador — de um resultado (também depois de <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> ou <code>bind_rows()</code>), de identificadores de fonte ou do acervo.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
