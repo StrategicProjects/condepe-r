@@ -113,20 +113,23 @@ condepe_geometry_condepe <- function(refresh = FALSE, error_call = rlang::caller
     return(NULL)
   }
   manifesto <- jsonlite::fromJSON(rawToChar(raw), simplifyVector = FALSE)
-  atual <- Filter(function(v) identical(v$id, manifesto$atual), manifesto$versoes)
+  # `corrente` é a edição padronizada (cd_municipio_ibge, nm_municipio); o
+  # manifesto antigo só tem `atual`, com as colunas de origem (cod_munici).
+  edicao <- if (is.null(manifesto$corrente)) manifesto$atual else manifesto$corrente
+  atual <- Filter(function(v) identical(v$id, edicao), manifesto$versoes)
   geojson <- if (length(atual)) {
     Filter(function(f) identical(f$tipo, "geojson"), atual[[1]]$formatos)
   } else {
     list()
   }
   if (length(geojson) == 0L) {
-    cli::cli_abort("O manifesto da malha n\u00e3o traz o GeoJSON da edi\u00e7\u00e3o {.val {manifesto$atual}}.", call = NULL)
+    cli::cli_abort("O manifesto da malha n\u00e3o traz o GeoJSON da edi\u00e7\u00e3o {.val {edicao}}.", call = NULL)
   }
   arq <- geojson[[1]]
-  dest <- file.path(condepe_cache_dir(), "malha", manifesto$atual, arq$arquivo)
+  dest <- file.path(condepe_cache_dir(), "malha", edicao, arq$arquivo)
   if (isTRUE(refresh) || !file.exists(dest) || condepe_sha256(dest) != arq$sha256) {
     corpo <- condepe_fetch_url(
-      condepe_malha_url, paste0(manifesto$atual, "/", arq$arquivo),
+      condepe_malha_url, paste0(edicao, "/", arq$arquivo),
       error_call = error_call
     )
     if (is.null(corpo)) {
@@ -143,14 +146,15 @@ condepe_geometry_condepe <- function(refresh = FALSE, error_call = rlang::caller
     }
   }
   malha <- sf::read_sf(dest, quiet = TRUE)
+  padronizada <- "cd_municipio_ibge" %in% names(malha)
   out <- sf::st_sf(
-    cd_municipio_ibge = as.character(malha$cod_munici),
-    nm_municipio = as.character(malha$nom_munici),
+    cd_municipio_ibge = as.character(if (padronizada) malha$cd_municipio_ibge else malha$cod_munici),
+    nm_municipio = as.character(if (padronizada) malha$nm_municipio else malha$nom_munici),
     geometry = sf::st_geometry(malha)
   )
   out <- out[order(out$cd_municipio_ibge), ]
   row.names(out) <- NULL
-  attr(out, "version") <- manifesto$atual
+  attr(out, "version") <- edicao
   attr(out, "source") <- "Condepe/Fidem, Malha Municipal de Pernambuco"
   out
 }
