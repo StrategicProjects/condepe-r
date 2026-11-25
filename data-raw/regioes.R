@@ -35,7 +35,13 @@ municipios <- data.frame(
   regiao_intermediaria = vapply(ibge, function(m) m$`regiao-imediata`$`regiao-intermediaria`$nome, ""),
   # A API devolve o travessão de duas regiões como "¿" ("Goiana ¿ Timbaúba");
   # as demais compostas vêm com hífen, e é essa a grafia usada.
-  regiao_imediata = gsub(" ¿ ", " - ", vapply(ibge, function(m) m$`regiao-imediata`$nome, ""), fixed = TRUE)
+  regiao_imediata = gsub(" ¿ ", " - ", vapply(ibge, function(m) m$`regiao-imediata`$nome, ""), fixed = TRUE),
+  # Códigos oficiais do IBGE das quatro divisões: chave estável para junções
+  # (o nome muda de grafia; o código não).
+  cd_mesorregiao = vapply(ibge, function(m) as.character(m$microrregiao$mesorregiao$id), ""),
+  cd_microrregiao = vapply(ibge, function(m) as.character(m$microrregiao$id), ""),
+  cd_regiao_intermediaria = vapply(ibge, function(m) as.character(m$`regiao-imediata`$`regiao-intermediaria`$id), ""),
+  cd_regiao_imediata = vapply(ibge, function(m) as.character(m$`regiao-imediata`$id), "")
 )
 stopifnot(nrow(municipios) == 185)
 
@@ -49,9 +55,11 @@ ler <- function(f) utils::read.csv(file.path(dir, f), colClasses = "character",
 cod6 <- substr(municipios$cd_municipio_ibge, 1, 6)
 
 rs <- ler("rl_municip_regsaud.csv"); tb_rs <- ler("tb_regsaud.csv")
+municipios$cd_regiao_saude <- rs$CO_REGSAUD[match(cod6, rs$CO_MUNICIP)]
 municipios$regiao_saude <- sub(" - PE$", "", tb_rs$DS_NOME[match(rs$CO_REGSAUD[match(cod6, rs$CO_MUNICIP)], tb_rs$CO_REGSAUD)])
 
 ms <- ler("rl_municip_macsaud.csv"); tb_ms <- ler("tb_macsaud.csv")
+municipios$cd_macrorregiao_saude <- ms$CO_MACSAUD[match(cod6, ms$CO_MUNICIP)]
 nome_ms <- tb_ms[[5]][match(ms$CO_MACSAUD[match(cod6, ms$CO_MUNICIP)], tb_ms[[1]])]
 municipios$macrorregiao_saude <- sub("S.Francisco", "São Francisco", nome_ms, fixed = TRUE)
 
@@ -107,7 +115,20 @@ if (file.exists(up_gz) && file.exists(malha_manifesto)) {
 municipios <- municipios[order(municipios$cd_municipio_ibge),
   c("cd_municipio_ibge", "nm_municipio", "rd", "mesorregiao", "microrregiao",
     "regiao_intermediaria", "regiao_imediata", "regiao_saude", "macrorregiao_saude",
-    "gre", "regiao_fiscal", "dro", "rm", "up_perh")]
+    "gre", "regiao_fiscal", "dro", "rm", "up_perh",
+    # Códigos no fim, para não deslocar as colunas de quem lê por posição.
+    # GRE, região fiscal, DRO e RD não têm código na origem; a UP traz o seu
+    # no próprio rótulo ("UP02 - ...").
+    "cd_mesorregiao", "cd_microrregiao", "cd_regiao_intermediaria",
+    "cd_regiao_imediata", "cd_regiao_saude", "cd_macrorregiao_saude")]
 stopifnot(!anyNA(municipios[setdiff(names(municipios), "rm")]))
 utils::write.csv(municipios, "inst/extdata/regioes.csv", row.names = FALSE, fileEncoding = "UTF-8", na = "")
 print(sapply(municipios[-(1:2)], function(x) length(unique(stats::na.omit(x)))))
+# Cada código corresponde a um nome só, e vice-versa.
+for (par in list(c("mesorregiao", "cd_mesorregiao"), c("microrregiao", "cd_microrregiao"),
+                 c("regiao_intermediaria", "cd_regiao_intermediaria"),
+                 c("regiao_imediata", "cd_regiao_imediata"), c("regiao_saude", "cd_regiao_saude"),
+                 c("macrorregiao_saude", "cd_macrorregiao_saude"))) {
+  stopifnot(nrow(unique(municipios[par])) == length(unique(municipios[[par[1]]])),
+            nrow(unique(municipios[par])) == length(unique(municipios[[par[2]]])))
+}

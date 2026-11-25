@@ -81,7 +81,7 @@ test_that("condepe_regions cobre os 185 municípios em cada regionalização", {
   }
   # só rm tem municípios fora de toda região
   expect_true(all(!is.na(r[, setdiff(names(esperado), "rm")])))
-  expect_equal(sum(r$rm == "Região Metropolitana do Recife", na.rm = TRUE), 15L)
+  expect_equal(sum(r$rm == "Região Metropolitana do Recife", na.rm = TRUE), 14L) # LC 426/2020: Goiana fora da RMR
   rd <- condepe_regions("rd", offline = TRUE)
   expect_named(rd, c("cd_municipio_ibge", "nm_municipio", "regiao"))
   expect_error(condepe_regions("ais"))
