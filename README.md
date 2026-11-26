@@ -13,7 +13,7 @@ devolvendo tibbles.
 ## Instalação
 
 ```r
-install.packages("condepe")   # quando estiver no CRAN
+install.packages("condepe")
 
 # versão em desenvolvimento:
 # install.packages("pak")
